@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/vue.js"></script>
+<script>
+//定义组件  
+var MyComponent = Vue.extend({
+	props:['form'],
+  template: '<label>{{ form.title }}</label>' +
+        '<input ' +
+        'class="ipt" ' +
+        ':name="form.name" ' +
+        ':value="form.value" ' +
+        ':type="form.type" ' +
+        'v-model="form.value" ' +
+        ':placeholder="form.placeHolder" />',
+	
+})
+//组件A   
+var AComponent = Vue.extend({
+  props: ['text'],
+  template: '<li>A Component: {{ text }}</li>'
+})
+
+//组件B 
+var BComponent = Vue.extend({
+  props: ['text'],
+  template: '<li>B Component: {{ text }}</li>'
+})
+//生成组件  	
+Vue.component('my-component', MyComponent)
+
+  window.onload = function(){
+      //创建实例
+      var vm = new Vue({
+        el: '#example',
+        components: {
+          'a-component': AComponent,
+          'b-component': BComponent,
+        },
+        data:{
+          msg: "a",
+          detail:{
+              "vname": {
+                  "title": "vname",
+                  "name": "vname",
+                  "value": "aa",
+                  "type": "text"
+              }
+           },
+           items: []
+        },
+        methods: {
+         update: function(){
+            this.msg = "b"
+         },
+         add(component, text) {
+              this.items.push({
+                'component': component,
+                'text': text,
+              })
+            }
+         }
+      })
+ }
+</script>
+</head>
+<body>
+<div id="example">
+ 
+<button @click="add('a-component', 'testA')">Add A</button>
+<button @click="add('b-component', 'testB')">Add B</button>
+<ul>
+  <li :is="item.component" :text="item.text" v-for="item in items"></li>
+</ul>
+    
+  <button @click="update()">create</button>
+  <label for="">{{msg}}</label>
+  <!-- 2、动态创建dom并绑定-->
+  
+	<my-component :form="detail.vname" ></my-component>
+</div>
+
+
+</body>
+</html>

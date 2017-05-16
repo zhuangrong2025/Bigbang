@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/vue.js"></script>
+<link rel="stylesheet" href="../css/smui.css">
+<style>
+  body{
+    padding: .2rem;
+  }
+</style>
+<script>
+
+
+//新建一个组件
+var ButtonComp = Vue.extend({
+    props: ["comp"],//设置组件的属性
+    template: '<a href="#" class="sm-btn" v-bind:class="comp.type" > {{comp.text}} </a>'
+})
+
+window.onload = function(){
+    
+    //创建vue实例
+    var vm = new Vue({
+      el: '#example',
+      components: {
+         btnComp: ButtonComp
+      },
+      data:{
+        cls: "warning",
+        seen: true,
+        comps: [
+          {
+            name: ButtonComp,
+            type: "warning",
+            text: "警告"
+          }
+        ],
+      },
+      methods:{
+        addCompBtn(comp, type, text){
+           this.comps.push({
+             name: comp,
+             type: type,
+             text: text
+           })
+        }
+      }
+    })
+ }
+</script>
+</head>
+<body>
+<div id="example">
+ 
+  <button @click="addCompBtn('btnComp', 'primary', '主要')">+添加按钮组件</button>
+  <component v-bind:is="item.name"  :comp="item" v-for="item in comps"></component>
+  
+</div>
+
+
+</body>
+</html>

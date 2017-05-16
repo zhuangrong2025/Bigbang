@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/vue.js"></script>
+<script>
+
+var MyComponent = Vue.extend({
+    template: '<div>dom挂载{{some}}</div>',
+    data:function(){
+       return {
+         some: "water"
+       }
+    }
+})
+//组件A   
+var AComponent = Vue.extend({
+  props: ['text'],
+  template: '<li>A Component: {{ text }}</li>'
+})
+
+//组件B 
+var BComponent = Vue.extend({
+  props: ['text'],
+  template: '<li>B Component: {{ text }}</li>'
+})
+
+  window.onload = function(){
+      
+//      new MyComponent().$mount('#example');
+    //  new MyComponent().$mount().$appendTo('#example')
+    
+      //创建实例
+      var vm = new Vue({
+        el: '#example',
+        components: {
+          'a-component': AComponent,
+          'b-component': BComponent,
+        },
+        data:{
+           items: [
+             {
+               'component': AComponent,
+               'text': "ac"
+             }
+           ]
+        },
+        methods: {
+           add(component, text) {
+              this.items.push({
+                'component': component,
+                'text': text,
+              })
+              
+            //  new MyComponent().$mount('#box')
+//              $("#box").append( "<div :is=" + AComponent + " :text= + " this.items[0].text + ">1</div>" )
+//              $("#box").append( "<div :is=" + AComponent + ">1</div>" )
+              
+              
+            }
+        }
+      })
+ }
+</script>
+</head>
+<body>
+<div id="example">
+  <button @click="add('a-component', 'testA')">Add A</button>
+  <button @click="add('b-component', 'testB')">Add B</button>
+  <ul id="ul">
+    <li :is="item.component" :text="item.text" v-for="item in items"></li>
+  </ul>
+  <div id="box" style="border: 1px solid #ccc; padding: 50px">
+    
+  </div>
+  这是组件：
+  <component v-bind:is="item.component"  :text="item.text" v-for="item in items"></component>
+</div>
+
+
+</body>
+</html>

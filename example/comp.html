@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/vue.js"></script>
+<script>
+
+//新建一个组件
+Vue.component("todo-item",{
+    props: ["todo"],//设置组件的属性
+    template: '<div> this is a {{todo.text}}</div>'
+})
+
+window.onload = function(){
+      
+      //创建实例
+      var vm = new Vue({
+        el: '#example',
+        data:{
+           seen: true,  //添加或删除组件
+           lists: [
+             {
+              text: "one"
+             },
+             {
+              text: "two"
+             }
+           ]
+        }
+      })
+ }
+</script>
+</head>
+<body>
+<div id="example">
+    
+ 
+    <todo-item :todo="list" v-for="list in lists" v-if="seen"></todo-item>
+    
+ 
+</div>
+
+
+</body>
+</html>

@@ -26,14 +26,16 @@
   .select-box{
     position: absolute;
     top: 280px;
-    left: 10px;
-    right: 10px;
-    height: 50px;    
+    left: 19px;
+    right: 19px;
+    height: 48px;    
     display: block;
     color: #4a87ee;
     border: 1px solid #4a87ee;
     border-radius: 3px;
-    background-color: rgba(105, 151, 242, 0.05);
+    background-color: rgba(105, 151, 242, 0.3);
+		z-index: 999;
+		display: none;
   }
   .select-box i{
     position: absolute;
@@ -115,7 +117,7 @@ window.onload = function(){
           this.currentComp = this.comps.indexOf(obj)
 					var currDom = $(this.$el).find("#"+obj.id)
 					console.log(obj.id)
-					console.log($(this.$el).find("#"+obj.id).offset().top)
+					console.log($(this.$el).find("#"+obj.id).offset().left)
 					console.log($(this.$el).find("#"+obj.id).height())
 					
          // console.log( this.components )
@@ -131,7 +133,7 @@ window.onload = function(){
   <div class="select-box" @click="removeComp()">
     <i>&times;</i>
   </div>
-  <button @click="addComp('btnComp', 'primary', '主要')">+添加按钮组件</button>
+  <button @click="addComp('btnComp', 'warning', '主要')">+添加按钮组件</button>
   
   <component v-bind:is="item.name" v-on:select="selectComp(item)"  :comp="item" v-for="item in comps" :key="item.id"></component>
   

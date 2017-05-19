@@ -107,6 +107,7 @@ window.onload = function(){
         //删除组件
         removeComp(){
           this.comps.splice(this.currentComp,1)
+					$(".select-box").hide()
         },
         
         //选择组件
@@ -118,7 +119,7 @@ window.onload = function(){
 					console.log($(this.$el).find("#"+obj.id).height())
 					
          // console.log( this.components )
-					$(".select-box").css("top", currDom.offset().top + "px")
+					$(".select-box").show().css("top", currDom.offset().top + "px")
         }
       }
     })

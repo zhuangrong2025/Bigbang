@@ -113,10 +113,10 @@ window.onload = function(){
         },
         
         //选择组件
-        selectComp: function(obj){
+        selectComp: function(obj,index){
           this.currentComp = this.comps.indexOf(obj)
 					var currDom = $(this.$el).find("#"+obj.id)
-					console.log(obj.id)
+					console.log(index)
 					console.log($(this.$el).find("#"+obj.id).offset().left)
 					console.log($(this.$el).find("#"+obj.id).height())
 					
@@ -135,7 +135,7 @@ window.onload = function(){
   </div>
   <button @click="addComp('btnComp', 'warning', '主要')">+添加按钮组件</button>
   
-  <component v-bind:is="item.name" v-on:select="selectComp(item)"  :comp="item" v-for="item in comps" :key="item.id"></component>
+  <component v-bind:is="item.name" v-on:select="selectComp(item, $index)"  :comp="item" v-for="item in comps" :key="item.id"></component>
   
 </div>
 

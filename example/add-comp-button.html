@@ -80,16 +80,20 @@ window.onload = function(){
          btnComp: ButtonComp
       },
       data:{
-        currentComp: 0,
+        currentComp: "a",
         seen: true,
         comps: [
-//          {
-//            name: ButtonComp,
-//            type: "warning",
-//            text: "警告",
-//            id: "0"
-//          }
+          {
+            name: ButtonComp,
+            type: "warning",
+            text: "警告",
+            id: "0"
+          }
         ],
+      },
+      mounted(){
+        //默认加载类似onload
+        this.test()
       },
       methods:{
         
@@ -99,7 +103,8 @@ window.onload = function(){
              name: comp,
              type: type,
              text: text + this.comps.length,
-             id: this.comps.length
+             id: this.comps.length,
+             ref: this.currentComp
            })
         },
         
@@ -111,21 +116,36 @@ window.onload = function(){
         //选择组件
         selectComp: function(obj){
           this.currentComp = this.comps.indexOf(obj)
-          console.log( this.components )
+        },
+        test(){
+          var refid = this.currentComp
+          var getRef = this.$refs.ck
+          
+           console.log(this.$refs.btnComp)
+          
+          //获取的是未渲染的组件
+          //console.log(refid)
         }
+        
       }
     })
  }
 </script>
 </head>
 <body>
+
 <div id="example">
+ <p ref="home"  style="width:100px; height: 30px; border: 1px solid #ddd ">home</p>
+  <div @click="test()">获取dom对象和样式</div>
+  
+  <!--选择组件-->
   <div class="select-box" @click="removeComp()">
     <i>&times;</i>
   </div>
+  
   <button @click="addComp('btnComp', 'primary', '主要')">+添加按钮组件</button>
   
-  <component v-bind:is="item.name" v-on:select="selectComp(item)"  :comp="item" v-for="item in comps" :key="item.id"></component>
+  <component v-bind:is="item.name" v-on:select="selectComp(item)" :ref="item.name" :comp="item" v-for="item in comps" :key="item.id"></component>
   
 </div>
 

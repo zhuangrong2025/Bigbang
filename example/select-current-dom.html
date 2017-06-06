@@ -57,6 +57,19 @@
     background-color: rgb(105, 151, 242);
   }
 </style>
+</head>
+<body>
+<div id="example">
+  <div class="select-box">
+    <i  @click="removeComp()">&times;</i>
+  </div>
+  <button @click="addComp('btnComp', 'warning', '主要')">+添加按钮组件</button>
+  
+  <component v-bind:is="item.name"   v-on:increment="selectComp($event, item)"  :comp="item" v-for="item in comps" :key="item.id"></component>
+  
+</div>
+<script src="../js/vue.js"></script>
+
 <script>
 
 
@@ -68,13 +81,20 @@ var ButtonComp = {
                      class="sm-btn"
                      v-bind:class="comp.type"
                      v-bind:id="comp.id"
-                     v-on:click = "$emit(\'select\')">
+                     v-on:click = "increment" >
                      {{ comp.text }}
                   </a>
                 `,
+  
+      methods: {
+        increment: function(event){
+          console.log(event.target.className)
+          this.$emit('increment', event)  //触发v-on:increment，并传回当前对象event
+        }
+      }
     }
 
-window.onload = function(){
+
     
     //创建vue实例
     var vm = new Vue({
@@ -83,7 +103,7 @@ window.onload = function(){
          btnComp: ButtonComp
       },
       data:{
-        currentComp: 0,
+//        currentComp: 0,
         seen: true,
         comps: [
 //          {
@@ -108,37 +128,20 @@ window.onload = function(){
         
         //删除组件
         removeComp(){
-          this.comps.splice(this.currentComp,1)
+//          this.comps.splice(this.currentComp,1)
 					$(".select-box").hide()
         },
         
         //选择组件
-        selectComp: function(obj,index){
-          this.currentComp = this.comps.indexOf(obj)
-					var currDom = $(this.$el).find("#"+obj.id)
-					console.log(index)
-					console.log($(this.$el).find("#"+obj.id).offset().left)
-					console.log($(this.$el).find("#"+obj.id).height())
-					
-         // console.log( this.components )
-					$(".select-box").show().css("top", currDom.offset().top + "px")
+        selectComp: function(event, obj){
+          var ele = $(event.target)
+          $(".select-box").show().css("top", ele.offset().top + "px")
+          console.log(this.comps.indexOf(obj))
+
         }
       }
     })
- }
+
 </script>
-</head>
-<body>
-<div id="example">
-  <div class="select-box" @click="removeComp()">
-    <i>&times;</i>
-  </div>
-  <button @click="addComp('btnComp', 'warning', '主要')">+添加按钮组件</button>
-  
-  <component v-bind:is="item.name" v-on:select="selectComp(item, $index)"  :comp="item" v-for="item in comps" :key="item.id"></component>
-  
-</div>
-
-
 </body>
 </html>

@@ -3,47 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>Document</title>
-<script src="js/vue.js"></script>
-<script>
-var MyComponent = Vue.extend({
-  props:['form'],
-  template: '<label>{{ form.title }}</label>' +
-        '<input ' +
-        'class="form-control modal-input" ' +
-        ':name="form.name" ' +
-        ':value="form.value" ' +
-        ':type="form.inputType" ' +
-        'v-model="form.value" ' +
-        ':placeholder="form.placeHolder" />' +
-        '<p class="help-block">{{ form.help }}</p>',
-    
-})
-    
-Vue.component('my-component', MyComponent)
-
-  window.onload = function(){
-    var vm = new Vue({
-      el : '#app',
-      data : {
-        msg : "aabb",
-        wd: 10
-      }
-    })
-  
-};
-</script>
+<title>creator</title>
+<link rel="stylesheet" href="css/creator.css">
 </head>
 <body>
-
-<div id="app">
- 
- <input type="text" v-model="wd" placeholder="" >
- <div v-bind:style="{ background: '#ccc', width: wd + 'px' }">
-   {{wd}}
- </div>
-</div>
-
+<!--头部-->
+<header>
+  <div class="h-l">
+    <i class="logo icon-h"></i>
+    <span>Smui creator</span>
+    <button class="save icon-h" title="保存"></button>
+  </div>
+  <div class="h-m">
+    <a href="#" class="build active" title="创建"></a>
+    <a href="#" class="preview" title="预览"></a>
+  </div>
+  <div class="h-r">
+    <ul>
+      <li><i class="theme icon-h" title="主题"></i></li>
+      <li><i class="help icon-h"  title="帮助"></i></li>
+      <li><i class="user icon-h"  title="用户"></i></li>
+    </ul>
+  </div>
+</header>
+<!--//头部-->
 
 </body>
 </html>

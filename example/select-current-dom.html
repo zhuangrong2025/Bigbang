@@ -88,7 +88,6 @@ var ButtonComp = {
   
       methods: {
         increment: function(event){
-          console.log(event.target.className)
           this.$emit('increment', event)  //触发v-on:increment，并传回当前对象event
         }
       }
@@ -103,7 +102,7 @@ var ButtonComp = {
          btnComp: ButtonComp
       },
       data:{
-//        currentComp: 0,
+        currentComp: 0,
         seen: true,
         comps: [
 //          {
@@ -128,7 +127,7 @@ var ButtonComp = {
         
         //删除组件
         removeComp(){
-//          this.comps.splice(this.currentComp,1)
+          this.comps.splice(this.currentComp,1)
 					$(".select-box").hide()
         },
         
@@ -136,8 +135,7 @@ var ButtonComp = {
         selectComp: function(event, obj){
           var ele = $(event.target)
           $(".select-box").show().css("top", ele.offset().top + "px")
-          console.log(this.comps.indexOf(obj))
-
+          this.currentComp = this.comps.indexOf(obj)
         }
       }
     })

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+
+  <div id="app">
+    <button @click="toShow">父组件-显示</button>
+    <child>
+       
+    </child>
+  </div>
+<script src="../js/vue.js"></script>
+
+<script>
+
+var vm = new Vue({
+  el: '#app',
+  methods: {
+    toShow: function(){
+      this.$children[0].toHidden = true
+    }
+  },
+  components: {
+      child: {
+        template: "<button v-if='toHidden' @click='tohide'>这是子组件</button>",
+        data: function(){
+          return {
+            toHidden: true
+          }
+        },
+        methods: {
+          tohide: function(){
+            this.toHidden = !this.toHidden
+          }
+        }
+      }
+  }
+})
+</script>
+</body>
+</html>

@@ -5,28 +5,90 @@
 <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>creator</title>
 <link rel="stylesheet" href="css/creator.css">
+<style>
+  html,body{
+    height: 100%;
+    overflow: hidden;
+  }
+</style>
 </head>
 <body>
-<!--头部-->
+<!--header-->
 <header>
-  <div class="h-l">
+  <div class="header-left">
     <i class="logo icon-h"></i>
     <span>Smui creator</span>
-    <button class="save icon-h" title="保存"></button>
+    <button class="save icon-h" title="save"></button>
   </div>
-  <div class="h-m">
-    <a href="#" class="build active" title="创建"></a>
-    <a href="#" class="preview" title="预览"></a>
+  <div class="navbar">
+    <a href="#" class="build active" title="creator"></a>
+    <a href="#" class="preview" title="preview"></a>
   </div>
-  <div class="h-r">
+  <div class="header-right">
     <ul>
-      <li><i class="theme icon-h" title="主题"></i></li>
-      <li><i class="help icon-h"  title="帮助"></i></li>
-      <li><i class="user icon-h"  title="用户"></i></li>
+      <li><i class="theme icon-h" title="themes"></i></li>
+      <li><i class="help icon-h"  title="help"></i></li>
+      <li><i class="user icon-h"  title="user"></i></li>
     </ul>
   </div>
 </header>
-<!--//头部-->
-
+<!--//header-->
+<!--content-->
+<section class="container">
+  <aside class="aside-bar">
+    <!--pages-->
+    <div class="pages">
+      <h3 class="title">Pages <button><i class="new-page"></i>Add Page</button></h3>
+      <div class="page-list">
+        <ul>
+          <li class="active">
+            <a href="#"><i class="icon-page"></i>index <span class="del-page"></span></a>
+          </li>
+          <li>
+            <a href="#"><i class="icon-page"></i>list</a>
+          </li>
+          <li>
+            <a href="#"><i class="icon-page"></i>article</a>
+          </li>
+          <li>
+            <a href="#"><i class="icon-page"></i>news</a>
+          </li>
+          <li>
+            <a href="#"><i class="icon-page"></i>contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--//pages-->
+    <!--component-->
+    <div class="component-wrap">
+      <h3 class="title">Components</h3>
+      <div class="component">
+        <ul>
+          <li><i class="heading"></i>Heading</li>
+          <li><i class="button"></i>Button</li>
+          <li><i class="button-bar"></i>Button Bar</li>
+          <li><i class="checkbox"></i>Checkbox</li>
+          <li><i class="radio"></i>Radio</li>
+          <li><i class="input"></i>Input</li>
+          <li><i class="select"></i>Select</li>
+          <li><i class="toggle"></i>Toggle</li>
+          <li><i class="search"></i>Search</li>
+          <li><i class="textarea"></i>Textarea</li>
+          <li><i class="slider"></i>Slider</li>
+          <li><i class="range"></i>Range</li>
+        </ul>
+      </div>
+    </div>
+    <!--//component-->
+  </aside>
+  <section class="content">
+    main
+  </section>
+  <aside class="property">
+    right
+  </aside>
+</section>
+<!--//content-->
 </body>
 </html>

@@ -7,6 +7,7 @@ html {
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   font-size: 13px;
+  font-family:'Helvetica Neue', Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 *, *::before, *::after{
   margin: 0;
@@ -20,7 +21,6 @@ li {
 body {
   color: #333;
   line-height: 1.6;
-  font-family:'Roboto', 'Helvetica Neue', Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 body, span, label, p, a, div, li, dt, dd, i, em, section, article, :after, :before, button, input {
   background-repeat: no-repeat;
@@ -104,7 +104,12 @@ em, h3 {
 .tc {
   text-align: center;
 }
-
+.pull-left{
+  float: left;
+}
+.pull-right{
+  float: right;
+}
 /*--------------------header--------------------*/
 header{
   height: 48px;
@@ -123,6 +128,7 @@ header .navbar{
 	flex: 1;
 }
 header .header-left{
+  width: 312px;
   color: #4EABF9;
 }
 header .header-left{
@@ -212,6 +218,10 @@ header .navbar .preview:hover:after{
 }
 
 /*header-right*/
+.header-right{
+  width: 312px;
+  text-align: right;
+}
 .header-right li{
   display: inline-block;  
   margin: 0 5px;
@@ -281,6 +291,7 @@ h3.title{
   line-height: 32px;
   padding: 0 10px;
   border-bottom: 1px solid  #E6E6E6;
+  color: #222429;
 }
 h3.title button{
   float: right;
@@ -354,7 +365,6 @@ h3.title button i{
 .component{
   padding: 20px 20px;
   height: -webkit-calc(100% - 32px);
-/*  height: 300px;*/
   overflow: auto;
 }
 .component ul{
@@ -380,7 +390,7 @@ h3.title button i{
   cursor: pointer;
 }
 .component li:hover{
- color: #4B8FFF;
+  color: #4B8FFF;
 }
 .component li i{
   display: block;
@@ -485,13 +495,176 @@ h3.title button i{
   background-position: center -2050px;
 }
 
+/*proerty*/
+.path label,
+.path a{
+  color: #c0c2c7;
+}
+.path a:hover{
+  color: #4B8FFF;
+}
+.property-list{
+  height: -webkit-calc(100% - 32px);
+  overflow-x: auto;
+}
+.pro-item{
+  border-bottom: 1px solid  #E9EBED;
+  padding: 0 10px 5px;
+}
+.pro-item h3{
+  color: #3a7ef5;
+  line-height: 32px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.pro-item h3 .caret{
+  float: right;
+  display: inline-block;
+  margin-right: 0;
+  margin-top: 12px;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-left: 4px solid #222429;
+  vertical-align: middle;
+  height: 0;
+  width: 0;
+  transition: .2s transform;
+  transform-origin: left;
+  transform: rotate3d(0, 0, 1, 90deg);
+}
+.pro-item.category-toggle h3 .caret{
+  transform: rotate3d(0, 0, 1, 0deg);
+}
+.pro-item .pro-box{
+  display: block;
+  max-height: 500px;
+  overflow: visible;
+}
+.pro-item.category-toggle .pro-box{
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  overflow: auto;
+  transition: .2s max-height ease-in-out, .2s opacity;
+}
 
+/*form*/
+.form-group{
+  height: 44px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	justify-content: center;
+}
+.form-group label{
+  display: inline-block;
+  width: 80px;
+  padding: 6px 0;
+  color: #a8aeb7;
+  font-size: 12px;
+}
+.form-group div{
+  webkit-box-flex: 1;
+	-webkit-flex: 1;
+	flex: 1;
+}
+.form-group .c-ipt{
+  font-size: 12px;
+  width: 100%;
+  height: 32px;
+  padding: 0 6px;
+  border: 1px solid #dde1e8 !important;
+  box-shadow: none;
+  border-radius: 2px;
+  color: #555;
+}
+.form-group .select{
+  width: 100%;
+  height: 32px;
+  line-height: 32px;
+  font-size: 12px;
+  border: 1px solid #dde1e8 !important;
+  border-radius: 2px;
+  -webkit-appearance: none;
+  background-image: url(../images/select-caret.png);
+  padding: 0 10px 0 10px;
+  background-origin: content-box;
+  background-position: right center;
+  color: #555;
+  z-index: 0
+}
 
-
-
-
-
-
+/*---------------content-----------------*/
+/*device bar*/
+.device-bar{
+  height: 32px;
+  padding: 6px 10px 0;
+  background-color: #fff;
+  border-bottom: 1px solid  #E6E6E6;
+  color: #222429;
+}
+.choose-device{
+  float: left;
+}
+.zoom-device{
+  float: right;
+}
+.dropdown{
+  display: inline-block;  
+  margin-left: 8px;
+}
+.dropdown a:after{
+  content: '';    
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+.dropdown a{
+  color: #979797;
+}
+.dropdown a:hover{
+  color: #4B8FFF;
+}
+.zoom-dropdown a{
+  color: #000;
+}
+/*orientation*/
+.orientation{
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-top: 5px;
+  position: relative;
+  cursor: pointer;
+}
+.orientation:before,
+.orientation:after{
+  display: inline-block;
+  background: no-repeat center top url("../images/rotate-orientation-icon.png");
+  background-size: 12px;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: '';
+  transition: .25s opacity;
+}
+.orientation:after{
+  background-position: center bottom;
+  opacity: 0;
+}
+.orientation:hover:after{
+  opacity: 1;
+}
 
 
 

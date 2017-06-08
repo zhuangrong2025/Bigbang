@@ -5,12 +5,21 @@
 <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>creator</title>
 <link rel="stylesheet" href="css/creator.css">
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/vue.js"></script>
 <style>
   html,body{
     height: 100%;
     overflow: hidden;
   }
 </style>
+<script>
+$(function(){
+  $(".pro-item h3").on("click",function(){
+    $(this).parent(".pro-item").toggleClass("category-toggle")
+  })
+})
+</script>
 </head>
 <body>
 <!--header-->
@@ -83,10 +92,89 @@
     <!--//component-->
   </aside>
   <section class="content">
-    main
+    <h3 class="device-bar">
+      <div class="choose-device">
+        Device
+        <div class="dropdown device-dropdown">
+          <a href="javascript:void(0)">iPhone</a>
+          <ul class="dropdown-menu" style="display: none">
+            <li>a</li>
+          </ul>
+        </div>
+      </div>
+      <div class="zoom-device">
+        <i class="orientation" title="ratate orientation"></i>
+        <div class="dropdown zoom-dropdown">
+          <a href="javascript:void(0)">100%</a>
+          <ul class="dropdown-menu" style="display: none">
+            <li>a</li>
+          </ul>
+        </div>
+      </div>
+    </h3>
   </section>
   <aside class="property">
-    right
+    <!--proerty-->
+    <h3 class="title path">
+      <a href="#">index</a> <label>/</label> Button
+    </h3>
+    <div class="property-list">
+      <!--Link-->
+      <div class="pro-item">
+        <h3>
+          Link <span class="caret"></span>
+        </h3>
+        <div class="pro-box">
+          <div class="form-group">
+            <select class="select">
+              <option value="">select page</option>
+              <option value="">list</option>
+              <option value="">article</option>
+              <option value="">contact</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!--Text-->
+      <div class="pro-item">
+        <h3>
+          Text <span class="caret"></span>
+        </h3>
+        <div class="pro-box">
+          <div class="form-group">
+            <input type="text" class="c-ipt">
+          </div>
+        </div>
+      </div>
+      <!--Style-->
+      <div class="pro-item">
+        <h3>
+          Style <span class="caret"></span>
+        </h3>
+        <div class="pro-box">
+          <div class="form-group">
+            <label>Size</label>
+            <div>
+              <select class="select">
+                <option value="">default</option>
+                <option value="">large</option>
+                <option value="">small</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Color</label>
+            <div>
+              <select class="select">
+                <option value="">primary</option>
+                <option value="">warning</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--//proerty-->
   </aside>
 </section>
 <!--//content-->

@@ -83,10 +83,10 @@ textarea {
 	border-radius: 8px;
 }
 ::-webkit-scrollbar:hover {
-	background-color: #fcfcfc
+	background-color: #fff;
 }
 ::-webkit-scrollbar-thumb{
-	background: #D8D8D8; 
+	background: #fff; 
 	border-radius: 8px;
 	background-clip: content-box;
 	border: 2px solid transparent
@@ -279,6 +279,7 @@ header .navbar .preview:hover:after{
   background-color: #EFF1F5;
   border-left: 1px solid  #ddd;
   border-right: 1px solid  #ddd;
+  height: 100%;
 }
 .property{
   width: 312px;
@@ -366,6 +367,10 @@ h3.title button i{
   padding: 20px 20px;
   height: -webkit-calc(100% - 32px);
   overflow: auto;
+}
+.component:hover::-webkit-scrollbar-thumb{ /*鼠标滑过，显示滚动条颜色*/
+	background: #D8D8D8; 
+	background-clip: content-box;
 }
 .component ul{
 	display: -webkit-box;
@@ -665,7 +670,110 @@ h3.title button i{
 .orientation:hover:after{
   opacity: 1;
 }
+/*simulator*/
+.simulator-wrap{
+  height: -webkit-calc( 100% - 32px);
+  overflow: auto;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	justify-content: center;
+}
+.simulator{
+  margin-bottom: 100px;
+  background-color: #fff;
+  border: 1px solid #efefef;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  height: 100%;
+}
+.app-status{
+  height: 20px;
+  width: 98.5%;
+  background-image: url(../images/ios-statusbar-left.png);
+  background-size: auto 10px;
+  background-position: center center;
+}
+.app-status:after,
+.app-status:before{
+  content: '';
+  display: block;
+  float: left;
+  width: 60px;
+  height: 20px;
+  background-image: url(../images/ios-statusbar-center.png);
+  background-position: center center;
+  background-size: auto 10px;
+}
+.app-status:after{
+  float: right;
+  background-image: url(../images/ios-statusbar-right.png);
+}
+.app-navbar{
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  font-size: 14px;
+  color: #000;
+  background-color: #fff;
+  border-bottom: 1px solid  #ddd;
+}
 
-
-
-
+/*-------------------------canvas-------------------------*/
+.canvas{
+  height: -webkit-calc(100% - 64px);
+  overflow: scroll;  
+}
+.canvas::-webkit-scrollbar{ /*set scrollbar width 0 to hide it*/
+	width: 0 !important;
+	height: 0 !important;
+}
+/*-------------------------common component-------------------------*/
+/*dropdown-menu*/
+.dropdown{
+  position: relative;
+  z-index: 999;
+}
+.open .dropdown-menu {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+  display: block;
+  top: 90%;
+  transition: opacity 0.25s, transform 0.25s cubic-bezier(0.36, 0.66, 0.04, 1);
+}
+.dropdown-menu {
+  position: absolute;
+  top: -5000px;
+  left: 0;
+  z-index: 1000;
+  opacity: 0;
+  display: block;
+  overflow: hidden;
+  min-width: 160px;
+  padding: 8px 0;
+  margin: 8px 0 0;
+  background-color: #fff;
+  border-radius: 2px;
+  transform: translate3d(0, -10px, 0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.175);
+  transition: opacity 0.25s, transform 0.25s cubic-bezier(0.36, 0.66, 0.04, 1), top 0.25s step-end;
+}
+.dropdown-menu > li{
+  display: block;
+  padding: 3px 20px;
+  cursor: pointer;
+}
+.dropdown-menu > li:hover{
+  background-color: #f5f5f5;
+}
+.mask-c{
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 9;
+	background-color: rgba(0, 0, 0, 0);
+	display: none;
+}

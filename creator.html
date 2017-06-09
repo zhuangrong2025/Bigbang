@@ -18,6 +18,31 @@ $(function(){
   $(".pro-item h3").on("click",function(){
     $(this).parent(".pro-item").toggleClass("category-toggle")
   })
+  
+  /*dropdown-menu*/
+  $(".dropdown > a").each(function(){
+    $(this).click(function(){
+      $(this).parent().toggleClass("open")
+      $(".mask-c").toggle()
+    })
+  })
+  
+	//hide mask,hide dropdown
+	$(".mask-c, .dropdown-menu li").on("click",function(e){
+			e.stopPropagation()
+		  $(".dropdown").removeClass("open")
+			$(".mask-c").hide()
+	})
+  
+  //choose deivce
+  $("#device .dropdown-menu li").on("click",function(){
+    var deviceType = $(this).text()
+    var deviceWidth = $(this).attr("data-width")
+    var deviceHeight = $(this).attr("data-height")
+    $("#device a").text(deviceType)
+    
+  })
+  
 })
 </script>
 </head>
@@ -42,7 +67,7 @@ $(function(){
   </div>
 </header>
 <!--//header-->
-<!--content-->
+<!--container-->
 <section class="container">
   <aside class="aside-bar">
     <!--pages-->
@@ -91,14 +116,20 @@ $(function(){
     </div>
     <!--//component-->
   </aside>
+  <!--content-->
   <section class="content">
+    <!--device bar-->
     <h3 class="device-bar">
       <div class="choose-device">
         Device
-        <div class="dropdown device-dropdown">
-          <a href="javascript:void(0)">iPhone</a>
-          <ul class="dropdown-menu" style="display: none">
-            <li>a</li>
+        <div class="dropdown device-dropdown" id="device">
+          <a href="javascript:void(0)">iPhone6</a>
+          <ul class="dropdown-menu">
+            <li data-width="640" data-height="1136" >iPhone5</li>
+            <li data-width="750" data-height="1334">iPhone6</li>
+            <li data-width="1242" data-height="2208">iPhone6 Plus</li>
+            <li data-width="720" data-height="1280">720x1280</li>
+            <li data-width="1080" data-height="1920">1080x1920</li>
           </ul>
         </div>
       </div>
@@ -112,7 +143,24 @@ $(function(){
         </div>
       </div>
     </h3>
+    <!--mask-->
+    <div class="mask-c"></div>
+    <!--//device bar-->
+    <!--simulator-->
+    <div class="simulator-wrap">
+      <div class="simulator" style="width: 320px; height: 568px">
+        <div class="app-status"></div>
+        <div class="app-navbar">导航栏</div>
+        <!--html-->
+        <div class="canvas" id="canvas">
+        </div>
+        <!--//html-->
+      </div>
+    </div>
+    <!--//simulator-->
   </section>
+  
+  <!--//content-->
   <aside class="property">
     <!--proerty-->
     <h3 class="title path">
@@ -124,7 +172,7 @@ $(function(){
         <h3>
           Link <span class="caret"></span>
         </h3>
-        <div class="pro-box">
+        <div class="pro-box"> 
           <div class="form-group">
             <select class="select">
               <option value="">select page</option>
@@ -177,6 +225,6 @@ $(function(){
     <!--//proerty-->
   </aside>
 </section>
-<!--//content-->
+<!--//container-->
 </body>
 </html>

@@ -6,8 +6,7 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
-  font-size: 13px;
-  font-family:'Helvetica Neue', Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family:"Microsoft yahei", 'Helvetica Neue', Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 *, *::before, *::after{
   margin: 0;
@@ -21,6 +20,7 @@ li {
 body {
   color: #333;
   line-height: 1.6;
+  font-size: 13px !important;
 }
 body, span, label, p, a, div, li, dt, dd, i, em, section, article, :after, :before, button, input {
   background-repeat: no-repeat;
@@ -646,7 +646,8 @@ h3.title button i{
   display: inline-block;
   width: 12px;
   height: 12px;
-  margin-top: 5px;
+  margin-top: -5px;
+  margin-right: -10px;
   position: relative;
   cursor: pointer;
 }
@@ -687,11 +688,12 @@ h3.title button i{
   border: 1px solid #efefef;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
   height: 100%;
+  transition: all .2s  linear;
 }
 .app-status{
   height: 20px;
-  width: 98.5%;
-  background-image: url(../images/ios-statusbar-left.png);
+  width: 98.6%;
+  background-image: url(../images/ios-statusbar-center.png);
   background-size: auto 10px;
   background-position: center center;
 }
@@ -702,12 +704,14 @@ h3.title button i{
   float: left;
   width: 60px;
   height: 20px;
-  background-image: url(../images/ios-statusbar-center.png);
+  margin-left: 5px;
+  background-image: url(../images/ios-statusbar-left.png);
   background-position: center center;
   background-size: auto 10px;
 }
 .app-status:after{
   float: right;
+  margin-left: 0;
   background-image: url(../images/ios-statusbar-right.png);
 }
 .app-navbar{
@@ -724,6 +728,8 @@ h3.title button i{
 .canvas{
   height: -webkit-calc(100% - 64px);
   overflow: scroll;  
+  position: relative;
+  padding: 10px;
 }
 .canvas::-webkit-scrollbar{ /*set scrollbar width 0 to hide it*/
 	width: 0 !important;
@@ -777,3 +783,84 @@ h3.title button i{
 	background-color: rgba(0, 0, 0, 0);
 	display: none;
 }
+
+/*---------select box---------------*/
+.select-box{
+  position: absolute;
+  top: 280px;
+  left: 19px;
+  right: 19px;
+  height: 48px;    
+  color: #4a87ee;
+  border: 1px solid #4a87ee;
+  border-radius: 3px;
+  background-color: rgba(105, 151, 242, 0.3);
+  z-index: 999;
+  display: none;
+}
+.select-box span,
+.select-box i{
+  position: absolute;
+  top: -11px;
+  right: 28px;
+  display: block;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  line-height: 15px;
+  border-radius: 50%;
+  text-align: center;
+  border: 1px solid #4a87ee;
+  background-color: #fff;
+  transition: all .2s
+}
+.select-box span:hover,
+.select-box i:hover{
+  cursor: pointer;
+  color: #fff;
+  background-color: rgb(105, 151, 242);
+}
+.select-box span{
+  right: 5px;
+}
+.select-box span:before{
+  position: absolute;
+  top: 5px;
+  left: 3px;
+  content: '';
+  display: block;
+  width: 13px;
+  height: 8px;
+  border: 1px solid #4a87ee;
+  border-radius: 100%;
+  transition: all .2s
+}
+.select-box span:after{
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  border: 1px solid  #4a87ee;
+  border-radius: 50%;
+  transition: all .2s
+}
+.select-box span:hover:before{
+  border: 1px solid #fff;
+  top: 8px;
+  height: 3px;
+}
+.select-box span:hover:after{
+  top: 8px;
+  left: 9px;
+  border: none;
+  width: 3px;
+  height: 3px;
+  background-color: #fff;
+}
+
+
+
+

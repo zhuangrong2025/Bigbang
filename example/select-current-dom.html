@@ -77,9 +77,16 @@
   </div>
   <!--//页面-生成html-->
   
+  <!--属性区-->
+  
+  <b>选择样式名: </b>
+  <select v-model="selectedCls" v-on:change="selType($event)">>
+    <option :value="cls" v-for="cls in classes">{{cls}}</option>
+  </select>
+  <!--//属性区-->
+  
 </div>
 <script src="../js/vue.js"></script>
-
 <script>
 
 
@@ -89,10 +96,10 @@ var ButtonComp = {
       template: `
                   <a href="#" 
                      class="sm-btn"
-                     v-bind:class="comp.type"
+                     v-bind:class="comp.class"
                      v-bind:id="comp.id"
                      v-on:click = "increment" >
-                     {{ comp.text }}
+                     {{ comp.value }}
                   </a>
                 `,
   
@@ -112,41 +119,53 @@ var ButtonComp = {
          btnComp: ButtonComp
       },
       data:{
-        currentComp: 0,
-        seen: true,
-        comps: [
-//  根据默认载入的数据，就可以生成页面
-//          {
-//            name: ButtonComp,
-//            type: "warning",
-//            text: "警告",
-//            id: "0"
-//          }
+        compIdx: 0,
+        comps: [  //根据默认载入的数据，就可以生成页面
+          /*{
+            name: ButtonComp,
+            class: "warning",
+            value: "警告",
+            id: "0"
+          }*/
         ],
+        selectedCls:"primary",
+        classes:["primary", "warning"]
       },
       methods:{
         
         //添加组件
-        addComp(comp, type, text){
+        addComp(comp, classname, value){
            this.comps.push({
              name: comp,
-             type: type,
-             text: text + this.comps.length,
+             class: classname,
+             value: value + this.comps.length,
              id: this.comps.length
            })
         },
         
         //删除组件
         removeComp(){
-          this.comps.splice(this.currentComp,1)
+          this.comps.splice(this.compIdx,1)
 					$(".select-box").hide()
         },
         
         //选择组件
         selectComp: function(event, obj){
           var ele = $(event.target)
-          $(".select-box").show().css("top", ele.offset().top + "px")
-          this.currentComp = this.comps.indexOf(obj)
+          $(".select-box").show()
+                          .css("top", ele.offset().top + "px")
+                          .css("left", ele.offset().left + "px")
+                          .css("width", ele.outerWidth() + "px")
+                          .css("height", ele.outerHeight() + "px")
+          this.compIdx = this.comps.indexOf(obj)
+          //选中组件的样式
+          this.selectedCls = this.comps[this.compIdx].class
+        },
+        //修改样式名
+        selType: function(event){
+          var selObj = this.comps[this.compIdx]
+          selObj.class = event.target.value
+          this.comps.splice(this.compIdx,1,selObj)
         }
       }
     })

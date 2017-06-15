@@ -54,6 +54,12 @@
       <input type="text" v-focus style="border:1px solid #000">
    </div>
    
+   <!--下拉框选择-->
+   <div >
+    <select name="" v-on:change="selType($event)">
+      <option :value="todo.name" v-for="todo in todos">{{todo.name}}</option>
+    </select>
+   </div>
 </div>
 
 <script src="../js/vue.js"></script>
@@ -146,10 +152,13 @@ var vm = new Vue({
     /*自定义事件*/
     incrementTotal:function(){
       this.total += 1
+    },
+    /*下拉框选择*/
+    selType: function(event){
+      alert(event.target.value)
     }
   }
 })
-
 </script>
 </body>
 </html>

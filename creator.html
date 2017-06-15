@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>creator</title>
+<link rel="stylesheet" href="asset/css/smui.css">
 <link rel="stylesheet" href="css/creator.css">
 <script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/vue.js"></script>
 <style>
   html,body{
     height: 100%;
@@ -40,7 +40,13 @@ $(function(){
     var deviceWidth = $(this).attr("data-width")
     var deviceHeight = $(this).attr("data-height")
     $("#device a").text(deviceType)
-    
+    $("#simulator").css({ "width": deviceWidth })
+    $("#simulator").css({ "height": deviceHeight })
+  })
+  //orientation
+  $("#orientation").on("click",function(){
+    $("#simulator").css({ "width": $("#simulator").height() + 'px' })
+    $("#simulator").css({ "height": $("#simulator").width() + 'px' })
   })
   
 })
@@ -68,7 +74,7 @@ $(function(){
 </header>
 <!--//header-->
 <!--container-->
-<section class="container">
+<section class="container" id="app">
   <aside class="aside-bar">
     <!--pages-->
     <div class="pages">
@@ -100,7 +106,7 @@ $(function(){
       <div class="component">
         <ul>
           <li><i class="heading"></i>Heading</li>
-          <li><i class="button"></i>Button</li>
+          <li @click="addComp('btnComp', 'warning', '警告')"><i class="button"></i>Button</li>
           <li><i class="button-bar"></i>Button Bar</li>
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
@@ -123,23 +129,23 @@ $(function(){
       <div class="choose-device">
         Device
         <div class="dropdown device-dropdown" id="device">
-          <a href="javascript:void(0)">iPhone6</a>
+          <a href="javascript:void(0)">iPhone5</a>
           <ul class="dropdown-menu">
-            <li data-width="640" data-height="1136" >iPhone5</li>
-            <li data-width="750" data-height="1334">iPhone6</li>
-            <li data-width="1242" data-height="2208">iPhone6 Plus</li>
-            <li data-width="720" data-height="1280">720x1280</li>
-            <li data-width="1080" data-height="1920">1080x1920</li>
+            <li data-width="320" data-height="568">iPhone5</li>
+            <li data-width="375" data-height="667">iPhone6</li>
+            <li data-width="414" data-height="736">iPhone6 Plus</li>
+            <li data-width="360" data-height="640">360x640</li>
+            <li data-width="540" data-height="960">540x960</li>
           </ul>
         </div>
       </div>
       <div class="zoom-device">
-        <i class="orientation" title="ratate orientation"></i>
+        <i class="orientation" id="orientation" title="ratate orientation"></i>
         <div class="dropdown zoom-dropdown">
-          <a href="javascript:void(0)">100%</a>
+          <!--<a href="javascript:void(0)">100%</a>
           <ul class="dropdown-menu" style="display: none">
             <li>a</li>
-          </ul>
+          </ul>-->
         </div>
       </div>
     </h3>
@@ -148,21 +154,32 @@ $(function(){
     <!--//device bar-->
     <!--simulator-->
     <div class="simulator-wrap">
-      <div class="simulator" style="width: 320px; height: 568px">
+      <div class="simulator" style="width: 320px; height: 568px" id="simulator">
         <div class="app-status"></div>
-        <div class="app-navbar">导航栏</div>
-        <!--html-->
+        <div class="app-navbar">page</div>
+        <!--****************Canvas****************-->
         <div class="canvas" id="canvas">
+          <!--vue comp-->
+          <component v-bind:is="item.name"  v-on:increment="selectComp($event, item)"  :comp="item" v-for="item in comps" :key="item.id"></component>
+          <!--//vue comp-->
         </div>
-        <!--//html-->
+        <!--****************//Canvas****************-->
+        
+        <!--select box-->
+        <div class="select-box">
+          <i @click="removeComp()" title="delete component">&times;</i>
+          <span @click="hideSelBox()" title="hide maskbox"></span>
+        </div>
+        <!--//select box-->
       </div>
     </div>
+    
     <!--//simulator-->
   </section>
   
   <!--//content-->
+  <!--proerty-->
   <aside class="property">
-    <!--proerty-->
     <h3 class="title path">
       <a href="#">index</a> <label>/</label> Button
     </h3>
@@ -222,9 +239,88 @@ $(function(){
         </div>
       </div>
     </div>
-    <!--//proerty-->
   </aside>
+  <!--//proerty-->
 </section>
 <!--//container-->
+
+<script src="js/vue.js"></script>
+<script>
+//定义按钮组件
+var ButtonComp = {
+      props: ["comp"],
+      template: `
+                  <a href="#" 
+                     class="sm-btn"
+                     v-bind:class="comp.type"
+                     v-bind:id="comp.id"
+                     v-on:click = "increment" >
+                     {{ comp.text }}
+                  </a>
+                `,
+  
+      methods: {
+        increment: function(event){
+          this.$emit('increment', event)  //触发v-on:increment，并传回当前对象event
+        }
+      }
+    }
+
+
+    
+    //创建vue实例
+    var vm = new Vue({
+      el: '#app',
+      components: {
+         btnComp: ButtonComp
+      },
+      data:{
+        currentComp: 0,
+        comps: [//根据默认载入的数据，就可以生成页面
+          /*{
+            name: ButtonComp,
+            type: "warning",
+            text: "警告",
+            id: "0"
+          }*/
+        ],
+      },
+      methods:{
+        
+        //添加组件
+        addComp(comp, type, text){
+           this.comps.push({
+             name: comp,
+             type: type,
+             text: text + this.comps.length,
+             id: this.comps.length
+           })
+        },
+        
+        //删除组件
+        removeComp(){
+          this.comps.splice(this.currentComp,1)
+					$(".select-box").hide()
+        },
+        
+        //隐藏select-box
+        hideSelBox(){
+					$(".select-box").hide()
+        },
+        
+        //选择组件
+        selectComp: function(event, obj){
+          var ele = $(event.target)
+          $(".select-box").show()
+                          .css("top", ele.offset().top + "px")
+                          .css("left", ele.offset().left + "px")
+                          .css("width", ele.outerWidth() + "px")
+                          .css("height", ele.outerHeight() + "px")
+          this.currentComp = this.comps.indexOf(obj)
+        }
+      }
+    })
+
+</script>
 </body>
 </html>

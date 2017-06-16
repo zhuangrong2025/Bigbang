@@ -228,11 +228,10 @@ $(function(){
             </div>
           </div>
           <div class="form-group">
-            <label>Color</label>
+            <label>Class</label>
             <div>
-              <select class="select">
-                <option value="">primary</option>
-                <option value="">warning</option>
+              <select class="select" v-model="selectedCls" v-on:change="selClass">>
+                <option :value="cls" v-for="cls in classes">{{cls}}</option>
               </select>
             </div>
           </div>
@@ -252,7 +251,7 @@ var ButtonComp = {
       template: `
                   <a href="#" 
                      class="sm-btn"
-                     v-bind:class="comp.type"
+                     v-bind:class="comp.class"
                      v-bind:id="comp.id"
                      v-on:click = "increment" >
                      {{ comp.text }}
@@ -275,23 +274,25 @@ var ButtonComp = {
          btnComp: ButtonComp
       },
       data:{
-        currentComp: 0,
+        compIdx: 0,
         comps: [//根据默认载入的数据，就可以生成页面
           /*{
             name: ButtonComp,
-            type: "warning",
+            class: "warning",
             text: "警告",
             id: "0"
           }*/
         ],
+        selectedCls:"primary",
+        classes:["primary", "warning"]
       },
       methods:{
         
         //添加组件
-        addComp(comp, type, text){
+        addComp(comp, classname, text){
            this.comps.push({
              name: comp,
-             type: type,
+             class: classname,
              text: text + this.comps.length,
              id: this.comps.length
            })
@@ -299,7 +300,7 @@ var ButtonComp = {
         
         //删除组件
         removeComp(){
-          this.comps.splice(this.currentComp,1)
+          this.comps.splice(this.compIdx,1)
 					$(".select-box").hide()
         },
         
@@ -316,7 +317,16 @@ var ButtonComp = {
                           .css("left", ele.offset().left + "px")
                           .css("width", ele.outerWidth() + "px")
                           .css("height", ele.outerHeight() + "px")
-          this.currentComp = this.comps.indexOf(obj)
+          this.compIdx = this.comps.indexOf(obj)
+          //选中组件的样式
+          this.selectedCls = this.comps[this.compIdx].class
+        },
+        
+        //修改样式名
+        selClass: function(){
+          var selComp = this.comps[this.compIdx]
+          selComp.class = this.selectedCls
+          this.comps.splice(this.compIdx,1,selComp)
         }
       }
     })

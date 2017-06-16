@@ -80,7 +80,7 @@
   <!--属性区-->
   
   <b>选择样式名: </b>
-  <select v-model="selectedCls" v-on:change="selType($event)">>
+  <select v-model="selectedCls" v-on:change="selType">>
     <option :value="cls" v-for="cls in classes">{{cls}}</option>
   </select>
   <!--//属性区-->
@@ -161,11 +161,12 @@ var ButtonComp = {
           //选中组件的样式
           this.selectedCls = this.comps[this.compIdx].class
         },
+        
         //修改样式名
-        selType: function(event){
-          var selObj = this.comps[this.compIdx]
-          selObj.class = event.target.value
-          this.comps.splice(this.compIdx,1,selObj)
+        selType: function(){
+          var selComp = this.comps[this.compIdx]
+          selComp.class = this.selectedCls
+          this.comps.splice(this.compIdx,1,selComp)
         }
       }
     })

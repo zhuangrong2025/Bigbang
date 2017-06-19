@@ -128,25 +128,30 @@ var ButtonComp = {
       data:{
         compIdx: 0,
         comps: [  //根据默认载入的数据，就可以生成页面
-          /*{
-            name: ButtonComp,
-            class: "primary",
-            text: "按钮",
-            id: "0"
-          }*/
+          {
+            name: "",
+            class: "",
+            text: "",
+            id: ""
+          }
         ],
         classes:["primary", "warning"]
       },
       methods:{
         
         //添加组件
+        /*
+           * 因为v-model="comps[compIdx].class"需要有data才行
+           * 当删除最后一个组件时，找不到对应的compIdx，
+           * 在最后一个空数组前，添加元素，这样删除时v-model就有对应compIdx
+        */
         addComp(comp, classname, text){
-           this.comps.push({
-             name: comp,
-             class: classname,
-             text: text + this.comps.length,
-             id: this.comps.length
-           })
+           this.comps.splice((this.comps.length-1), 0, {
+               name: comp,
+               class: classname,
+               text: text + this.comps.length,
+               id: this.comps.length
+             })
         },
         
         //删除组件
@@ -165,20 +170,7 @@ var ButtonComp = {
                           .css("height", ele.outerHeight() + "px")
           this.compIdx = this.comps.indexOf(obj)
           
-          /*
-           * 因为v-model="comps[compIdx].class"需要有data才行
-           * 当删除最后一个组件时，找不到对应的compIdx，
-           * 尾巴加上一个空的组件对象，这样删除时，就不会找不到compIdx
-           * todo: 会产生很多空对象
-          */
-          if (this.compIdx == (this.comps.length - 1)){
-            this.comps.push({
-               name: "",
-               class: "",
-               text: "",
-               id: ""
-             })
-          }
+         
         },
         
         //修改样式名

@@ -79,10 +79,17 @@
   
   <!--属性区-->
   
-  <b>选择样式名: </b>
-  <select v-model="selectedCls" v-on:change="selType">>
-    <option :value="cls" v-for="cls in classes">{{cls}}</option>
-  </select>
+  <b>样式名: </b>
+  <div v-if="comps.length > 0">
+    
+      <select v-model="comps[compIdx].class" v-on:change="selType">>
+        <option :value="cls" v-for="cls in classes">{{cls}}</option>
+      </select>
+      <b>文本: </b><input type="text" class="ipt" v-model="comps[compIdx].text">
+   
+  </div>
+  
+  {{compIdx}}
   <!--//属性区-->
   
 </div>
@@ -99,7 +106,7 @@ var ButtonComp = {
                      v-bind:class="comp.class"
                      v-bind:id="comp.id"
                      v-on:click = "increment" >
-                     {{ comp.value }}
+                     {{ comp.text }}
                   </a>
                 `,
   
@@ -123,29 +130,28 @@ var ButtonComp = {
         comps: [  //根据默认载入的数据，就可以生成页面
           /*{
             name: ButtonComp,
-            class: "warning",
-            value: "警告",
+            class: "primary",
+            text: "按钮",
             id: "0"
           }*/
         ],
-        selectedCls:"primary",
         classes:["primary", "warning"]
       },
       methods:{
         
         //添加组件
-        addComp(comp, classname, value){
+        addComp(comp, classname, text){
            this.comps.push({
              name: comp,
              class: classname,
-             value: value + this.comps.length,
+             text: text + this.comps.length,
              id: this.comps.length
            })
         },
         
         //删除组件
         removeComp(){
-          this.comps.splice(this.compIdx,1)
+          this.comps.splice(this.compIdx, 1)
 					$(".select-box").hide()
         },
         
@@ -158,14 +164,26 @@ var ButtonComp = {
                           .css("width", ele.outerWidth() + "px")
                           .css("height", ele.outerHeight() + "px")
           this.compIdx = this.comps.indexOf(obj)
-          //选中组件的样式
-          this.selectedCls = this.comps[this.compIdx].class
+          
+          /*
+           * 因为v-model="comps[compIdx].class"需要有data才行
+           * 当删除最后一个组件时，找不到对应的compIdx，
+           * 尾巴加上一个空的组件对象，这样删除时，就不会找不到compIdx
+           * todo: 会产生很多空对象
+          */
+          if (this.compIdx == (this.comps.length - 1)){
+            this.comps.push({
+               name: "",
+               class: "",
+               text: "",
+               id: ""
+             })
+          }
         },
         
         //修改样式名
         selType: function(){
           var selComp = this.comps[this.compIdx]
-          selComp.class = this.selectedCls
           this.comps.splice(this.compIdx,1,selComp)
         }
       }

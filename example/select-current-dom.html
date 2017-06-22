@@ -82,7 +82,7 @@
   <b>样式名: </b>
   <div v-if="comps.length > 0">
     
-      <select v-model="comps[compIdx].class" v-on:change="selType">>
+      <select v-model="comps[compIdx].class">
         <option :value="cls" v-for="cls in classes">{{cls}}</option>
       </select>
       <b>文本: </b><input type="text" class="ipt" v-model="comps[compIdx].text">
@@ -171,12 +171,6 @@ var ButtonComp = {
           this.compIdx = this.comps.indexOf(obj)
           
          
-        },
-        
-        //修改样式名
-        selType: function(){
-          var selComp = this.comps[this.compIdx]
-          this.comps.splice(this.compIdx,1,selComp)
         }
       }
     })

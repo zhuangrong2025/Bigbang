@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>TextEditorLocal</title>
+
+<body>
+<textarea placeholder="Type here, see it here..." id="notepad">
+  you could do any element w/ contentEditable, but that doesn't fire onchange
+</textarea>
+<script>
+
+
+/* the code */
+	var n = document.getElementById("notepad");
+	/* save */
+	var s = function(){localStorage.setItem("notepad", n.value);}
+	/* retrieve (only on page load) */
+	if(window.localStorage){ n.value = localStorage.getItem("notepad");}
+	/* autosave onchange and every 500ms and when you close the window */
+	n.onchange = s();
+	setInterval( s, 500);
+	window.onunload = s();
+</script>
+
+</body>
+</html>

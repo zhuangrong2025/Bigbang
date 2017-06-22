@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <button>导出zip</button>
+  <div>
+    <h3>html</h3>
+    <textarea style="border:1px solid #000;height: 300px; width: 300px;" v-model="snippets[0].vhtml" wrap="logical"></textarea>
+  </div>
+  <div>
+    <h3>css</h3>
+    <textarea style="border:1px solid #999;height: 300px; width: 300px;" v-model="snippets[0].vcss"></textarea>
+  </div>
+  
+  <div v-html="snippets[0].vhtml">
+    {{snippets[0].vhtml}}
+  </div>
+  <div v-html="snippets[0].vcss">
+      {{snippets[0].vcss}}
+  </div>
+</div>
+<script> 
+var vm = new Vue({ 
+  el: '#app', 
+  data: {
+    snippets: [
+      {     
+        vhtml: "<button class='bb'>按钮</button>",
+        vcss: "<style></style>"
+      }
+    ]
+  }, 
+  methods: { 
+    toshow: function () { //切换组件显示 
+      
+    } 
+  }
+}); 
+</script>
+</body>
+</html>

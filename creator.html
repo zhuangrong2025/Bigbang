@@ -207,7 +207,7 @@ $(function(){
         </h3>
         <div class="pro-box">
           <div class="form-group">
-            <input type="text" class="c-ipt">
+            <input type="text" class="c-ipt" v-model="comps[compIdx].text">
           </div>
         </div>
       </div>
@@ -218,20 +218,20 @@ $(function(){
         </h3>
         <div class="pro-box">
           <div class="form-group">
+            <label>Class</label>
+            <div>
+              <select class="select" v-model="comps[compIdx].class">
+                <option :value="cls" v-for="cls in classes">{{cls}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
             <label>Size</label>
             <div>
               <select class="select">
                 <option value="">default</option>
                 <option value="">large</option>
                 <option value="">small</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Class</label>
-            <div>
-              <select class="select" v-model="selectedCls" v-on:change="selClass">>
-                <option :value="cls" v-for="cls in classes">{{cls}}</option>
               </select>
             </div>
           </div>
@@ -267,69 +267,61 @@ var ButtonComp = {
 
 
     
-    //创建vue实例
-    var vm = new Vue({
-      el: '#app',
-      components: {
-         btnComp: ButtonComp
-      },
-      data:{
-        compIdx: 0,
-        comps: [//根据默认载入的数据，就可以生成页面
-          /*{
-            name: ButtonComp,
-            class: "warning",
-            text: "警告",
-            id: "0"
-          }*/
-        ],
-        selectedCls:"primary",
-        classes:["primary", "warning"]
-      },
-      methods:{
-        
-        //添加组件
-        addComp(comp, classname, text){
-           this.comps.push({
-             name: comp,
-             class: classname,
-             text: text + this.comps.length,
-             id: this.comps.length
-           })
-        },
-        
-        //删除组件
-        removeComp(){
-          this.comps.splice(this.compIdx,1)
-					$(".select-box").hide()
-        },
-        
-        //隐藏select-box
-        hideSelBox(){
-					$(".select-box").hide()
-        },
-        
-        //选择组件
-        selectComp: function(event, obj){
-          var ele = $(event.target)
-          $(".select-box").show()
-                          .css("top", ele.offset().top + "px")
-                          .css("left", ele.offset().left + "px")
-                          .css("width", ele.outerWidth() + "px")
-                          .css("height", ele.outerHeight() + "px")
-          this.compIdx = this.comps.indexOf(obj)
-          //选中组件的样式
-          this.selectedCls = this.comps[this.compIdx].class
-        },
-        
-        //修改样式名
-        selClass: function(){
-          var selComp = this.comps[this.compIdx]
-          selComp.class = this.selectedCls
-          this.comps.splice(this.compIdx,1,selComp)
-        }
+//创建vue实例
+var vm = new Vue({
+  el: '#app',
+  components: {
+     btnComp: ButtonComp
+  },
+  data:{
+    compIdx: 0,
+    comps: [//根据默认载入的数据，就可以生成页面
+      {
+        name: "",
+        class: "",
+        text: "",
+        id: ""
       }
-    })
+    ],
+    classes:["primary", "warning"]
+  },
+  methods:{
+
+    //添加组件
+    addComp(comp, classname, text){
+       this.comps.splice((this.comps.length-1), 0, {
+           name: comp,
+           class: classname,
+           text: text + this.comps.length,
+           id: this.comps.length
+       })
+    },
+
+    //删除组件
+    removeComp(){
+      this.comps.splice(this.compIdx,1)
+      $(".select-box").hide()
+    },
+
+    //隐藏select-box
+    hideSelBox(){
+      $(".select-box").hide()
+    },
+
+    //选择组件
+    selectComp: function(event, obj){
+      var ele = $(event.target)
+      $(".select-box").show()
+                      .css("top", ele.offset().top + "px")
+                      .css("left", ele.offset().left + "px")
+                      .css("width", ele.outerWidth() + "px")
+                      .css("height", ele.outerHeight() + "px")
+      this.compIdx = this.comps.indexOf(obj)
+      //选中组件的样式
+      this.selectedCls = this.comps[this.compIdx].class
+    }
+  }
+})
 
 </script>
 </body>

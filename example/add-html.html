@@ -107,6 +107,7 @@
       <component v-bind:is="snp.name"  v-on:increment="selectComp($event, snp)"  :comp="snp" v-for="snp in snippets" :key="snp.id"></component>
       <!--//html组件-->
     </div>
+    <!--html编辑框-->
     <div class="code">
       <h3>html </h3>
       <textarea v-model="snippets[compIdx].vhtml">
@@ -117,6 +118,7 @@
       <!--加个全屏编辑的功能，把编辑窗口放大悬浮底部-->
       <a href="#">全屏</a>
     </div>
+    <!--//html编辑框-->
   </div> 
   <!--//html-->
   

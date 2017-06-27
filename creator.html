@@ -12,13 +12,10 @@
     height: 100%;
     overflow: hidden;
   }
+  
 </style>
 <script>
 $(function(){
-  $(".pro-item h3").on("click",function(){
-    $(this).parent(".pro-item").toggleClass("category-toggle")
-  })
-  
   /*dropdown-menu*/
   $(".dropdown > a").each(function(){
     $(this).click(function(){
@@ -106,8 +103,8 @@ $(function(){
       <div class="component">
         <ul>
           <li><i class="heading"></i>Heading</li>
-          <li @click="addComp('btnComp', 'warning', '警告')"><i class="button"></i>Button</li>
-          <li><i class="button-bar"></i>Button Bar</li>
+          <li @click="addBtnComp('btnComp', 'warning', '警告')"><i class="button"></i>Button</li>
+          <li @click="addHtmlComp('htmlComp')"><i class="button-bar"></i>Button Bar</li>
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
           <li><i class="input"></i>Input</li>
@@ -160,17 +157,17 @@ $(function(){
         <!--****************Canvas****************-->
         <div class="canvas" id="canvas">
           <!--vue comp-->
-          <component v-bind:is="item.name"  v-on:increment="selectComp($event, item)"  :comp="item" v-for="item in comps" :key="item.id"></component>
+          <component v-bind:is="comp.name"  v-on:increment="selectComp($event, comp)"  :comp="comp" v-for="comp in comps"></component>
           <!--//vue comp-->
         </div>
         <!--****************//Canvas****************-->
         
-        <!--select box-->
+        <!--************select box************-->
         <div class="select-box">
           <i @click="removeComp()" title="delete component">&times;</i>
           <span @click="hideSelBox()" title="hide maskbox"></span>
         </div>
-        <!--//select box-->
+        <!--//************select box************-->
       </div>
     </div>
     
@@ -184,59 +181,86 @@ $(function(){
       <a href="#">index</a> <label>/</label> Button
     </h3>
     <div class="property-list">
-      <!--Link-->
-      <div class="pro-item">
-        <h3>
-          Link <span class="caret"></span>
-        </h3>
-        <div class="pro-box"> 
-          <div class="form-group">
-            <select class="select">
-              <option value="">select page</option>
-              <option value="">list</option>
-              <option value="">article</option>
-              <option value="">contact</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <!--Text-->
-      <div class="pro-item">
-        <h3>
-          Text <span class="caret"></span>
-        </h3>
-        <div class="pro-box">
-          <div class="form-group">
-            <input type="text" class="c-ipt" v-model="comps[compIdx].text">
-          </div>
-        </div>
-      </div>
-      <!--Style-->
-      <div class="pro-item">
-        <h3>
-          Style <span class="caret"></span>
-        </h3>
-        <div class="pro-box">
-          <div class="form-group">
-            <label>Class</label>
-            <div>
-              <select class="select" v-model="comps[compIdx].class">
-                <option :value="cls" v-for="cls in classes">{{cls}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Size</label>
-            <div>
+      <!--**************panel-button-property**************-->
+      <div v-if=" panelProp == 'btnComp'">
+        <!--Link-->
+        <div class="pro-item">
+          <h3>
+            Link <span class="caret"></span>
+          </h3>
+          <div class="pro-box"> 
+            <div class="form-group">
               <select class="select">
-                <option value="">default</option>
-                <option value="">large</option>
-                <option value="">small</option>
+                <option value="">select page</option>
+                <option value="">list</option>
+                <option value="">article</option>
+                <option value="">contact</option>
               </select>
             </div>
           </div>
         </div>
+        <!--Text-->
+        <div class="pro-item">
+          <h3>
+            Text <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <input type="text" class="c-ipt" v-model="comps[compIdx].text">
+            </div>
+          </div>
+        </div>
+        <!--Style-->
+        <div class="pro-item">
+          <h3>
+            Style <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Class</label>
+              <div>
+                <select class="select" v-model="comps[compIdx].class">
+                  <option :value="cls" v-for="cls in classes">{{cls}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Size</label>
+              <div>
+                <select class="select">
+                  <option value="">default</option>
+                  <option value="">large</option>
+                  <option value="">small</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <!--//**************//panel-button-property**************-->
+      <!--**************panel-html-property **************-->
+      <div v-if=" panelProp == 'htmlComp'">
+        <!--html-->
+        <div class="pro-item" @click="toggleCls">
+          <h3>
+            html <span class="caret"></span>
+          </h3>
+          <div class="pro-box"> 
+            <textarea v-model="comps[compIdx].vhtml" class="codeMirror"></textarea>
+          </div>
+        </div>
+        <!--css-->
+        <div class="pro-item" @click="toggleCls">
+          <h3>
+            css <span class="caret"></span>
+          </h3>
+          <div class="pro-box"> 
+            <textarea v-model="comps[compIdx].vcss" class="codeMirror"></textarea>
+          </div>
+        </div>
+        
+      </div>
+      <!--//**************panel-html-property**************-->
     </div>
   </aside>
   <!--//proerty-->
@@ -245,7 +269,8 @@ $(function(){
 
 <script src="js/vue.js"></script>
 <script>
-//定义按钮组件
+
+/******************按钮组件******************/
 var ButtonComp = {
       props: ["comp"],
       template: `
@@ -265,38 +290,70 @@ var ButtonComp = {
       }
     }
 
+/******************自定义html组件******************/
+var HtmlComp = {
+      props: ["comp"],
+      template: ` 
+                  <div class="html-box" v-on:click = "increment" >
+                   <span v-html="comp.vcss"></span>
+                   <span v-html="comp.vhtml"></span>
+                  </div>
+                `,
+      methods: {
+        increment: function(event){
+          this.$emit('increment', event)  
+        }
+      }
+    }
 
+
+/******************创建vue实例******************/
     
-//创建vue实例
 var vm = new Vue({
   el: '#app',
   components: {
-     btnComp: ButtonComp
+    btnComp: ButtonComp,
+    htmlComp: HtmlComp
   },
   data:{
     compIdx: 0,
-    comps: [//根据默认载入的数据，就可以生成页面
-      {
-        name: "",
-        class: "",
-        text: "",
-        id: ""
-      }
+    panelProp: "btnComp",
+    comps: [
+      {}
     ],
-    classes:["primary", "warning"]
+    classes:["primary", "warning"],
+    toggle: true
   },
   methods:{
 
-    //添加组件
-    addComp(comp, classname, text){
+    //添加按钮组件
+    addBtnComp(comp, classname, text){
        this.comps.splice((this.comps.length-1), 0, {
            name: comp,
            class: classname,
            text: text + this.comps.length,
            id: this.comps.length
-       })
+         })
     },
-
+    
+    //添加html组件
+    addHtmlComp(comp){
+       this.comps.splice((this.comps.length-1), 0, {
+           name: comp,
+           vhtml: `<div class='box'>
+请在右边编辑框中插入html,实时预览效果 →
+</div>`,
+           vcss: `<style>
+.box{
+font-size: 12px;
+padding: 10px;
+margin: 10px 0;
+background-color: #fff;
+border: 1px dashed #0cf;
+}
+</style>`
+         })
+    },
     //删除组件
     removeComp(){
       this.comps.splice(this.compIdx,1)
@@ -311,6 +368,10 @@ var vm = new Vue({
     //选择组件
     selectComp: function(event, obj){
       var ele = $(event.target)
+       
+      if(ele.parents(".html-box")[0]){ //捕获html片段的父元素
+        ele = ele.parents(".html-box")
+      } 
       $(".select-box").show()
                       .css("top", ele.offset().top + "px")
                       .css("left", ele.offset().left + "px")
@@ -319,6 +380,15 @@ var vm = new Vue({
       this.compIdx = this.comps.indexOf(obj)
       //选中组件的样式
       this.selectedCls = this.comps[this.compIdx].class
+      
+      //切换属性面板
+      this.panelProp = this.comps[this.compIdx].name
+    },
+    
+    //属性展开收缩
+    toggleCls: function(event){
+      var ele = $(event.target)
+      ele.parent().toggleClass("category-toggle")
     }
   }
 })

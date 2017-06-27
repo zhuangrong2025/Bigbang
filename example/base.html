@@ -5,6 +5,54 @@
 <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Document</title>
 <script src="../js/jquery-3.2.1.min.js"></script>
+<style>
+/*属性展开隐藏*/
+  .pro-item{
+  border-bottom: 1px solid  #E9EBED;
+  padding: 0 10px 5px;
+}
+.pro-item h3{
+  color: #3a7ef5;
+  line-height: 32px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.pro-item h3 .caret{
+  float: right;
+  display: inline-block;
+  margin-right: 0;
+  margin-top: 12px;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-left: 4px solid #222429;
+  vertical-align: middle;
+  height: 0;
+  width: 0;
+  transition: .2s transform;
+  transform-origin: left;
+  transform: rotate3d(0, 0, 1, 90deg);
+}
+.pro-item.category-toggle h3 .caret{
+  transform: rotate3d(0, 0, 1, 0deg);
+}
+.pro-item .pro-box{
+  display: block;
+  max-height: 500px;
+  overflow: visible;
+}
+.pro-item.category-toggle .pro-box{
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  overflow: auto;
+  transition: .2s max-height ease-in-out, .2s opacity;
+}
+  .titlex{
+    margin-top: 20px;
+    font-size: 14px;
+  }
+</style>
 </head>
 <body>
 <div id="example">
@@ -61,6 +109,18 @@
       <option :value="todo.name" v-for="todo in todos">{{todo.name}}</option>
     </select>
    </div>
+   
+   
+   <!--点击切换样式-->
+   <h3 class="titlex">5、点击切换样式</h3>
+   <div class="pro-item " v-bind:class="{ 'category-toggle' : cls }" @click="toggleCls">
+    <h3>
+      Link <span class="caret"></span>
+    </h3>
+    <div class="pro-box"> 
+      a
+    </div>
+  </div>
 </div>
 
 <script src="../js/vue.js"></script>
@@ -133,7 +193,8 @@ var vm = new Vue({
     dis: false,
     num: 10,
     total: 0,
-    selected: "c"
+    selected: "c",
+    cls: true  /*切换样式toggleClass*/
   },
   computed: {
     fullName: {
@@ -157,6 +218,10 @@ var vm = new Vue({
     /*下拉框选择*/
     selType: function(event){
       alert(event.target.value)
+    },
+    /*切换样式*/
+    toggleCls: function(){
+      this.cls = !this.cls
     }
   }
 })

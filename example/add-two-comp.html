@@ -99,27 +99,36 @@
   </div>
   <!--//选中框-->
   
-  <button @click="addcomp('htmlComp')">添加html组件</button>
-  <button @click="addComp('btnComp', 'warning', '主要')">添加按钮组件</button>
+  <button @click="addHtmlComp('htmlComp')">添加html组件</button>
+  <button @click="addBtnComp('btnComp', 'warning', '主要')">添加按钮组件</button>
   
   <div class="wrap">
     <div class="perview">
-      <!--html组件-->
+      <!--组件-->
       <component v-bind:is="comp.name"  v-on:increment="selectComp($event, comp)"  :comp="comp" v-for="comp in comps"></component>
-      <!--//html组件-->
-<!--      <component v-bind:is="item.name"  v-on:increment="selectComp($event, item)"  :comp="item" v-for="item in comps" :key="item.id"></component>-->
-    
+      <!--//组件-->
     </div>
     
+    <!--html编辑框-->
+    <div class="code">
+      <h3>html </h3>
+      <textarea v-model="comps[compIdx].vhtml">
+        
+      </textarea> 
+      <h3>css </h3>
+      <textarea v-model="comps[compIdx].vcss"></textarea> 
+      <!--加个全屏编辑的功能，把编辑窗口放大悬浮底部-->
+      <a href="#">全屏</a>
+    </div>
+    <!--//html编辑框-->
   </div> 
-  <!--//html-->
   
   
 </div>
 <script src="../js/vue.js"></script>
 <script>
 
-//新建按钮组件
+/******************新建按钮组件******************/
 var ButtonComp = {
       props: ["comp"],
       template: `
@@ -138,7 +147,8 @@ var ButtonComp = {
         }
       }
     }
-//新建html组件
+
+/******************新建html组件******************/
 var HtmlComp = {
       props: ["comp"],
       template: ` 
@@ -154,68 +164,72 @@ var HtmlComp = {
       }
     }
 
-    //创建vue实例
-    var vm = new Vue({
-      el: '#example',
-      components: {
-        btnComp: ButtonComp,
-        htmlComp: HtmlComp
-      },
-      data:{
-        compIdx: 0,
-        comps:[
-            {}
-        ]
-      },
-      methods:{
-        //添加html组件
-        addcomp(comp){
-           this.comps.splice((this.comps.length-1), 0, {
-               name: comp,
-               vhtml: `<div class='box'>
-    请在右边编辑框中插入html,实时预览效果 →
+/******************创建vue实例******************/
+var vm = new Vue({
+  el: '#example',
+  components: {
+    btnComp: ButtonComp,
+    htmlComp: HtmlComp
+  },
+  data:{
+    compIdx: 0,
+    comps:[
+        {}
+    ]
+  },
+  methods:{
+    //添加html组件
+    addHtmlComp(comp){
+       this.comps.splice((this.comps.length-1), 0, {
+           name: comp,
+           vhtml: `<div class='box'>
+请在右边编辑框中插入html,实时预览效果 →
 </div>`,
-               vcss: `<style>
+           vcss: `<style>
 .box{
-  font-size: 12px;
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #fff;
-  border: 1px dashed #0cf;
+font-size: 12px;
+padding: 10px;
+margin: 10px 0;
+background-color: #fff;
+border: 1px dashed #0cf;
 }
 </style>`
-             })
-        },
-        
-        //添加按钮组件
-        addComp(comp, classname, text){
-           this.comps.splice((this.comps.length-1), 0, {
-               name: comp,
-               class: classname,
-               text: text + this.comps.length,
-               id: this.comps.length
-             })
-        },
-        
-        //删除组件
-        removeComp(){
-          this.comps.splice(this.compIdx, 1)
-					$(".select-box").hide()
-        },
-        
-        //选择组件
-        selectComp: function(event, obj){
-          var ele = $(event.target)
-          $(".select-box").show()
-                          .css("top", ele.offset().top + "px")
-                          .css("left", ele.offset().left + "px")
-                          .css("width", ele.outerWidth() + "px")
-                          .css("height", ele.outerHeight() + "px")
-          this.compIdx = this.comps.indexOf(obj)
-        }
-        
-      }
-    })
+         })
+    },
+
+    //添加按钮组件
+    addBtnComp(comp, classname, text){
+       this.comps.splice((this.comps.length-1), 0, {
+           name: comp,
+           class: classname,
+           text: text + this.comps.length,
+           id: this.comps.length
+         })
+    },
+
+    //删除组件
+    removeComp(){
+      this.comps.splice(this.compIdx, 1)
+      $(".select-box").hide()
+    },
+
+    //选择组件
+    selectComp: function(event, obj){
+      var ele = $(event.target)
+      
+      if(ele.parents(".html-box")[0]){ //捕获html片段的父元素
+        ele = ele.parents(".html-box")
+      } 
+      $(".select-box").show()
+                      .css("top", ele.offset().top + "px")
+                      .css("left", ele.offset().left + "px")
+                      .css("width", ele.outerWidth() + "px")
+                      .css("height", ele.outerHeight() + "px")
+      this.compIdx = this.comps.indexOf(obj)
+    }
+
+  }
+})
 
 </script>
 </body>

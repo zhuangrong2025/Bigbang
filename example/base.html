@@ -121,11 +121,33 @@
       a
     </div>
   </div>
+  
+   <!--v-model的执行过程-->
+   <h3 class="titlex">6、v-model的执行过程</h3>
+   <input type="text" v-bind:value="lastName" v-on:input=" lastName = $event.target.value">
+   {{lastName}}
+   
+   
+   <!--光标的位置-->
+   <h3 class="titlex">6、光标的位置</h3>
+   <input type="text" id="ipt" value="13266">
 </div>
 
 <script src="../js/vue.js"></script>
 
 <script>
+$(function(){
+  $("#ipt").click(function(){
+    var text = document.querySelector("#ipt")
+    if (text.selectionStart == text.selectionEnd){  
+      
+        alert(text.selectionStart)
+    }  
+    
+  })
+ 
+})
+
 //指令-自定义指令
 Vue.directive('focus',{
   inserted: function(el){  //inserted 为钩子函数
@@ -194,7 +216,8 @@ var vm = new Vue({
     num: 10,
     total: 0,
     selected: "c",
-    cls: true  /*切换样式toggleClass*/
+    cls: true,  /*切换样式toggleClass*/
+    val: "test"
   },
   computed: {
     fullName: {

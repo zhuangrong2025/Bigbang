@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<style>
+  .box{
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  .gray{
+    color: #999;
+  }
+  .box2{
+    background-color: #222;
+    width: 300px;
+    height: 300px;
+    padding: 10px;
+    color: #1DA9CF;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <h3>DIV可编辑同步文字</h3>
+  <div contenteditable="true" class="box" type="text"  v-on:input=" txt = $event.target.innerText">可编辑文字</div>
+  <span class="gray">{{txt}}</span>
+   
+  <h3>DIV做为编辑框</h3>
+  <div contenteditable="true" class="box2" type="text"  v-on:input=" html = $event.target.innerText"></div>
+  <div v-html="html"></div>
+</div>
+
+<!--js-->
+<script src="../js/vue.js"></script>
+<script>
+/*=====================
+  div当做html编辑框
+======================*/
+
+// vue实例 
+  new Vue({
+    el: "#app",
+    data:{
+      txt: "可编辑文字",
+      html: "<div>html</div>"
+    },
+    methods:{
+      
+    }
+});
+</script>
+</body>
+</html>

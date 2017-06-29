@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+ <div v-if="show">
+  内容toggle
+ </div>
+ 
+ <button @click=" show = !show">&times;</button>
+
+</div>
+<script src="../js/vue.js"></script>
+
+<script>
+
+var vm = new Vue({
+  el: '#app',
+  data: {
+    show: true
+  }
+  
+})
+</script>
+</body>
+</html>

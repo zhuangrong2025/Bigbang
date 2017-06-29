@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="../asset/css/smui.css">
+<style>
+ .area,
+ .show{
+  
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 500px;
+  height: 300px;  
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  border: 1px solid  #000;
+  line-height: 1.5;
+  font-size: 13px;
+  letter-spacing: .1em;
+  font-family:Segoe, Segoe UI, DejaVu Sans, Trebuchet MS, Verdana,' sans-serif';
+  white-space: nowrap;
+  }
+.area{ 
+  z-index: 99;
+  background-color: transparent;
+  opacity: .2;
+  color: #fff;
+}
+.show{
+  background-color: #242424;
+  color:#FF9735;
+  
+ 
+}
+</style>
+</head>
+<body>
+
+<div style="position: relative">
+ <textarea id="area" class="area"> 
+  body{ 
+      font-size:12px; 
+      line-height:1.8;
+  } 
+  #area{ 
+      width:320px; 
+      line-height:1.5; 
+  } 
+
+  </textarea> 
+  
+  
+<div  id="pre" class="show"></div> 
+
+</div>
+
+<!--js-->
+
+<script type="text/javascript"> 
+$(function(){
+   $("#area").scroll(function(){
+        var domscleft=$("#area").scrollLeft();
+        $("#pre").scrollLeft(domscleft);
+   });
+   codeHightLight();
+   $("#area").keyup(function(){
+      codeHightLight();
+   })
+})
+function codeHightLight(){ 
+  
+    var code=$("#area")[0].value; 
+    //处理注释：注释替换成 _数字_ 
+    var startIdx=endIndex=-1; 
+    var at=0; 
+    var commentList=[]; 
+    while(true){ 
+        startIndex=code.indexOf("/*",at); 
+        if(startIndex==-1)break; 
+        endIndex=code.indexOf("*/",startIndex); 
+        if(endIndex==-1)break; 
+         
+        at=endIndex+2; 
+        commentList.push(code.substring(startIndex,at)); 
+        code=code.replace(commentList[commentList.length-1],"_"+(commentList.length-1)+"_"); 
+    } 
+     
+    //字符串 
+    code=code.replace(/(['"]).*\1/g,function(m){return "<span style=\"color:#060;\">"+m+"</span>"}); 
+    //CSS样式值 
+    code=code.replace(/:(.+);/g,function(m,n){return ":<span style=\"color:#84F0FF;\">"+n+"</span>;"}); 
+    //CSS样式名称 
+    code=code.replace(/[{}]/g,function(m){ 
+        if(m=="{"){ 
+            return "{<span style=\"color:#84F0FF;\">"; 
+        }else{ 
+            return "</span>}"; 
+        } 
+    }); 
+     
+    //注释 
+    code=code.replace(/_(\d+)_/g,function(m,n){return "<span style=\"color:#999;\">"+commentList[n]+"</span>"}); 
+    //处理\t 
+    code=code.replace(/^(\t+)/gm,function(m){ 
+        return (new Array(m.length+1)).join("    ");                                     
+    }); 
+    //处理空格 
+    code=code.replace(/^( +)/gm, function(m) { 
+        return (new Array(m.length + 1)).join(" "); 
+    }); 
+    //处理换行 
+    code=code.replace(/\r?\n/g,"<br>"); 
+    $("#pre")[0].innerHTML=code; 
+} 
+</script> 
+
+</body>
+</html>

@@ -127,25 +127,17 @@
    <input type="text" v-bind:value="lastName" v-on:input=" lastName = $event.target.value">
    {{lastName}}
    
+    
+  
    
-   <!--光标的位置-->
-   <h3 class="titlex">6、光标的位置</h3>
-   <input type="text" id="ipt" value="13266">
+   
 </div>
 
 <script src="../js/vue.js"></script>
 
 <script>
 $(function(){
-  $("#ipt").click(function(){
-    var text = document.querySelector("#ipt")
-    if (text.selectionStart == text.selectionEnd){  
-      
-        alert(text.selectionStart)
-    }  
-    
-  })
- 
+
 })
 
 //指令-自定义指令
@@ -217,7 +209,8 @@ var vm = new Vue({
     total: 0,
     selected: "c",
     cls: true,  /*切换样式toggleClass*/
-    val: "test"
+    val: "test",
+    sex: "男"
   },
   computed: {
     fullName: {

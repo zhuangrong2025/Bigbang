@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<style>
+  .cls td,
+  .cls th{
+    border: 1px solid #000;
+    padding: 10px;
+    text-align: left;
+  }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <table class="cls" width="100%" cellspacing="0" cellpadding="0">
+    <thead>
+      <tr>
+        <th v-for="(value, key) in users[0]">{{key}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr is="my-component" :user="user" v-for="user in users">
+        
+      </tr>
+    </tbody>
+  </table>
+  
+</div>
+
+<!--表格组件-->
+<template id="myComponent">
+      <tr>
+        <td>{{user.name}}</td>
+        <td>{{user.age}}</td>
+      </tr>
+    
+</template>
+<script src="../js/vue.js"></script>
+
+<script>
+
+var vm = new Vue({
+  el: '#app',
+  data:{
+    users:[
+      {
+        name: "John",
+        age: 28
+      },
+      {
+        name: "Jack",
+        age: 32
+      }
+    ]
+  },
+  components: {
+    'my-component': {
+      template: "#myComponent",
+      props:["user"]
+    }
+  }
+})
+</script>
+</body>
+</html>

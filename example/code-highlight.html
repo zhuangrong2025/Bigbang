@@ -30,6 +30,7 @@
   background-color: transparent;
   opacity: .2;
   color: #fff;
+  resize: none;
 }
 .show{
   background-color: #242424;
@@ -50,9 +51,23 @@
   #area{ 
       width:320px; 
       line-height:1.5; 
-  } 
-
-  </textarea> 
+  }
+nav a{
+	-webkit-box-flex:1;
+	-webkit-flex:1;
+  flex:1;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	flex-direction:column;  
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	justify-content: center; 
+	font-size: 11px;
+	color: #4B4B4B;
+}
+  
+/*禁止光标在这行结尾处回车，防止代码错位*/</textarea> 
   
   
 <div  id="pre" class="show"></div> 
@@ -65,11 +80,16 @@
 $(function(){
    $("#area").scroll(function(){
         var domscleft=$("#area").scrollLeft();
+        var domsctop=$("#area").scrollTop();
         $("#pre").scrollLeft(domscleft);
+        $("#pre").scrollTop(domsctop);
    });
    codeHightLight();
-   $("#area").keyup(function(){
+   $("#area").keyup(function(e){
       codeHightLight();
+      if(e.ctrlKey && e.which == 86 || e.which == 13) {    
+        $("#area").trigger("scroll");
+      } 
    })
 })
 function codeHightLight(){ 
@@ -104,10 +124,10 @@ function codeHightLight(){
     }); 
      
     //注释 
-    code=code.replace(/_(\d+)_/g,function(m,n){return "<span style=\"color:#999;\">"+commentList[n]+"</span>"}); 
-    //处理\t 
+    code=code.replace(/_(\d+)_/g,function(m,n){return "<span style=\"color:#717171;\">"+commentList[n]+"</span>"}); 
+    //处理\t \制表符 tab,转空格8个
     code=code.replace(/^(\t+)/gm,function(m){ 
-        return (new Array(m.length+1)).join("    ");                                     
+        return (new Array(m.length+1)).join("        ");                                     
     }); 
     //处理空格 
     code=code.replace(/^( +)/gm, function(m) { 

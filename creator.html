@@ -255,10 +255,10 @@ $(function(){
             css <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
-            <textarea v-model="comps[compIdx].vcss" class="codeMirror"></textarea>
+            <textarea v-model="comps[compIdx].vcss" class="codeMirror" @input="codeHighLight"></textarea>
+            <span class="codeMirror codeMask" v-html="code"></span>
           </div>
         </div>
-        
       </div>
       <!--//**************panel-html-property**************-->
     </div>
@@ -267,7 +267,10 @@ $(function(){
 </section>
 <!--//container-->
 
+
+   
 <script src="js/vue.js"></script>
+<script src="js/codeHightLight.js"></script>
 <script>
 
 /******************按钮组件******************/
@@ -321,7 +324,8 @@ var vm = new Vue({
     comps: [
       {}
     ],
-    classes:["primary", "warning"]
+    classes:["primary", "warning"],
+    code: ""
   },
   methods:{
 
@@ -344,11 +348,11 @@ var vm = new Vue({
 </div>`,
            vcss: `<style>
 .box{
-font-size: 12px;
-padding: 10px;
-margin: 10px 0;
-background-color: #fff;
-border: 1px dashed #0cf;
+  font-size: 12px;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #fff;
+  border: 1px dashed #0cf;
 }
 </style>`
          })
@@ -382,12 +386,24 @@ border: 1px dashed #0cf;
       
       //切换属性面板
       this.panelProp = this.comps[this.compIdx].name
+      
+      //获取高亮代码
+      if( this.panelProp == "htmlComp"){
+        this.codeHighLight()
+      }
     },
     
     //属性展开收缩
     toggleCls: function(event){
       var ele = $(event.target)
       ele.parent().toggleClass("category-toggle")
+    },
+    
+    //html编辑框代码高亮
+    codeHighLight: function(){
+       var cssVal = this.comps[this.compIdx].vcss
+       cssVal = codeHightLight(cssVal)
+       this.code = cssVal
     }
   }
 })

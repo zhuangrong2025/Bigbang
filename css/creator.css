@@ -545,6 +545,7 @@ h3.title button i{
   display: block;
   max-height: 500px;
   overflow: visible;
+  position: relative;
 }
 .pro-item.category-toggle .pro-box{
   max-height: 0;
@@ -553,7 +554,6 @@ h3.title button i{
   overflow: auto;
   transition: .2s max-height ease-in-out, .2s opacity;
 }
-
 /*form*/
 .form-group{
   height: 44px;
@@ -608,21 +608,30 @@ h3.title button i{
   margin: 0;
   padding: 5px 5px 5px 39px;
   border: none;
-  background:#272822;
+  background:#242424;
   color: #F8F8F2;
   outline: 0;
   background-image: url(../images/linenums.png);
   background-position: 0 0;
   background-repeat: no-repeat;
   background-attachment:local;
-  font-size: 12px;
-  font-family:Arial,'Microsoft YaHei'; 
-  line-height: 16px;
-  letter-spacing: 1px;
+  font-size: 14px;
+  font-family:Consolas, Andale Mono, Lucida Console, Lucida Sans Typewriter, Monaco, Courier New, monospace;
+  line-height: 18px;
+  letter-spacing: 0;
   overflow: auto;
   white-space:nowrap;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  opacity: .2;
+}
+.codeMask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  z-index: -1;
+  color: #FF9735;
 }
 /*---------------canvas/simulator-----------------*/
 /*device bar*/

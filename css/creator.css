@@ -644,6 +644,36 @@ h3.title button i{
 .opa1{
   opacity: 1 !important;
 }
+
+/*fullscreen*/
+.fullscreen{
+  position: absolute;
+  bottom: 27px;
+  right: 7px;
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 3px;
+  cursor: pointer;
+  background-position: 0 -613px;
+  background-size: 28px auto !important;
+}
+.fs-cnt{
+  webkit-box-flex: initial;
+	-webkit-flex: initial;
+	flex: initial;
+  width: 500px !important;
+}
+.fs-prop{
+  webkit-box-flex: 1;
+	-webkit-flex: 1;
+	flex: 1;
+  width: auto;
+}
+.fs-reset{
+  background-position: 0 -785px;
+  background-size: 28px auto !important;
+}
 /*---------------canvas/simulator-----------------*/
 /*device bar*/
 .device-bar{

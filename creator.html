@@ -258,6 +258,7 @@ $(function(){
             <textarea v-model="comps[compIdx].vcss" class="codeMirror" @input="codeHighLight" @scroll="codeScroll"></textarea>
             <span class="codeMirror codeMask" v-html="code"></span>
             <div class="attention">/*禁止光标在最后一行结尾处回车*/</div>
+            <em title="fullscreen" class="icon-h fullscreen" @click="fullscreen"></em>
           </div>
         </div>
       </div>
@@ -355,20 +356,6 @@ var vm = new Vue({
   background-color: #fff;
   border: 1px dashed #0cf;
 }
-.box{
-  font-size: 12px;
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #fff;
-  border: 1px dashed #0cf;
-}
-.box{
-  font-size: 12px;
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #fff;
-  border: 1px dashed #0cf;
-}
 </style>`
          })
     },
@@ -384,7 +371,7 @@ var vm = new Vue({
     },
 
     //选择组件
-    selectComp: function(event, obj){
+    selectComp(event, obj){
       var ele = $(event.target)
        
       if(ele.parents(".html-box")[0]){ //捕获html片段的父元素,select-box可以选中这个组件所有
@@ -409,13 +396,13 @@ var vm = new Vue({
     },
     
     //属性展开收缩
-    toggleCls: function(event){
+    toggleCls(event){
       var ele = $(event.target)
       ele.parent().toggleClass("category-toggle")
     },
     
     //监听html编辑器文本框滚动
-    codeScroll: function(event){
+    codeScroll(event){
       var ele = $(event.target)
       var domsctop = ele.scrollTop()
       var domscleft = ele.scrollLeft()
@@ -423,10 +410,18 @@ var vm = new Vue({
     },
     
     //html编辑框代码高亮
-    codeHighLight: function(){
+    codeHighLight(){
        var cssVal = this.comps[this.compIdx].vcss
        cssVal = codeHightLight(cssVal)
        this.code = cssVal
+    },
+    
+    //html编辑框全屏
+    fullscreen(){
+      $(".content").toggleClass("fs-cnt")
+      $(".property").toggleClass("fs-prop")
+      $(".fullscreen").toggleClass("fs-reset")
+      this.hideSelBox()
     }
   }
 })

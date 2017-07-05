@@ -609,7 +609,7 @@ h3.title button i{
   padding: 5px 5px 5px 39px;
   border: none;
   background:#242424;
-  color: #F8F8F2;
+  color: #84F0FF;
   outline: 0;
   background-image: url(../images/linenums.png);
   background-position: 0 0;
@@ -623,7 +623,8 @@ h3.title button i{
   white-space:nowrap;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  opacity: .2;
+  opacity: .28;
+  resize: none;
 }
 .codeMask{
   position: absolute;
@@ -631,7 +632,17 @@ h3.title button i{
   left: 0;
   opacity: 1;
   z-index: -1;
-  color: #FF9735;
+  color: #ff9c00;
+}
+.codeMirror::-webkit-scrollbar-thumb{
+  background-color: #c2c2c2;
+}
+.attention{
+  font-size: 12px;
+  color: #888;
+}
+.opa1{
+  opacity: 1 !important;
 }
 /*---------------canvas/simulator-----------------*/
 /*device bar*/

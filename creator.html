@@ -246,7 +246,7 @@ $(function(){
             html <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
-            <textarea v-model="comps[compIdx].vhtml" class="codeMirror"></textarea>
+            <textarea v-model="comps[compIdx].vhtml" class="codeMirror opa1"></textarea>
           </div>
         </div>
         <!--css-->
@@ -255,8 +255,11 @@ $(function(){
             css <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
-            <textarea v-model="comps[compIdx].vcss" class="codeMirror" @input="codeHighLight"></textarea>
+            <textarea v-model="comps[compIdx].vcss" class="codeMirror" @input="codeHighLight" @scroll="codeScroll">
+            
+            </textarea>
             <span class="codeMirror codeMask" v-html="code"></span>
+            <div class="attention">/*禁止光标在最后一行结尾处回车*/</div>
           </div>
         </div>
       </div>
@@ -372,7 +375,7 @@ var vm = new Vue({
     selectComp: function(event, obj){
       var ele = $(event.target)
        
-      if(ele.parents(".html-box")[0]){ //捕获html片段的父元素
+      if(ele.parents(".html-box")[0]){ //捕获html片段的父元素,select-box可以选中这个组件所有
         ele = ele.parents(".html-box")
       } 
       $(".select-box").show()
@@ -399,11 +402,20 @@ var vm = new Vue({
       ele.parent().toggleClass("category-toggle")
     },
     
+    //监听html编辑器文本框滚动
+    codeScroll: function(event){
+      var ele = $(event.target)
+      var domsctop = ele.scrollTop()
+      var domscleft = ele.scrollLeft()
+      $(".codeMask").scrollTop(domsctop).scrollLeft(domscleft)
+    },
+    
     //html编辑框代码高亮
     codeHighLight: function(){
        var cssVal = this.comps[this.compIdx].vcss
        cssVal = codeHightLight(cssVal)
        this.code = cssVal
+       this.codeScroll()
     }
   }
 })

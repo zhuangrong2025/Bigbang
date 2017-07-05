@@ -255,9 +255,7 @@ $(function(){
             css <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
-            <textarea v-model="comps[compIdx].vcss" class="codeMirror" @input="codeHighLight" @scroll="codeScroll">
-            
-            </textarea>
+            <textarea v-model="comps[compIdx].vcss" class="codeMirror" @input="codeHighLight" @scroll="codeScroll"></textarea>
             <span class="codeMirror codeMask" v-html="code"></span>
             <div class="attention">/*禁止光标在最后一行结尾处回车*/</div>
           </div>
@@ -357,6 +355,20 @@ var vm = new Vue({
   background-color: #fff;
   border: 1px dashed #0cf;
 }
+.box{
+  font-size: 12px;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #fff;
+  border: 1px dashed #0cf;
+}
+.box{
+  font-size: 12px;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #fff;
+  border: 1px dashed #0cf;
+}
 </style>`
          })
     },
@@ -415,7 +427,6 @@ var vm = new Vue({
        var cssVal = this.comps[this.compIdx].vcss
        cssVal = codeHightLight(cssVal)
        this.code = cssVal
-       this.codeScroll()
     }
   }
 })

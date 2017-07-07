@@ -255,8 +255,8 @@ $(function(){
             css <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
-            <textarea v-model="comps[compIdx].vcss" class="codeMirror" @input="codeHighLight" @scroll="codeScroll"></textarea>
-            <span class="codeMirror codeMask" v-html="code"></span>
+            <textarea v-model="comps[compIdx].vcss" class="codeMirror" @scroll="codeScroll"></textarea>
+            <span class="codeMirror codeMask" v-code-highlight="comps[compIdx].vcss"></span>
             <div class="attention">/*禁止光标在最后一行结尾处回车*/</div>
             <em title="fullscreen" class="icon-h fullscreen" @click="fullscreen"></em>
           </div>
@@ -311,6 +311,17 @@ var HtmlComp = {
       }
     }
 
+/*----------利用自定义指令处理高亮css代码----------*/
+Vue.directive('codeHighlight', {
+  bind(el, binding) {
+    var code = binding.value
+    el.innerHTML = codeHightLight(code)
+  },
+  update(el, binding){
+    var code = binding.value
+    el.innerHTML = codeHightLight(code)
+  }
+})
 
 /******************创建vue实例******************/
     
@@ -389,10 +400,7 @@ var vm = new Vue({
       //切换属性面板
       this.panelProp = this.comps[this.compIdx].name
       
-      //获取高亮代码
-      if( this.panelProp == "htmlComp"){
-        this.codeHighLight()
-      }
+      
     },
     
     //属性展开收缩
@@ -407,13 +415,6 @@ var vm = new Vue({
       var domsctop = ele.scrollTop()
       var domscleft = ele.scrollLeft()
       $(".codeMask").scrollTop(domsctop).scrollLeft(domscleft)
-    },
-    
-    //html编辑框代码高亮
-    codeHighLight(){
-       var cssVal = this.comps[this.compIdx].vcss
-       cssVal = codeHightLight(cssVal)
-       this.code = cssVal
     },
     
     //html编辑框全屏

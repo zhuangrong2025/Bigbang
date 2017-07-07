@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Document</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<style>
+  textarea{
+    width: 300px;
+    height: 100px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <h3>文本框中过滤文字：我</h3>
+  <textarea v-model="content" v-out-me></textarea>
+  <div>
+    {{content}}
+  </div>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+Vue.directive('outMe', {
+  update: function(el, binding, vnode) {
+    el.value = el.value.replace(/我/g, '')
+    //el.value 修改之后还要触发 input 或 change 事件
+    el.dispatchEvent(new Event('input'))
+  }
+})
+var vm = new Vue({
+  el: '.app',
+  data: {
+    content: ''
+  }
+})
+
+
+
+
+</script>
+</body>
+</html>

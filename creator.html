@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="asset/css/smui.css">
 <link rel="stylesheet" href="css/creator.css">
 <script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/store.js"></script>
 <style>
   html,body{
     height: 100%;
@@ -334,11 +335,18 @@ var vm = new Vue({
   data:{
     compIdx: 0,
     panelProp: "btnComp",
-    comps: [
-      {}
-    ],
+    comps: Store.fetch(),
     classes:["primary", "warning"],
     code: ""
+  },
+  /*监听组件列表*/
+  watch: {
+    comps: {
+       handler: function(comps){
+          Store.save(comps)
+       },
+       deep: true
+    }
   },
   methods:{
 
@@ -394,6 +402,7 @@ var vm = new Vue({
                       .css("width", ele.outerWidth() + "px")
                       .css("height", ele.outerHeight() + "px")
       this.compIdx = this.comps.indexOf(obj)
+      
       //选中组件的样式
       this.selectedCls = this.comps[this.compIdx].class
       

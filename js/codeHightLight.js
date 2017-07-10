@@ -1,6 +1,10 @@
 function codeHightLight(val){ 
-  
-    var code=val; 
+    
+    if(val){
+      var code=val; 
+    }else{
+      return
+    }    
     //处理注释：注释替换成 _数字_ 
     var startIdx=endIndex=-1; 
     var at=0; 

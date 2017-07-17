@@ -1,0 +1,12 @@
+@import 'color.scss';
+body {
+  padding: 50px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: $color;
+  border:1px;
+  font-size: $fontsize;
+}
+

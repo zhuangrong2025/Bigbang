@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>login</title>
+<link rel="stylesheet" href="/stylesheets/app.css">
+<script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/javascripts/jqColorPicker.min.js"></script>
+<style>
+  .color-wrap{
+    width: 212px;
+    position: relative;
+  }
+  .color{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    width: 22px;
+    height: 22px;
+    text-indent: -999px;
+    cursor: pointer;
+    border: none;
+    z-index: 999;
+    border-radius: 3px;
+    outline: 0;
+  }
+  .ipt{
+    border: none;
+    height: 28px;
+    width: 200px;
+    border: 1px solid  #ddd;
+    padding: 0 5px;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+  
+</style>
+<script type="text/javascript">
+
+$(function(){
+//    $("#show").val($(".color").val())
+//    $("#show").change(function(){
+//      $(".color").val($("#show").val())
+//      $(".color").trigger("focus")
+//    })
+    getColor()
+    $("#show").val($(".color").val())
+    $("#show").keyup(function(){
+      $(".color").val($("#show").val())
+      getColor()
+    })
+   
+    function getColor(){
+      $('.color').colorPicker({
+        opacity: false,
+        GPU: false,
+        renderCallback: function($elm, toggled) {
+          $("#show").val($elm.val())
+        }, 
+        animationSpeed: 0
+      })
+    }
+   
+  
+})
+/*color参数
+$('.color').colorPicker({
+    color: '', // see Colors...
+    customBG: '#FFF',// see Colors...
+    animationSpeed: 150, // toggle animation speed
+    GPU: true, // use transform: translate3d
+    doRender: true, // manipulate color ans bgColor of input field
+    opacity: true, // enable / disable alpha slider
+    renderCallback: function($elm, toggled) {}, // this === instance; $elm: the input field;toggle === true -> just appeared; false -> opposite; else -> is rendering on pointer move
+    buidCallback: function($elm) {}, // this === instance; $elm: the UI
+    css: '', // replaces existing css
+    cssAddon: '', // adds css to existing
+    margin: '', // positioning margin (can also be set in cssAddon)
+    scrollResize: true, // toggle for reposition colorPicker on window.resize/scroll
+    gap: 4 ,// gap to right and bottom edge of view port if repositioned to fit
+    preventFocus: false, // prevents default on focus of input fields,
+    body: document.body // the element where the events are attached to (touchstart, mousedown, pointerdown, focus, click, change)
+});  
+*/
+</script>
+</head>
+
+<body>
+
+
+ <form action="http://10.168.1.91:3000/login" method="post">
+   <div class="color-wrap">
+     <input type="text" class="ipt" id="show">
+     <input type="text" name="linkcolor" class="color" value="#f30">
+   </div>
+   <p><input type="text" name="fontsize" class="ipt" placeholder="13px"></p>
+   <p><input type="submit" value="submit"></p>
+ </form>
+
+</body>
+</html>

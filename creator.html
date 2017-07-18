@@ -6,7 +6,7 @@
 <title>creator</title>
 <link rel="stylesheet" href="/stylesheets/smui.css">
 <link rel="stylesheet" href="/stylesheets/creator.css">
-<script src="http://code.jquery.com/jquery-2.2.3.min.js"></script>
+<script src="/javascripts/jquery-3.2.1.min.js"></script>
 <script src="/javascripts/store.js"></script>
 <style>
   html,body{
@@ -46,12 +46,59 @@ $(function(){
     $("#simulator").css({ "height": $("#simulator").width() + 'px' })
   })
   
+  
+  //modal for theme
+	$("#openModal").on("click",function(){
+		$("#modal-theme").addClass("in")
+		$(".modal-mask").addClass("in")
+	})
+	$(".icon-modal-close").on("click",function(){
+		 $(this).parent('.modal').removeClass("in")
+     $(".modal-mask").removeClass("in")
+	})
+	
 })
 </script>
 </head>
 <body>
+<!--modal-->
+<input type="button" value="teminging" id="openModal">
+<div class="modal in" id="modal-theme">
+  <div class="modal-header">
+    <h3>teminging</h3>
+    <i class="icon-modal-close"></i>
+  </div>
+  <div class="modal-body">
+    <div class="modal-tabs">
+      <ul>
+        <li class="active"><i class="icon-theme"></i>Custom</li>
+        <li>WeChat</li>
+      </ul>
+    </div>
+    <div class="modal-content">
+      <!-- theme box-->
+      <div class="theme-box">
+        <div class="theme-list">
+          <ul>
+            <li>Page and Header</li>
+            <li>Theme Color</li>
+            <li>Typography</li>
+          </ul>
+        </div>
+        <div class="theme-detail">
+          a
+          
+        </div>
+      </div>
+      <!--//select theme-->
+    </div>
+  </div>
+</div>
+<div class="modal-mask in"></div>
+<!--//modal-->
+
 <!--header-->
-<header>
+<header style="opacity: .0">
   <div class="header-left">
     <i class="logo icon-h"></i>
     <span>Smui creator</span>
@@ -71,7 +118,7 @@ $(function(){
 </header>
 <!--//header-->
 <!--container-->
-<section class="container" id="app">
+<section class="container" id="app" style="opacity: .0">
   <aside class="aside-bar">
     <!--pages-->
     <div class="pages">

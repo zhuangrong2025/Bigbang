@@ -622,7 +622,7 @@ h3.title button i{
   line-height: 18px;
   letter-spacing: 0;
   overflow: auto;
-  /*white-space:nowrap; //不能加这个属性，否则空格会被解析为&nbsp;*/
+  /*white-space:nowrap; //不能加这个属性，否则空格会被解析为&nbsp; */
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   opacity: .28;
@@ -935,6 +935,171 @@ h3.title button i{
   height: 3px;
   background-color: #fff;
 }
+
+
+/*---------------------modal---------------------*/
+.modal {
+	position: fixed;
+	z-index: 9999;
+	width: 0;
+	height: 0;
+	top: 50%;
+	left: 50%;
+	background-color: #F6F7F8;
+  opacity: 0;
+  -webkit-transform: translate(-50%, -50%) scale3d(0.5, 0.5, 1)  ;
+  transform: translate(-50%, -50%) scale3d(0.5, 0.5, 1)  ;
+  transition: opacity 0.2s, height 0.2s, width 0.2s, -webkit-transform 0.4s cubic-bezier(0.155, 1.105, 0.295, 1.12);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.modal.in{
+	height: 645px;
+  width: 1000px;
+  opacity: 1;
+  -webkit-transform: translate(-50%, -50%) scale3d(1, 1, 1);
+  transform: translate(-50%, -50%)  scale3d(1, 1, 1);
+}
+.modal-mask {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+  background-color: #0f1e37;
+  opacity: 0;
+	z-index: 9;
+  overflow: hidden;
+  height: 0;
+  transition: opacity 1.2s, height 0.0s 1.2s; /*退出动画：高度延迟1.2s后播放*/
+}
+.modal-mask.in{
+  opacity: .5;
+  height: 100%;
+  transition: opacity 0.2s;
+}
+.modal .modal-header{
+  height: 97px;
+  background-color: #fff;
+  padding: 38px 40px 20px 40px;
+}
+.modal .modal-header h3{
+  background-color: #fff;
+  font-size: 28px;
+}
+.modal .icon-modal-close{
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 43px;
+  top: 46px;
+  cursor: pointer;
+}
+.modal .icon-modal-close:before,
+.modal .icon-modal-close:after {
+  background-image: url(../images/small-icons-sprite.png);
+  background-position: 0 0;
+  background-size: 16px;
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  content: '';
+}
+.modal .icon-modal-close:after {
+  opacity: 0;
+  background-position: 0 -16px;
+  transition: 0.2s opacity;
+}
+.modal .icon-modal-close:hover:after {
+  opacity: 1;
+}
+.modal .modal-body {
+  background: #f6f7f8;
+}
+.modal .modal-tabs{
+  height: 40px;
+  background-color: #fff;
+  padding: 0 40px;
+  border-bottom: 2px solid  #EEEFF2;
+}
+.modal .modal-tabs li{
+  display: inline-block;
+  line-height: 40px;
+  text-align: center;
+  padding: 0 2px;
+  margin-right: 55px;
+  color: #a8aeb7;
+  position: relative;
+}
+.modal .modal-tabs li.active{
+  color: #3a7ef5;
+}
+.modal .modal-tabs li.active:after{
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  overflow: hidden;
+  background-color:#C5D6F2;
+}
+.modal .modal-tabs li i{
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.modal .modal-tabs li i.icon-theme{
+  background-image: url(../images/small-icons-sprite.png);
+  background-position: 0 -336px;
+  background-size: 16px;
+}
+.modal .modal-content{
+  padding: 40px;
+}
+/*theme box*/
+.theme-box{
+  overflow: hidden;
+}
+.theme-box .theme-list{
+  float: left;
+  width: 208px;
+  padding-right: 10px;
+}
+.theme-box .theme-list li{
+  padding: 5px 0;
+  color: #9299A9;
+}
+.theme-box .theme-list li:hover{
+  color: #3a7ef5;
+}
+.theme-box .theme-detail{
+  float: right;
+  width: 700px;
+  min-height: 370px;
+  background-color: #fff;
+  overflow: auto;
+  border: 1px solid  #e2e2e2;
+  border-radius: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

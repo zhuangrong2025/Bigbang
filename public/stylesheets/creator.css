@@ -947,19 +947,21 @@ h3.title button i{
 	left: 50%;
 	background-color: #F6F7F8;
   opacity: 0;
-  -webkit-transform: translate(-50%, -50%) scale3d(0.5, 0.5, 1)  ;
-  transform: translate(-50%, -50%) scale3d(0.5, 0.5, 1)  ;
+  -webkit-transform: scale3d(0.5, 0.5, 1);
+  transform: scale3d(0.5, 0.5, 1);
   transition: opacity 0.2s, height 0.2s, width 0.2s, -webkit-transform 0.4s cubic-bezier(0.155, 1.105, 0.295, 1.12);
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 .modal.in{
-	height: 645px;
+	height: 640px;
   width: 1000px;
+  margin-left: -500px;
+  margin-top: -320px;
   opacity: 1;
-  -webkit-transform: translate(-50%, -50%) scale3d(1, 1, 1);
-  transform: translate(-50%, -50%)  scale3d(1, 1, 1);
+  -webkit-transform: scale3d(1, 1, 1);
+  transform: scale3d(1, 1, 1);
 }
 .modal-mask {
 	position: fixed;
@@ -1072,21 +1074,75 @@ h3.title button i{
 .theme-box .theme-list li{
   padding: 5px 0;
   color: #9299A9;
+  cursor: pointer;
 }
+.theme-box .theme-list li.active,
 .theme-box .theme-list li:hover{
   color: #3a7ef5;
 }
 .theme-box .theme-detail{
   float: right;
   width: 700px;
+  padding: 30px;
   min-height: 370px;
   background-color: #fff;
   overflow: auto;
   border: 1px solid  #e2e2e2;
   border-radius: 5px;
 }
-
-
+.theme-box .theme-detail dl{
+  padding: 10px 0;
+  border-bottom: 1px solid  #f0f0f0;
+  overflow: hidden;
+}
+.theme-box .theme-detail dt{
+  float: left;
+  font-size: 16px;
+  line-height: 32px;
+}
+.theme-box .theme-detail dd{
+  position: relative;
+  float: right;
+  width: 202px;
+}
+.theme-box .theme-detail .theme-color-ipt{
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  height: 32px;
+  padding: 6px 12px;
+  border-color: #dadde2;
+  border-radius: 2px;
+  box-shadow: 0px 1px 2px rgba(200, 200, 200, 0.3) inset;
+  display: block;
+  width: 100%;
+  line-height: 1.42857;
+  color: #555555;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.theme-box .theme-detail .theme-color-ipt:focus {
+  border-color: #4d84f1;
+}
+.color{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 22px;
+  height: 22px;
+  text-indent: -999px;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  outline: 0;
+}
+.cp-color-picker{
+  z-index: 999999999999;
+}
 
 
 

@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/stylesheets/smui.css">
 <link rel="stylesheet" href="/stylesheets/creator.css">
 <script src="/javascripts/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/javascripts/jqColorPicker.min.js"></script>
 <script src="/javascripts/store.js"></script>
 <style>
   html,body{
@@ -56,6 +57,18 @@ $(function(){
 		 $(this).parent('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
 	})
+  getColor()
+  //tinycolorPicker
+  function getColor(){
+    $('.color').colorPicker({
+      opacity: false,
+      GPU: false,
+      renderCallback: function($elm, toggled) {
+        $("#show").val($elm.val())
+      }, 
+      animationSpeed: 0
+    })
+  }
 	
 })
 </script>
@@ -80,13 +93,21 @@ $(function(){
       <div class="theme-box">
         <div class="theme-list">
           <ul>
+            <li class="active">Theme Color</li>
             <li>Page and Header</li>
-            <li>Theme Color</li>
             <li>Typography</li>
           </ul>
         </div>
         <div class="theme-detail">
-          a
+          <div>
+            <dl>
+              <dt>Primary</dt>
+              <dd>
+                <input type="text" class="theme-color-ipt" id="show">
+                <input type="text" name="linkcolor" class="color" value="#f30">
+              </dd>
+            </dl>
+          </div>
           
         </div>
       </div>

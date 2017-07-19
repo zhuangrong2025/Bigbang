@@ -636,6 +636,7 @@ h3.title button i{
   z-index: -1;
   color: #ff9c00;
 }
+.theme-detail::-webkit-scrollbar-thumb,
 .codeMirror::-webkit-scrollbar-thumb{
   background-color: #c2c2c2;
 }
@@ -1081,10 +1082,11 @@ h3.title button i{
   color: #3a7ef5;
 }
 .theme-box .theme-detail{
+  position: relative;
   float: right;
   width: 700px;
   padding: 30px;
-  min-height: 370px;
+  height: 370px;
   background-color: #fff;
   overflow: auto;
   border: 1px solid  #e2e2e2;
@@ -1105,7 +1107,7 @@ h3.title button i{
   float: right;
   width: 202px;
 }
-.theme-box .theme-detail .theme-color-ipt{
+.theme-box .theme-detail input:not(.color){
   font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 400;
   font-size: 12px;
@@ -1125,10 +1127,11 @@ h3.title button i{
   -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
-.theme-box .theme-detail .theme-color-ipt:focus {
+.theme-box .theme-detail input:not(.color):focus {
   border-color: #4d84f1;
 }
 .color{
+  position: absolute;
   position: absolute;
   top: 5px;
   right: 5px;

@@ -41,6 +41,7 @@ $(function(){
     $("#simulator").css({ "width": deviceWidth })
     $("#simulator").css({ "height": deviceHeight })
   })
+  
   //orientation
   $("#orientation").on("click",function(){
     $("#simulator").css({ "width": $("#simulator").height() + 'px' })
@@ -57,16 +58,21 @@ $(function(){
 		 $(this).parent('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
 	})
-  getColor()
+  
   //tinycolorPicker
+  getColor()
+  $("#theme-color dl").each(function(){
+    $(this).find('input').eq(0).keyup(function(){
+      getColor()
+    })
+  })
   function getColor(){
     $('.color').colorPicker({
-      opacity: false,
-      GPU: false,
       renderCallback: function($elm, toggled) {
-        $("#show").val($elm.val())
-      }, 
-      animationSpeed: 0
+        $elm.prev().focus()
+        var cls = $elm.attr("name")
+        vm.themes[cls] = $elm.val()
+      }
     })
   }
 	
@@ -74,6 +80,7 @@ $(function(){
 </script>
 </head>
 <body>
+<div id="app">
 <!--modal-->
 <input type="button" value="teminging" id="openModal">
 <div class="modal in" id="modal-theme">
@@ -84,7 +91,7 @@ $(function(){
   <div class="modal-body">
     <div class="modal-tabs">
       <ul>
-        <li class="active"><i class="icon-theme"></i>Custom</li>
+        <li class="active"  title="自定义风格"><i class="icon-theme"></i>Custom</li>
         <li>WeChat</li>
       </ul>
     </div>
@@ -93,22 +100,35 @@ $(function(){
       <div class="theme-box">
         <div class="theme-list">
           <ul>
-            <li class="active">Theme Color</li>
+            <li class="active" title="">Theme Color</li>
             <li>Page and Header</li>
             <li>Typography</li>
           </ul>
         </div>
-        <div class="theme-detail">
+        <div class="theme-detail" id="theme-color">
           <div>
             <dl>
               <dt>Primary</dt>
               <dd>
-                <input type="text" class="theme-color-ipt" id="show">
-                <input type="text" name="linkcolor" class="color" value="#f30">
+                <input type="text" v-model="themes.primary">
+                <input type="text" name="primary" class="color" v-model="themes.primary">
+              </dd>
+            </dl>
+            <dl>
+              <dt>Warning</dt>
+              <dd>
+                <input type="text" v-model="themes.warning">
+                <input type="text" name="warning" class="color" v-model="themes.warning">
               </dd>
             </dl>
           </div>
-          
+          <!--save-->
+          <div class="save-bar">
+            <button>Restore defaults</button>
+            <button>Cancel</button>
+            <button>Save</button>
+          </div>
+          <!--//save-->
         </div>
       </div>
       <!--//select theme-->
@@ -139,7 +159,7 @@ $(function(){
 </header>
 <!--//header-->
 <!--container-->
-<section class="container" id="app" style="opacity: .0">
+<section class="container" style="opacity: .0">
   <aside class="aside-bar">
     <!--pages-->
     <div class="pages">
@@ -240,8 +260,7 @@ $(function(){
     </div>
     
     <!--//simulator-->
-  </section>
-  
+  </section>  
   <!--//content-->
   <!--proerty-->
   <aside class="property">
@@ -337,7 +356,7 @@ $(function(){
 </section>
 <!--//container-->
 
-
+</div>
    
 <script src="/javascripts//vue.js"></script>
 <script src="/javascripts/codeHightLight.js"></script>
@@ -391,6 +410,7 @@ Vue.directive('codeHighlight', {
   }
 })
 
+
 /******************创建vue实例******************/
     
 var vm = new Vue({
@@ -404,7 +424,10 @@ var vm = new Vue({
     panelProp: "btnComp",
     comps: Store.fetch(),
     classes:["primary", "warning"],
-    code: ""
+    themes:{
+      primary: "#008AD5",
+      warning: "#E64340"
+    }
   },
   /*监听组件列表*/
   watch: {
@@ -499,7 +522,8 @@ var vm = new Vue({
       $(".property").toggleClass("fs-prop")
       $(".fullscreen").toggleClass("fs-reset")
       this.hideSelBox()
-    }
+    },
+    
   }
 })
 

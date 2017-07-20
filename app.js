@@ -1,5 +1,6 @@
 var express = require('express')
 var sassMiddleware = require('node-sass-middleware')
+var fs=require('fs')  
 var path = require('path')
 var favicon = require('serve-favicon')
 var logger = require('morgan')
@@ -25,11 +26,11 @@ app.use(cookieParser())
 
 
 
-//调用node-sass-middleware中间件
+//user node-sass-middleware
 app.use(
   sassMiddleware({
     src: __dirname + '/sass',
-    dest: __dirname + '/public/stylesheets',  //输出路径
+    dest: __dirname + '/public/stylesheets',  //path of output
     prefix:  '/stylesheets',  // the sass middleware will look for the file /sass/app.scss rather than /sass/stylesheets/app.scss.
     debug: true,
   })
@@ -37,11 +38,37 @@ app.use(
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-//加载页面
+/*=============================
+  首页creator.html
+  =============================*/
 app.get('/', function(req, res){
    res.sendFile(__dirname + '/creator.html')
 })
-app.use('/', index);
+
+/*custom theme color*/
+app.post('/', function(req, res, next) {
+  //获取表单请求，修改颜色变量
+  var primaryNew = req.body.primary || '#008AD5'
+  var warningNew = req.body.warning || '#E64340'
+  
+  //生成scss变量
+  var newPrimary = sassVariable('primary', primaryNew)
+  var newWarning = sassVariable('warning', warningNew)  
+  var newScss = newPrimary + newWarning
+  
+  //写入variable.scss
+  fs.writeFile('sass/btn-variable.scss', newScss) 
+  
+  //变量组合
+  function sassVariable(name, value) {
+    return "$" + name + ": " + value + ";"
+  }
+  
+  
+  res.sendFile(__dirname + '/creator.html')
+  
+})
+
 app.use('/login', login)
 app.use('/users', users)
 

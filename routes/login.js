@@ -13,7 +13,6 @@ router.post('/', function(req, res, next) {
   var linkcolor = req.body.linkcolor || '#00f'
   var fontsize = req.body.fontsize || '13px'
   
-  //res.render('index', { title: linkcolor })  
   res.sendFile(__dirname + '/index.html')
   
   //生成scss变量
@@ -22,11 +21,7 @@ router.post('/', function(req, res, next) {
   var newScss = newLinkcolor + newFontsize
   
   //写入 color.scss
-  fs.writeFile('sass/color.scss', newScss ,function(err){  
-    if(err){
-      throw err
-    }
-  }) 
+  fs.writeFile('sass/color.scss', newScss) 
   
   //变量组合
   function sassVariable(name, value) {

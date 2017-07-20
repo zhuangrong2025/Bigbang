@@ -1,11 +1,11 @@
-var STORAGE_KEY = 'comps-list'
+//var STORAGE_KEY = 'comps-list'
 var Store = (function(){
       return {
-        fetch:function(){
-          return JSON.parse(window.localStorage.getItem( STORAGE_KEY) || '[{}]')
+        fetch:function(key, defaults){
+          return JSON.parse(window.localStorage.getItem(key) || defaults)
         },
-        save: function(comps){
-          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(comps))
+        save: function(key,data){
+          window.localStorage.setItem(key, JSON.stringify(data))
         }
       }
     })()

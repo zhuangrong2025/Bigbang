@@ -6,6 +6,7 @@
 <title>creator</title>
 <link rel="stylesheet" href="/stylesheets/smui.css">
 <link rel="stylesheet" href="/stylesheets/creator.css">
+<link rel="stylesheet" href="/stylesheets/btn.css">
 <script src="/javascripts/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/javascripts/jqColorPicker.min.js"></script>
 <script src="/javascripts/store.js"></script>
@@ -86,6 +87,8 @@ $(function(){
 <div class="modal in" id="modal-theme">
   <div class="modal-header">
     <h3>teminging</h3>
+    <button class="sm-btn primary">primary</button>
+    <button class="sm-btn warning">warning</button>
     <i class="icon-modal-close"></i>
   </div>
   <div class="modal-body">
@@ -96,7 +99,8 @@ $(function(){
       </ul>
     </div>
     <div class="modal-content">
-      <!-- theme box-->
+      <!--custom theme-->
+      <form action="http://10.168.1.91:3000/" method="post">
       <div class="theme-box">
         <div class="theme-list">
           <ul>
@@ -122,16 +126,21 @@ $(function(){
               </dd>
             </dl>
           </div>
-          <!--save-->
-          <div class="save-bar">
-            <button>Restore defaults</button>
-            <button>Cancel</button>
-            <button>Save</button>
-          </div>
-          <!--//save-->
         </div>
+        <!--modal-footer-->
+        <div class="modal-footer">
+          <div class="pull-left">
+            <button class="btn-restore">Restore defaults</button>
+          </div>
+          <div class="pull-right">
+            <input type="button" class="btn" value="Cancel">
+            <input type="submit" class="btn-ok" value="Save">
+          </div>
+        </div>
+        <!--//modal-footer-->
       </div>
-      <!--//select theme-->
+      </form>
+      <!--//custom theme-->
     </div>
   </div>
 </div>
@@ -422,18 +431,21 @@ var vm = new Vue({
   data:{
     compIdx: 0,
     panelProp: "btnComp",
-    comps: Store.fetch(),
+    comps: Store.fetch('comps-list', '[{}]'),
     classes:["primary", "warning"],
-    themes:{
-      primary: "#008AD5",
-      warning: "#E64340"
-    }
+    themes: Store.fetch('themes-list','{"primary": "#008AD5", "warning": "#E64340"}')
   },
   /*监听组件列表*/
   watch: {
     comps: {
        handler: function(comps){
-          Store.save(comps)
+          Store.save('comps-list', comps)
+       },
+       deep: true
+    },
+    themes: {
+       handler: function(themes){
+          Store.save('themes-list', themes)
        },
        deep: true
     }

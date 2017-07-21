@@ -7,8 +7,6 @@ html {
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   font-family:"Microsoft yahei", Consolas, Andale Mono, Lucida Console, Lucida Sans Typewriter, Monaco, Courier New, monospace, sans-serif;
-  
-  font-family:;
 }
 *, *::before, *::after{
   margin: 0;
@@ -880,15 +878,16 @@ h3.title button i{
   top: -11px;
   right: 28px;
   display: block;
-  font-size: 20px;
+  font-size: 17px;
   width: 20px;
   height: 20px;
-  line-height: 15px;
+  line-height: 20px;
   border-radius: 50%;
   text-align: center;
   border: 1px solid #4a87ee;
   background-color: #fff;
-  transition: all .2s
+  transition: all .2s;
+  font-family:Andale Mono, Lucida Console, Lucida Sans Typewriter, Monaco, Courier New, monospace;
 }
 .select-box span:hover,
 .select-box i:hover{
@@ -942,27 +941,25 @@ h3.title button i{
 .modal {
 	position: fixed;
 	z-index: 9999;
-	width: 0;
-	height: 0;
-	top: 50%;
+	height: 640px;
+  width: 1000px;
+	top: -9999px;
 	left: 50%;
+  margin-left: -500px;
+  margin-top: -320px;
 	background-color: #F6F7F8;
   opacity: 0;
   -webkit-transform: scale3d(0.5, 0.5, 1);
-  transform: scale3d(0.5, 0.5, 1);
-  transition: opacity 0.2s, height 0.2s, width 0.2s, -webkit-transform 0.4s cubic-bezier(0.155, 1.105, 0.295, 1.12);
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.2s, -webkit-transform 0.4s cubic-bezier(0.155, 1.105, 0.295, 1.12), top 0s 0.2s;
 }
 .modal.in{
-	height: 640px;
-  width: 1000px;
-  margin-left: -500px;
-  margin-top: -320px;
+  top:50%;
   opacity: 1;
   -webkit-transform: scale3d(1, 1, 1);
-  transform: scale3d(1, 1, 1);
+  transition: opacity 0.2s, -webkit-transform 0.4s cubic-bezier(0.155, 1.105, 0.295, 1.12);
 }
 .modal-mask {
 	position: fixed;
@@ -975,7 +972,7 @@ h3.title button i{
 	z-index: 9;
   overflow: hidden;
   height: 0;
-  transition: opacity 1.2s, height 0.0s 1.2s; /*退出动画：高度延迟1.2s后播放*/
+  transition: opacity 1s, height 0.0s 1s; /*退出动画：高度延迟1s后播放*/
 }
 .modal-mask.in{
   opacity: .5;

@@ -6,6 +6,7 @@
 <title>creator</title>
 <link rel="stylesheet" href="/stylesheets/smui.css">
 <link rel="stylesheet" href="/stylesheets/creator.css">
+<link rel="stylesheet" href="/stylesheets/scale.css">
 <script src="/javascripts/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/javascripts/jqColorPicker.min.js"></script>
 <script src="/javascripts/store.js"></script>
@@ -13,7 +14,7 @@
   html,body{
     height: 100%;
     overflow: hidden;
-  }  
+  } 
 </style>
 <script>
 $(function(){
@@ -80,15 +81,11 @@ $(function(){
 </script>
 </head>
 <body>
-<div id="app">
+<span id="app">
 <!--modal-->
 <div class="modal" id="modal-theme">
   <div class="modal-header">
     <h3>teminging</h3>
-    <span style="float: right">
-      <button class="sm-btn mini primary" style="width: 100px;margin-right: 100px">primary</button>
-      <button class="sm-btn mini warning" style="width: 100px;margin-right: 100px">warning</button>
-    </span>
     <i class="icon-modal-close"></i>
   </div>
   <div class="modal-body">
@@ -261,7 +258,7 @@ $(function(){
         
         <!--************select box************-->
         <div class="select-box">
-          <i @click="removeComp()" title="delete component">&times;</i>
+          <i @click="removeComp()" title="delete component"> &times;</i>
           <span @click="hideSelBox()" title="hide maskbox"></span>
         </div>
         <!--//************select box************-->
@@ -365,7 +362,7 @@ $(function(){
 </section>
 <!--//container-->
 
-</div>
+</span>
    
 <script src="/javascripts//vue.js"></script>
 <script src="/javascripts/codeHightLight.js"></script>

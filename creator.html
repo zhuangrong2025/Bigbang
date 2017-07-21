@@ -145,7 +145,7 @@ $(function(){
 <!--//modal-->
 
 <!--header-->
-<header style="opacity: 1.0">
+<header style="opacity: 0.0">
   <div class="header-left">
     <i class="logo icon-h"></i>
     <span>Smui creator</span>
@@ -169,30 +169,18 @@ $(function(){
   <aside class="aside-bar">
     <!--pages-->
     <div class="pages">
-      <h3 class="title">Pages <button><i class="new-page"></i>Add Page</button></h3>
+      <h3 class="title">Pages <button @click="addPage"><i class="new-page"></i>Add Page</button></h3>
       <div class="page-list">
         <ul>
-          <li class="active">
-            <a href="#"><i class="icon-page"></i>index <span class="del-page"></span></a>
-          </li>
-          <li>
-            <a href="#"><i class="icon-page"></i>list</a>
-          </li>
-          <li>
-            <a href="#"><i class="icon-page"></i>article</a>
-          </li>
-          <li>
-            <a href="#"><i class="icon-page"></i>news</a>
-          </li>
-          <li>
-            <a href="#"><i class="icon-page"></i>contact</a>
+          <li v-for="(page,index) in pages" @click="selectPage($event,index)">
+            <a href="#"><i class="icon-page"></i><em>{{page.name}}</em> <span class="del-page" @click.stop="delectPage"></span></a>
           </li>
         </ul>
       </div>
     </div>
     <!--//pages-->
     <!--component-->
-    <div class="component-wrap">
+    <div class="component-wrap" style="opacity: 0.0">
       <h3 class="title">Components</h3>
       <div class="component">
         <ul>
@@ -214,7 +202,7 @@ $(function(){
     <!--//component-->
   </aside>
   <!--content-->
-  <section class="content">
+  <section class="content" style="opacity: .0">
     <!--device bar-->
     <h3 class="device-bar">
       <div class="choose-device">
@@ -274,7 +262,7 @@ $(function(){
       <a href="#">index</a> <label>/</label> Button
     </h3>
     <div class="property-list">
-      <!--**************panel-button-property**************-->
+      <!--**************button property**************-->
       <div v-if=" panelProp == 'btnComp'">
         <!--Link-->
         <div class="pro-item">
@@ -330,8 +318,8 @@ $(function(){
           </div>
         </div>
       </div>
-      <!--//**************//panel-button-property**************-->
-      <!--**************panel-html-property **************-->
+      <!--//**************button property**************-->
+      <!--**************html property **************-->
       <div v-if=" panelProp == 'htmlComp'">
         <!--html-->
         <div class="pro-item" @click="toggleCls">
@@ -355,7 +343,21 @@ $(function(){
           </div>
         </div>
       </div>
-      <!--//**************panel-html-property**************-->
+      <!--//**************html property**************-->
+      <!--**************page property**************-->
+      <div v-if=" panelProp == 'page'">
+        <div class="pro-item">
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Name</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="pages[pageIdx].name">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************page property**************-->
     </div>
   </aside>
   <!--//proerty-->
@@ -427,10 +429,12 @@ var vm = new Vue({
   },
   data:{
     compIdx: 0,
-    panelProp: "btnComp",
+    panelProp: "page",
     comps: Store.fetch('comps-list', '[{}]'),
     classes:["primary", "warning"],
-    themes: Store.fetch('themes-list','{"primary": "#008AD5", "warning": "#E64340"}')
+    themes: Store.fetch('themes-list','{"primary": "#008AD5", "warning": "#E64340"}'),
+    pages: [{}],
+    pageIdx: 0
   },
   /*监听组件列表*/
   watch: {
@@ -532,6 +536,25 @@ var vm = new Vue({
       $(".fullscreen").toggleClass("fs-reset")
       this.hideSelBox()
     },
+    
+    /*===========================
+      page列表操作
+    =============================*/
+    addPage(){
+      this.pages.splice((this.comps.length-1), 0, {
+           name: "page"
+         })
+    },
+    
+    selectPage(event, pageIdx){
+      var ele = $(event.target)
+      this.pageIdx = pageIdx
+      ele.parents("li").addClass("active").siblings().removeClass("active")
+    },
+    
+    delectPage(){
+      this.pages.splice( this.pageIdx, 1)
+    }
     
   }
 })

@@ -349,6 +349,9 @@ h3.title button i{
 .pages .page-list li.active span.del-page{
   display: inline-block;
 }
+.pages .page-list li:last-child{
+  display: none;
+}
 .del-page{
   display: none;
   float: right;

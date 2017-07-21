@@ -1,0 +1,88 @@
+//所有变量
+
+// 基础颜色
+//
+//---------------------------------------------
+$white:           #fff !default;
+$black:           #000 !default;
+$blue:            #008AD5 !default;
+$red:             #E64340 !default;
+$orange:          #f80 !default;
+$green:           #09BB07 !default;
+$blue-lighter:    #D9EDF7 !default;
+
+
+
+// 灰色色阶
+$gray-dark:           #363636 !default;
+$gray:                #464a4c !default;
+$gray-light:          #636c72 !default;
+$gray-lighter:        #eceeef !default;
+$gray-lightest:       #f7f7f9 !default;
+
+// 主色调
+$brand-primary:       $blue !default;
+$brand-success:       $green !default;
+$brand-warning:       $red !default;
+$brand-info:          $blue-lighter !default;
+
+// Body
+$body-bg:             $white !default;
+$body-color:          $gray-dark !default;
+
+// 链接
+$link-color:          $brand-primary !default;
+
+// components
+$border-radius:       5px !default;
+
+
+
+//button
+//
+//-------------------------------------------------
+
+// 字体，高度，圆角
+$btn-height:                     46px !default;
+$btn-font-size:                  18px !default;
+$btn-border-radius:              $border-radius !default;
+
+// 主要
+$btn-primary-color:              $white !default;
+$btn-primary-bg:                 $brand-primary !default;
+$btn-primary-border:             $btn-primary-bg !default;
+
+// 警告
+$btn-warning-color:              $white !default;
+$btn-warning-bg:                 $brand-warning !default;
+$btn-warning-border:             $btn-warning-bg !default;
+
+// 次要
+$btn-secondary-color:            $gray-dark !default;
+
+// 禁用
+$btn-disabled-bg:                #F7F7F7 !default;
+
+//小按钮
+$btn-font-size-mini:13px;
+$btn-height-mini:2.3;
+
+// 链接按钮
+
+
+
+// 多选框，单选框变量
+//
+//-------------------------------------------------
+$checkedColor: #f60;
+$checkDefaultColor: #ccc;
+
+$checkFontSize: 23px;
+
+
+// 开关
+//
+//-------------------------------------------------
+
+$switchHeight: 32px;
+$switchedColor: #78BB05;

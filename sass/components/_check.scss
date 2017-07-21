@@ -1,0 +1,50 @@
+//checkbox,radio
+
+.sm-check-common{
+  display: inline-block;
+	vertical-align: middle;
+	-webkit-appearance:none;
+  margin: 0 5px;
+  &:checked{
+    &:before{
+      color: $checkedColor;
+    }
+  }
+  &:before{
+    font-family: 'smui';
+    font-size: $checkFontSize;
+    color: $checkDefaultColor;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; 
+  }
+}
+/*checkbox*/
+.sm-checkbox{
+  @extend .sm-check-common; 
+  &:checked{
+    &:before{
+      content: "\f007";
+    }
+  }
+  &:before{
+    content: "\f005";
+  }
+}
+
+/*radio*/
+.sm-radio{
+  @extend .sm-check-common; 
+  &:checked{
+    &:before{
+      content: "\f058";
+    }
+  }
+  &:before{
+    content: "\f1db";
+  }
+}
+
+
+
+

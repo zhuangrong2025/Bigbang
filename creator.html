@@ -6,7 +6,6 @@
 <title>creator</title>
 <link rel="stylesheet" href="/stylesheets/smui.css">
 <link rel="stylesheet" href="/stylesheets/creator.css">
-<link rel="stylesheet" href="/stylesheets/btn.css">
 <script src="/javascripts/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/javascripts/jqColorPicker.min.js"></script>
 <script src="/javascripts/store.js"></script>
@@ -56,7 +55,7 @@ $(function(){
 		$(".modal-mask").addClass("in")
 	})
 	$(".icon-modal-close").on("click",function(){
-		 $(this).parent('.modal').removeClass("in")
+		 $(this).parents('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
 	})
   
@@ -83,12 +82,13 @@ $(function(){
 <body>
 <div id="app">
 <!--modal-->
-<input type="button" value="teminging" id="openModal">
-<div class="modal in" id="modal-theme">
+<div class="modal" id="modal-theme">
   <div class="modal-header">
     <h3>teminging</h3>
-    <button class="sm-btn primary">primary</button>
-    <button class="sm-btn warning">warning</button>
+    <span style="float: right">
+      <button class="sm-btn mini primary" style="width: 100px;margin-right: 100px">primary</button>
+      <button class="sm-btn mini warning" style="width: 100px;margin-right: 100px">warning</button>
+    </span>
     <i class="icon-modal-close"></i>
   </div>
   <div class="modal-body">
@@ -144,11 +144,11 @@ $(function(){
     </div>
   </div>
 </div>
-<div class="modal-mask in"></div>
+<div class="modal-mask"></div>
 <!--//modal-->
 
 <!--header-->
-<header style="opacity: .0">
+<header style="opacity: 1.0">
   <div class="header-left">
     <i class="logo icon-h"></i>
     <span>Smui creator</span>
@@ -160,7 +160,7 @@ $(function(){
   </div>
   <div class="header-right">
     <ul>
-      <li><i class="theme icon-h" title="themes"></i></li>
+      <li id="openModal"><i class="theme icon-h" title="themes"></i></li>
       <li><i class="help icon-h"  title="help"></i></li>
       <li><i class="user icon-h"  title="user"></i></li>
     </ul>
@@ -168,7 +168,7 @@ $(function(){
 </header>
 <!--//header-->
 <!--container-->
-<section class="container" style="opacity: .0">
+<section class="container" style="opacity: 1.0">
   <aside class="aside-bar">
     <!--pages-->
     <div class="pages">

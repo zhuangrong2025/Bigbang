@@ -52,12 +52,12 @@ app.post('/', function(req, res, next) {
   var warningNew = req.body.warning || '#E64340'
   
   //生成scss变量
-  var newPrimary = sassVariable('primary', primaryNew)
-  var newWarning = sassVariable('warning', warningNew)  
+  var newPrimary = sassVariable('brand-primary', primaryNew)
+  var newWarning = sassVariable('brand-warning', warningNew)  
   var newScss = newPrimary + newWarning
   
   //写入variable.scss
-  fs.writeFile('sass/btn-variable.scss', newScss) 
+  fs.writeFile('sass/_custom.scss', newScss) 
   
   //变量组合
   function sassVariable(name, value) {

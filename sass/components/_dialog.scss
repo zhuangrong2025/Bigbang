@@ -1,0 +1,40 @@
+//dialog
+
+/*对话框15*/
+.dialog {
+	position: fixed;
+	z-index: 9999;
+	width: 80%;
+	max-width: 300px;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: #fff;
+	text-align: center;
+	border-radius: 5px;
+	overflow: hidden;		
+}
+.dialog .dialog-header{
+	padding: 20px 10px 10px;
+	font-size: 18px;
+}
+.dialog .dialog-body{
+	padding: 0 20px 20px;
+	text-align: left;
+	min-height: 140px;
+	font-size: 15px;
+	line-height: 1.3;
+	color: #999;
+}	
+.dialog .dialog-footer{
+	text-align: center;
+	min-height: 48px;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+}
+
+
+
+

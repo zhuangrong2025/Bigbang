@@ -1,0 +1,47 @@
+//switch
+
+.sm-switch{
+  position: relative;
+  width: 52px;
+  height: $switchHeight;
+  border: 1px solid #DFDFDF;
+  outline: 0;
+  border-radius: 16px;
+  background-color: #DFDFDF;
+  transition: background-color .1s, border .1s;
+  &:before{
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: $switchHeight - 2;
+    border-radius: 15px;
+    background-color: #FDFDFD;
+    transition:transform .35s cubic-bezier(0.45, 1, 0.4, 1);
+  }
+  &:after{
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $switchHeight - 2;
+    height: $switchHeight - 2;
+    border-radius: 15px;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    transition:transform .35s cubic-bezier(0.4, 0.4, 0.25, 1.35);
+  }
+}
+.sm-switch:checked{
+  border-color: $switchedColor;
+  background-color: $switchedColor;
+  &:before {
+    transform: scale(0);
+  }
+  &:after {
+    transform: translateX(20px);
+  }
+}
+
+

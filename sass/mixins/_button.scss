@@ -1,0 +1,31 @@
+// Button variants
+
+@mixin button-variant($color, $background, $border) {
+  $active-background: darken($background, 3%);
+  $active-border: darken($border, 3%);
+
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+  
+  &:active,
+  &.active{
+    color: rgba($color, .6);
+    background-color: $active-background;
+    border-color: $active-border;
+  }
+}
+
+
+@mixin button-outline-variant($color) {
+  $active-color: rgba($color, .6);
+  color: $color;
+  background-color: transparent;
+  border-color: $color;
+  
+  &:active,
+  &.active {
+    color: $active-color;
+    border-color: $active-color;
+  }
+}

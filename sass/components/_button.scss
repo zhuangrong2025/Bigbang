@@ -1,0 +1,72 @@
+//按钮样式
+
+.sm-btn {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: $btn-font-size;
+  text-align: center;
+  text-decoration: none;
+  line-height: $btn-height/$btn-font-size;
+  border: 1px solid transparent;
+  border-radius: $btn-border-radius;
+  
+  &.disabled,
+  &:disabled {
+    background-color: $btn-disabled-bg !important;
+    color: rgba($black, .3) !important;
+    border:1px solid rgba($black, .1) !important;
+  }
+}
+
+//主要
+.sm-btn.primary {
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+}
+//警告
+.sm-btn.warning {
+  @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
+}
+//有边框
+.sm-btn.outline-primary {
+  @include button-outline-variant($btn-primary-bg);
+}
+.sm-btn.outline-secondary {
+  @include button-outline-variant($btn-secondary-color);
+}
+
+//小按钮
+.sm-btn.mini{
+  display: inline-block;
+  padding: 0 1.32em;
+  line-height: $btn-height-mini;
+  font-size: $btn-font-size-mini;
+}
+//链接按钮
+.sm-btn.link{
+  display: inline-block;
+  padding: 0;
+  line-height: auto;
+  color: $link-color;
+}
+
+//兼容button标签
+button, input{
+  &.sm-btn {
+    width: 100%;
+    outline: 0;
+    -webkit-appearance: none;
+    &:focus {
+        outline: 0;
+    }
+  }
+}
+//两个按钮垂直排列时间距
+.sm-btn + .sm-btn{
+  margin-top: 15px;
+}
+
+
+

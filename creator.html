@@ -145,7 +145,7 @@ $(function(){
 <!--//modal-->
 
 <!--header-->
-<header style="opacity: 0.0">
+<header style="opacity: 1.0">
   <div class="header-left">
     <i class="logo icon-h"></i>
     <span>Smui creator</span>
@@ -169,7 +169,7 @@ $(function(){
   <aside class="aside-bar">
     <!--pages-->
     <div class="pages">
-      <h3 class="title">Pages <button @click="addPage"><i class="new-page"></i>Add Page</button></h3>
+      <h3 class="title"><span  @click="savePage">Pages</span> <button @click="addPage"><i class="new-page"></i>Add Page</button></h3>
       <div class="page-list">
         <ul>
           <li v-for="(page,index) in pages" @click="selectPage($event,index)">
@@ -180,7 +180,7 @@ $(function(){
     </div>
     <!--//pages-->
     <!--component-->
-    <div class="component-wrap" style="opacity: 0.0">
+    <div class="component-wrap" style="opacity: 1.0">
       <h3 class="title">Components</h3>
       <div class="component">
         <ul>
@@ -202,7 +202,7 @@ $(function(){
     <!--//component-->
   </aside>
   <!--content-->
-  <section class="content" style="opacity: .0">
+  <section class="content" style="opacity: 1.0">
     <!--device bar-->
     <h3 class="device-bar">
       <div class="choose-device">
@@ -430,7 +430,7 @@ var vm = new Vue({
   data:{
     compIdx: 0,
     panelProp: "page",
-    comps: Store.fetch('comps-list', '[{}]'),
+    comps: [{}],//JSON.parse(window.localStorage.getItem("page" + (this.pageIdx + 1 ) )),
     classes:["primary", "warning"],
     themes: Store.fetch('themes-list','{"primary": "#008AD5", "warning": "#E64340"}'),
     pages: [{}],
@@ -440,13 +440,22 @@ var vm = new Vue({
   watch: {
     comps: {
        handler: function(comps){
-          Store.save('comps-list', comps)
+          window.localStorage.setItem("page" + (this.pageIdx + 1) , JSON.stringify(comps))
        },
        deep: true
     },
     themes: {
        handler: function(themes){
           Store.save('themes-list', themes)
+       },
+       deep: true
+    },
+    pageIdx: {
+       handler: function(pageIdx){
+          this.compIdx = 0 //在切换page的时候compIdx要重置0，不然会找不到对应的组件属性，如.text .class .vhtml等
+          this.comps = JSON.parse(window.localStorage.getItem("page" + (pageIdx + 1 ) ))
+          this.panelProp = "page"
+          $(".select-box").hide()
        },
        deep: true
     }
@@ -541,24 +550,26 @@ var vm = new Vue({
       page列表操作
     =============================*/
     addPage(){
-      this.pages.splice((this.comps.length-1), 0, {
-           name: "page"
+      this.pages.splice((this.pages.length - 1), 0, {
+           name: "page" + this.pages.length
          })
-    },
-    
+      window.localStorage.setItem(this.pages[this.pages.length - 2 ].name, JSON.stringify([{}]))
+    },    
     selectPage(event, pageIdx){
       var ele = $(event.target)
       this.pageIdx = pageIdx
       ele.parents("li").addClass("active").siblings().removeClass("active")
-    },
-    
+    },    
     delectPage(){
       this.pages.splice( this.pageIdx, 1)
+    },     
+    savePage(){
+      window.localStorage.setItem("page1", JSON.stringify(vm.comps))
     }
-    
   }
 })
-
+ 
+  
 </script>
 </body>
 </html>

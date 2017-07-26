@@ -145,7 +145,7 @@ $(function(){
 <!--//modal-->
 
 <!--header-->
-<header style="opacity: 1.0">
+<header style="opacity: 0.0">
   <div class="header-left">
     <i class="logo icon-h"></i>
     <span>Smui creator</span>
@@ -169,11 +169,11 @@ $(function(){
   <aside class="aside-bar">
     <!--pages-->
     <div class="pages">
-      <h3 class="title"><span  @click="savePage">Pages</span> <button @click="addPage"><i class="new-page"></i>Add Page</button></h3>
+      <h3 class="title"><span>Pages</span> <button id="addpages" @click="addPage"><i class="new-page"></i>Add Page</button></h3>
       <div class="page-list">
         <ul>
-          <li v-for="(page,index) in pages" @click="selectPage($event,index)">
-            <a href="#"><i class="icon-page"></i><em>{{page.name}}</em> <span class="del-page" @click.stop="delectPage"></span></a>
+          <li v-for="(page,index) in pages" @click="selectPage($event,index)" :id="page.id">
+            <a href="#"><i class="icon-page"></i><em>{{page.name}}</em> <span class="del-page" @click.stop="delectPage($event)"></span></a>
           </li>
         </ul>
       </div>
@@ -257,7 +257,7 @@ $(function(){
   </section>  
   <!--//content-->
   <!--proerty-->
-  <aside class="property">
+  <aside class="property" style="opacity: .0">
     <h3 class="title path">
       <a href="#">index</a> <label>/</label> Button
     </h3>
@@ -430,7 +430,7 @@ var vm = new Vue({
   data:{
     compIdx: 0,
     panelProp: "page",
-    comps: [{}],//JSON.parse(window.localStorage.getItem("page" + (this.pageIdx + 1 ) )),
+    comps: 'JSON.parse(window.localStorage.getItem(this.pages[this.pageIdx].id)) || [{}]',
     classes:["primary", "warning"],
     themes: Store.fetch('themes-list','{"primary": "#008AD5", "warning": "#E64340"}'),
     pages: [{}],
@@ -440,7 +440,7 @@ var vm = new Vue({
   watch: {
     comps: {
        handler: function(comps){
-          window.localStorage.setItem("page" + (this.pageIdx + 1) , JSON.stringify(comps))
+          window.localStorage.setItem(this.pages[this.pageIdx].id , JSON.stringify(comps))
        },
        deep: true
     },
@@ -450,12 +450,10 @@ var vm = new Vue({
        },
        deep: true
     },
-    pageIdx: {
-       handler: function(pageIdx){
-          this.compIdx = 0 //在切换page的时候compIdx要重置0，不然会找不到对应的组件属性，如.text .class .vhtml等
-          this.comps = JSON.parse(window.localStorage.getItem("page" + (pageIdx + 1 ) ))
-          this.panelProp = "page"
-          $(".select-box").hide()
+    pages: {
+       handler: function(pages){
+          
+          
        },
        deep: true
     }
@@ -551,20 +549,36 @@ var vm = new Vue({
     =============================*/
     addPage(){
       this.pages.splice((this.pages.length - 1), 0, {
-           name: "page" + this.pages.length
+           name: "page" + this.pages.length,
+           id: "page" + Math.round(Math.random() * 10000)
          })
-      window.localStorage.setItem(this.pages[this.pages.length - 2 ].name, JSON.stringify([{}]))
+      window.localStorage.setItem(this.pages[this.pages.length - 2 ].id, JSON.stringify([{}]))
+      
     },    
     selectPage(event, pageIdx){
-      var ele = $(event.target)
+      var ele
+      if (event.target.nodeName == "LI"){
+         ele = $(event.target)
+      }else{
+         ele = $(event.target).parents("li")
+      }
+      ele.addClass("active").siblings().removeClass("active")
       this.pageIdx = pageIdx
-      ele.parents("li").addClass("active").siblings().removeClass("active")
+      var liId = ele.attr("id")
+      
+      this.compIdx = 0 //在切换page的时候compIdx要重置0，不然会找不到对应的组件属性，如.text .class .vhtml等
+      this.comps = JSON.parse(window.localStorage.getItem(liId))
+      this.panelProp = "page"
+      $(".select-box").hide()
     },    
-    delectPage(){
-      this.pages.splice( this.pageIdx, 1)
-    },     
-    savePage(){
-      window.localStorage.setItem("page1", JSON.stringify(vm.comps))
+    delectPage(event){
+      this.pages.splice( this.pageIdx, 1)  
+      
+      var ele = $(event.target)
+      var liId = ele.parents("li").attr("id")      
+      window.localStorage.removeItem(liId)
+      ele.parents("li").prev().trigger("click") //trigger对应的是LI元素，所以select中event.target也要是LI
+      
     }
   }
 })

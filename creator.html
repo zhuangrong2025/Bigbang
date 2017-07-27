@@ -172,7 +172,7 @@ $(function(){
       <h3 class="title"><span>Pages</span> <button id="addpages" @click="addPage"><i class="new-page"></i>Add Page</button></h3>
       <div class="page-list">
         <ul>
-          <li v-for="(page,index) in pages" @click="selectPage($event,index)" :id="page.id">
+          <li v-for="(page,index) in pages" @click="selectPage($event,index)" :id="page.id" :class="{active: pageIdx==index}">
             <a href="#"><i class="icon-page"></i><em>{{page.name}}</em> <span class="del-page" @click.stop="delectPage($event)"></span></a>
           </li>
         </ul>
@@ -429,34 +429,49 @@ var vm = new Vue({
   },
   data:{
     compIdx: 0,
+    comps: [{}],
     panelProp: "page",
-    comps: 'JSON.parse(window.localStorage.getItem(this.pages[this.pageIdx].id)) || [{}]',
     classes:["primary", "warning"],
-    themes: Store.fetch('themes-list','{"primary": "#008AD5", "warning": "#E64340"}'),
-    pages: [{}],
-    pageIdx: 0
+    themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340"}'),
+    pages: Store.fetch('pages-list', '[{}]'),
+    pageIdx: Store.fetch('pageIdx', 0)
   },
   /*监听组件列表*/
   watch: {
     comps: {
-       handler: function(comps){
-          window.localStorage.setItem(this.pages[this.pageIdx].id , JSON.stringify(comps))
+       handler: function(newVal){
+         if(this.pages.length > 1){
+            window.localStorage.setItem(this.pages[this.pageIdx].id , JSON.stringify(newVal))
+         }
        },
        deep: true
     },
     themes: {
-       handler: function(themes){
-          Store.save('themes-list', themes)
+       handler: function(newVal){
+          Store.save('themes-list', newVal)
        },
        deep: true
     },
     pages: {
-       handler: function(pages){
-          
-          
+       handler: function(newVal){
+          Store.save('pages-list', newVal)
+       },
+       deep: true
+    },
+    pageIdx: {
+       handler: function(newVal){
+          Store.save('pageIdx', newVal)
        },
        deep: true
     }
+  },
+  mounted:function () {
+    this.$nextTick(function () {
+      //初始化comps从localstorage中获取
+      if(this.pages[this.pageIdx].id){
+        this.comps  = Store.fetch(this.pages[this.pageIdx].id, '[{}]')
+      }
+    })
   },
   methods:{
 
@@ -562,23 +577,29 @@ var vm = new Vue({
       }else{
          ele = $(event.target).parents("li")
       }
-      ele.addClass("active").siblings().removeClass("active")
+      
       this.pageIdx = pageIdx
       var liId = ele.attr("id")
       
       this.compIdx = 0 //在切换page的时候compIdx要重置0，不然会找不到对应的组件属性，如.text .class .vhtml等
       this.comps = JSON.parse(window.localStorage.getItem(liId))
+      
       this.panelProp = "page"
       $(".select-box").hide()
+      
     },    
     delectPage(event){
       this.pages.splice( this.pageIdx, 1)  
       
       var ele = $(event.target)
-      var liId = ele.parents("li").attr("id")      
-      window.localStorage.removeItem(liId)
-      ele.parents("li").prev().trigger("click") //trigger对应的是LI元素，所以select中event.target也要是LI
+      var liId = ele.parents("li").attr("id")  
       
+      window.localStorage.removeItem(liId)
+      ele.parents("li").prev().trigger("click") //trigger对应的是LI元素，所以select中event.target也要是LI  
+      
+      if(this.pages.length == 1){ //删除最后一个
+        this.comps = [{}]
+      }
     }
   }
 })

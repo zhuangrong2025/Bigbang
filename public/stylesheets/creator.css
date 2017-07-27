@@ -296,10 +296,12 @@ h3.title{
 }
 h3.title button{
   float: right;
-  color: #979797;
   cursor: pointer;
+  padding: 0;
+  color: #979797;
   margin-top: 9px;
 }
+
 h3.title button i{
   width: 16px;
   height: 16px;
@@ -371,6 +373,7 @@ h3.title button i{
   height: -webkit-calc(100% - 32px);
   overflow: auto;
 }
+.page-list:hover::-webkit-scrollbar-thumb,
 .component:hover::-webkit-scrollbar-thumb{ /*鼠标滑过，显示滚动条颜色*/
 	background: #D8D8D8; 
 	background-clip: content-box;
@@ -944,8 +947,8 @@ h3.title button i{
 .modal {
 	position: fixed;
 	z-index: 9999;
-	height: 640px;
   width: 1000px;
+	height: 640px;
 	top: -9999px;
 	left: 50%;
   margin-left: -500px;
@@ -983,7 +986,7 @@ h3.title button i{
   transition: opacity 0.2s;
 }
 .modal .modal-header{
-  height: 97px;
+  height: 89px;
   background-color: #fff;
   padding: 38px 40px 20px 40px;
 }
@@ -1068,6 +1071,7 @@ h3.title button i{
   min-height: 66px;
   padding: 20px 0 20px 220px;
 }
+.modal .modal-footer .btn-danger,
 .modal .modal-footer .btn-ok,
 .modal .modal-footer .btn{
   min-height: 40px;
@@ -1080,22 +1084,50 @@ h3.title button i{
   border-radius: 4px;
   margin-left: 18px;
   cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 0.04em !important;
 }
 .modal .modal-footer .btn-ok{
   background-color: #4F91FC;
   color: #fff;
 }
 .modal .modal-footer .btn:hover{
-  background-color: #E3E7FD;
+  
 }
 .modal .modal-footer .btn-ok:hover{
   background-color: #397EEC;
 }
-
 .modal .modal-footer .btn-restore{
   color: #3a7ef5;
   cursor: pointer;
 }
+.modal .modal-footer .btn-danger{
+  color: #D9534F;
+  background-color: #FFF;
+  border: 1px solid #D9534F;
+  transition: 0.05s linear;
+  -webkit-transition: 0.05s linear;
+  font-size: 14px !important;
+  border-radius: 4px !important;
+  padding: 6px 24px !important;
+}
+.modal .modal-footer .btn-danger:hover{
+  background-color: #D2322D;
+  color: #fff;
+}
+/*modal page*/
+.modal-page{
+  width: 518px;
+  height: 240px;
+  margin-left: -259px;
+  margin-top: -120px;
+}
+.modal-page .modal-footer,
+.modal-page .modal-body{
+  background-color: #fff;
+  padding: 10px 40px 40px 40px;
+}
+
 
 /*theme box*/
 .theme-box{
@@ -1181,8 +1213,6 @@ h3.title button i{
 .cp-color-picker{
   z-index: 999999999999;
 }
-
-
 
 
 

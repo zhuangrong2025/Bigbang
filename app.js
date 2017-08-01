@@ -41,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 /*=============================
   首页creator.html
   =============================*/
+
 app.get('/', function(req, res){
    res.sendFile(__dirname + '/creator.html')
 })
@@ -63,10 +64,20 @@ app.post('/', function(req, res, next) {
   function sassVariable(name, value) {
     return "$" + name + ": " + value + ";"
   }
-  
-  
+    
   res.sendFile(__dirname + '/creator.html')
   
+})
+
+/*output and zip 保存页面*/
+app.post('/output', function(req, res){
+  var pagehtmlNew = req.body.pagehtml
+  
+  for (i in pagehtmlNew){
+    fs.writeFile('output/page'+ i +'.html', pagehtmlNew[i]) 
+  }
+  //fs.writeFile('output/output.css', pagehtmlNew) 
+  res.sendFile(__dirname + '/routes/output.html')
 })
 
 app.use('/login', login)

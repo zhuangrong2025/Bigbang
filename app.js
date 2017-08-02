@@ -72,10 +72,12 @@ app.post('/', function(req, res, next) {
 /*output and zip 保存页面*/
 app.post('/output', function(req, res){
   var pagehtmlNew = req.body.pagehtml
+  var pagenameNew = req.body.pagename
   
-  for (i in pagehtmlNew){
-    fs.writeFile('output/page'+ i +'.html', pagehtmlNew[i]) 
+  for (var i=0;i<pagehtmlNew.length;i++){
+    fs.writeFile('output/'+ pagenameNew[i]  +'.html', pagehtmlNew[i]) 
   }
+  
   //fs.writeFile('output/output.css', pagehtmlNew) 
   res.sendFile(__dirname + '/routes/output.html')
 })

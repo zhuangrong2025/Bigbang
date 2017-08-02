@@ -187,7 +187,7 @@ $(function(){
 </header>
 <!--//header-->
 <!--container-->
-<section class="container" style="opacity: 1.0">
+<section class="container" style="opacity: .3">
   <aside class="aside-bar">
     <!--pages-->
     <div class="pages">
@@ -224,7 +224,7 @@ $(function(){
     <!--//component-->
   </aside>
   <!--content-->
-  <section class="content" style="opacity: 1.0">
+  <section class="content" style="opacity: .3">
     <!--device bar-->
     <h3 class="device-bar">
       <div class="choose-device">
@@ -280,7 +280,7 @@ $(function(){
   </section>  
   <!--//content-->
   <!--proerty-->
-  <aside class="property" style="opacity: .0">
+  <aside class="property" style="opacity: .3">
     <h3 class="title path">
       <a href="#">index</a> <label>/</label> Button
     </h3>
@@ -399,7 +399,6 @@ var ButtonComp = {
                   <a href="#" 
                      class="sm-btn"
                      v-bind:class="comp.class"
-                     v-bind:id="comp.id"
                      v-on:click = "increment" >
                      {{ comp.text }}
                   </a>
@@ -489,7 +488,7 @@ var vm = new Vue({
     },
     generateHtml: {
        handler: function(newVal){
-          Store.save('html-list', this.generateHtml)
+          Store.save('html-list', newVal)
        },
        deep: true
     }
@@ -500,8 +499,6 @@ var vm = new Vue({
       if(this.pages[this.pageIdx].id){
         this.comps  = Store.fetch(this.pages[this.pageIdx].id, '[{}]')
       }
-     
-      
     })
   },
   
@@ -512,8 +509,7 @@ var vm = new Vue({
        this.comps.splice((this.comps.length-1), 0, {
            name: comp,
            class: classname,
-           text: text + this.comps.length,
-           id: this.comps.length
+           text: text + this.comps.length
          })
     },
     
@@ -601,7 +597,7 @@ var vm = new Vue({
          })
       window.localStorage.setItem(this.pages[this.pages.length - 2 ].id, JSON.stringify([{}]))
       
-      this.generateHtml.splice((this.pages.length - 1), 0, {
+      this.generateHtml.splice((this.generateHtml.length - 1), 0, {
            getHtml: ""
          })
     },    
@@ -625,6 +621,8 @@ var vm = new Vue({
     },    
     delectPageConfirm(){
       this.pages.splice(this.pageIdx, 1)  
+      //删除对应的generateHtml
+      this.generateHtml.splice(this.pageIdx, 1)  
       
       var ele = $(".page-list li").eq(this.pageIdx)
       var liId = ele.attr("id") 
@@ -633,6 +631,7 @@ var vm = new Vue({
       if(this.pages.length == 1){ //删除最后一个
         this.comps = [{}]
       }
+      
       $("#modal-page").removeClass("in")
       $(".modal-mask").removeClass("in")
     },   
@@ -641,16 +640,36 @@ var vm = new Vue({
       $(".modal-mask").addClass("in")
     },
     submit(){
-       //将html赋值表单value
+       var len = this.generateHtml.length - 1
+       //将每个page的html赋值表单value
        $.each(this.generateHtml, function(i, item){
-         if($("#ipt" + i)[0]){
-           $("#ipt" + i).val(item.getHtml)
+         if( i == len){
+           return
          }else{
-           $("#form-cvs").append($('<input type="hidden" name="pagehtml">').attr({"value": item.getHtml,"id": "ipt" + i }))
+           if($("#phtml" + i)[0]){
+             $("#phtml" + i).val(item.getHtml)
+           }else{
+             $("#form-cvs").append($('<input type="hidden" name="pagehtml">').attr({"value": item.getHtml,"id": "phtml" + i }))
+             console.log(len)
+           }
+         }
+       })
+       //将每个page的name赋值表单value
+       $.each(this.pages, function(i, item){
+         if( i == len){
+           return
+         }else{
+           if($("#pname" + i)[0]){
+             $("#pname" + i).val(item.name)
+           }else{
+             $("#form-cvs").append($('<input type="hidden" name="pagename">').attr({"value": item.name,"id": "pname" + i }))
+             console.log(len)
+           }
          }
        })
        
-       //$("#form-cvs").submit()
+       Store.save('html-list', this.generateHtml)
+       $("#form-cvs").submit()
     }
   },
   updated:function() {
@@ -660,9 +679,7 @@ var vm = new Vue({
       var  box = $(this).find(".box")
       $(this).replaceWith(box)
     })
-    
     this.generateHtml[this.pageIdx].getHtml = pageOfHtml.html()
-    
   }
 })
 

@@ -73,12 +73,17 @@ app.post('/', function(req, res, next) {
 app.post('/output', function(req, res){
   var pagehtmlNew = req.body.pagehtml
   var pagenameNew = req.body.pagename
+  var pagecssNew = req.body.pagecss
   
-  for (var i=0;i<pagehtmlNew.length;i++){
-    fs.writeFile('output/'+ pagenameNew[i]  +'.html', pagehtmlNew[i]) 
+  if(typeof (pagehtmlNew) == 'string'){
+    fs.writeFile('output/'+ pagenameNew  +'.html', pagehtmlNew) 
+  }else{
+    for (var i=0;i<pagehtmlNew.length;i++){
+      fs.writeFile('output/'+ pagenameNew[i]  +'.html', pagehtmlNew[i]) 
+    }
   }
+  fs.writeFile('output/output.css', pagecssNew) 
   
-  //fs.writeFile('output/output.css', pagehtmlNew) 
   res.sendFile(__dirname + '/routes/output.html')
 })
 

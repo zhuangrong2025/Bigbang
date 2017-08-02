@@ -598,7 +598,8 @@ var vm = new Vue({
       window.localStorage.setItem(this.pages[this.pages.length - 2 ].id, JSON.stringify([{}]))
       
       this.generateHtml.splice((this.generateHtml.length - 1), 0, {
-           getHtml: ""
+           getHtml: "",
+           getCss: ""
          })
     },    
     selectPage(event, pageIdx){
@@ -641,6 +642,7 @@ var vm = new Vue({
     },
     submit(){
        var len = this.generateHtml.length - 1
+       var pagecss = ""
        //将每个page的html赋值表单value
        $.each(this.generateHtml, function(i, item){
          if( i == len){
@@ -650,8 +652,8 @@ var vm = new Vue({
              $("#phtml" + i).val(item.getHtml)
            }else{
              $("#form-cvs").append($('<input type="hidden" name="pagehtml">').attr({"value": item.getHtml,"id": "phtml" + i }))
-             console.log(len)
            }
+           pagecss += item.getCss
          }
        })
        //将每个page的name赋值表单value
@@ -663,10 +665,16 @@ var vm = new Vue({
              $("#pname" + i).val(item.name)
            }else{
              $("#form-cvs").append($('<input type="hidden" name="pagename">').attr({"value": item.name,"id": "pname" + i }))
-             console.log(len)
            }
-         }
+        }
        })
+       
+       //所有的page的自定义的css合并在一起
+       if($("#pcss")[0]){
+         $("#pcss").val(pagecss)
+       }else{
+         $("#form-cvs").append($('<input type="hidden" name="pagecss">').attr({"value": pagecss, "id": "pcss"}))
+       }
        
        Store.save('html-list', this.generateHtml)
        $("#form-cvs").submit()
@@ -674,6 +682,13 @@ var vm = new Vue({
   },
   updated:function() {
     var pageOfHtml = $("#canvas").clone()
+    var pageOfCss = ""
+    //获取css
+    pageOfHtml.find("style").each(function(){
+      pageOfCss += $(this).html()
+    })
+    this.generateHtml[this.pageIdx].getCss = pageOfCss
+    
     //获取html
     pageOfHtml.find(".html-box").each(function(){
       var  box = $(this).find(".box")

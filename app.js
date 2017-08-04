@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser');
 var archiver = require('archiver')
 var beautify_html = require('js-beautify').html
+var beautify_css = require('js-beautify').css
 
 var index = require('./routes/index')
 var users = require('./routes/users')
@@ -112,6 +113,7 @@ app.post('/output', function(req, res){
   }else{
     for (var i=0; i<pagehtmlNew.length; i++){
       var htmlAll = contentHead + pagehtmlNew[i] + contentFooter
+      //js-beautify
       htmlAll = beautify_html(htmlAll, { "indent_size": 2,
                                          "extra_liners": [],
                                          "unformatted": ['span', 'label', 'b', 'strong', 'h1', 'h3', 'pre']  
@@ -122,6 +124,8 @@ app.post('/output', function(req, res){
       }) 
     }
   }
+  //js-beautify
+  pagecssNew = beautify_css(pagecssNew, { "indent_size": 2, "newline_between_rules": false})
   fs.writeFile('output/css/output.css', pagecssNew,function(err){ if (err) throw err}) 
   
   

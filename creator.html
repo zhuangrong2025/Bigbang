@@ -171,7 +171,7 @@ $(function(){
   <div class="header-left" >
     <i class="logo icon-h"></i>
     <span>Smui creator</span>
-    <button class="save icon-h" title="save"  @click.prevent="submit"></button>
+    <button class="save icon-h" title="save"></button>
   </div>
   <div class="navbar">
     <a href="#" class="build active" title="creator"></a>
@@ -180,6 +180,7 @@ $(function(){
   <div class="header-right">
     <ul>
       <li id="openModal"><i class="theme icon-h" title="themes"></i></li>
+      <li @click="submit"><i class="export icon-h"  title="export"></i></li>
       <li><i class="help icon-h"  title="help"></i></li>
       <li><i class="user icon-h"  title="user"></i></li>
     </ul>
@@ -395,13 +396,10 @@ $(function(){
 /******************按钮组件******************/
 var ButtonComp = {
       props: ["comp"],
-      template: `
-                  <a href="#" 
+      template: `<a href="#" 
                      class="sm-btn"
                      v-bind:class="comp.class"
-                     v-on:click = "increment" >
-                     {{ comp.text }}
-                  </a>
+                     v-on:click = "increment" >{{ comp.text }}</a>
                 `,
   
       methods: {

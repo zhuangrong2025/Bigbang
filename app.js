@@ -6,6 +6,8 @@ var favicon = require('serve-favicon')
 var logger = require('morgan')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser');
+var archiver = require('archiver')
+var beautify_html = require('js-beautify').html
 
 var index = require('./routes/index')
 var users = require('./routes/users')
@@ -57,7 +59,7 @@ app.post('/', function(req, res, next) {
   var newWarning = sassVariable('brand-warning', warningNew)  
   var newScss = newPrimary + newWarning
   
-  //写入variable.scss
+  //写入_custom.scss
   fs.writeFile('sass/_custom.scss', newScss) 
   
   //变量组合
@@ -69,23 +71,92 @@ app.post('/', function(req, res, next) {
   
 })
 
-/*output and zip 保存页面*/
+/*output 保存页面html到服务器  压缩zip*/
 app.post('/output', function(req, res){
   var pagehtmlNew = req.body.pagehtml
   var pagenameNew = req.body.pagename
   var pagecssNew = req.body.pagecss
+  var contentHead = `<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no" />
+<title>creator</title>
+<link rel="stylesheet" href="smui.css">
+<link rel="stylesheet" href="css/output.css">
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+`
   
+  var contentFooter = `
+</body>
+</html>
+`
+  //保存html 
   if(typeof (pagehtmlNew) == 'string'){
-    fs.writeFile('output/'+ pagenameNew  +'.html', pagehtmlNew) 
+    var htmlAll = contentHead + pagehtmlNew + contentFooter
+    //js-beautify
+    htmlAll = beautify_html(htmlAll, { "indent_size": 2,
+                                           "extra_liners": [],
+                                           "unformatted": ['span', 'label', 'b', 'strong', 'h1', 'h3', 'pre']  //unformatted (defaults to inline tags),if tag not in [] ,so it is not inline, example "a"
+                                         })
+        
+    fs.writeFile('output/'+ pagenameNew  +'.html', htmlAll ,function(err){
+        if (err) throw err
+    })
+    
   }else{
-    for (var i=0;i<pagehtmlNew.length;i++){
-      fs.writeFile('output/'+ pagenameNew[i]  +'.html', pagehtmlNew[i]) 
+    for (var i=0; i<pagehtmlNew.length; i++){
+      var htmlAll = contentHead + pagehtmlNew[i] + contentFooter
+      htmlAll = beautify_html(htmlAll, { "indent_size": 2,
+                                         "extra_liners": [],
+                                         "unformatted": ['span', 'label', 'b', 'strong', 'h1', 'h3', 'pre']  
+                                       })
+      
+      fs.writeFile('output/'+ pagenameNew[i]  +'.html', htmlAll, function(err){
+        if (err) throw err
+      }) 
     }
   }
-  fs.writeFile('output/output.css', pagecssNew) 
+  fs.writeFile('output/css/output.css', pagecssNew,function(err){ if (err) throw err}) 
+  
+  
+  
+  //zip
+  var output = fs.createWriteStream(__dirname + '/smui-www.zip')
+  var archive = archiver('zip', {
+      zlib: { level: 9 } 
+  })
+  output.on('close', function() {
+    console.log(archive.pointer() + ' total bytes')
+    console.log('archiver has been finalized and the output file descriptor has closed.')
+  })
+  archive.on('error', function(err) {
+    throw err
+  })   
+  archive.pipe(output)
+  
+  var smuiCss = __dirname + '/public/stylesheets/smui.css'
+  var readme = __dirname + '/public/README.txt'
+  archive.append(fs.createReadStream(smuiCss), { name: 'smui.css' })
+  archive.append(fs.createReadStream(readme), { name: 'README.txt' })
+  archive.directory('output/', false)
+  archive.finalize()
   
   res.sendFile(__dirname + '/routes/output.html')
 })
+
+//download zip
+app.get('/download', function(req, res){
+  var file = __dirname + '/smui-www.zip';
+  res.download(file); // Set disposition and send it.
+});
+
+
 
 app.use('/login', login)
 app.use('/users', users)
@@ -102,7 +173,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  
   // render the error page
   res.status(err.status || 500);
   res.render('error');

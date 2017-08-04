@@ -1,15 +1,44 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>login</title>
-<link rel="stylesheet" href="/stylesheets/app.css">
-<script type="text/javascript" src="/javascripts/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="/javascripts/jqColorPicker.min.js"></script>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>creator</title>
+<link rel="stylesheet" href="/stylesheets/creator.css">
+<script src="/javascripts/jquery-3.2.1.min.js"></script>
+<style>
+  html,body{
+    height: 100%;
+    overflow: hidden;
+  } 
+</style>
 </head>
-
-<body>
-you page has saved
+<body class="bg02">
+<!--header-->
+<header class="header60">
+  <div class="header-left" >
+    <i class="logo icon-h"></i>
+    <span>Smui creator</span>
+  </div>
+  <div class="navbar">
+  </div>
+  <div class="header-right linktext">
+    <ul>
+      <li><a href="#">Documentation & Help</a></li>
+      <li><i class="user icon-h" title="user"></i></li>
+    </ul>
+  </div>
+</header>
+<!--//header-->
+<form action="http://10.168.1.91:3000/download" method="get">
+  <div class="download-wrap">
+    <h1>Download a .zip file of your project.</h1>
+    <p>The .zip will contain the HTML/CSS/JS files of your project, separated into standard organizational format.</p>
+    <p>You will be able to give this ZIP file to a developer to place in the develope directory of an existing project.</p>
+    <p>&nbsp;</p>
+    <!--<div>Read the ZIP Tutorial</div>-->
+    <button type="submit" class="btn-primary">Download project ZIP</button>
+  </div> 
+</form>
 </body>
 </html>

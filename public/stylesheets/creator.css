@@ -166,7 +166,9 @@ header .navbar a:before,
   background-image: url(../images/default-icons-sprite.png);
   background-size: 32px;
 }
-
+.header60{
+  height: 60px;
+}
 /*navbar*/
 header .navbar{
   text-align: center;
@@ -248,6 +250,12 @@ header .navbar .preview:hover:after{
 .header-right .theme:hover{
   background-position: 0 -608px;
 }
+.header-right .export{
+  background-position: 0 -256px;
+}
+.header-right .export:hover{
+  background-position: 0 -288px;
+}
 .header-right .help{
   background-position: 0 -384px;
 }
@@ -260,7 +268,52 @@ header .navbar .preview:hover:after{
 .header-right .user:hover{
   background-position: 0 -864px;
 }
-
+.header-right.linktext a{
+  display: inline-block;
+  color: #B6BDC5;
+  line-height: 30px;
+  font-size: 12px;
+  vertical-align: -3px
+}
+.header-right.linktext a:hover{
+  color: #4E8EF7;
+}
+.header-right.linktext li:not(:last-child){
+  padding: 0 10px 0 0;
+}
+/*download page*/
+.bg02{
+  background-color: #F5F6F9;
+}
+.download-wrap{
+  padding: 100px 50px 50px;
+  text-align: center;
+}
+.download-wrap h1{
+  font-weight: 600;
+  font-size: 32px;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+}
+.download-wrap p{
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.btn-primary{
+  min-height: 40px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 6px 24px ;
+  letter-spacing: 0.02em;
+  color: #FFF;
+  background-color: #4E8EF7;
+  border: none;
+  transition: 0.1s linear;
+  -webkit-transition: 0.1s linear;
+  cursor: pointer;
+}
 /*--------------------main--------------------*/
 .container{
   display: -webkit-box; 

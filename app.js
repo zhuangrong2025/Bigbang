@@ -96,7 +96,22 @@ app.post('/output', function(req, res){
   var contentFooter = `
 </body>
 </html>
-`
+`  
+  //先删除output文件夹下的所有文件，避免客户端page删除或重命名引起的文件冗余 
+  var emptyDir = function(fileUrl){
+      var files = fs.readdirSync(fileUrl);//读取该文件夹
+      files.forEach(function(file){
+          var stats = fs.statSync(fileUrl+'/'+file);
+          if(stats.isDirectory()){
+              emptyDir(fileUrl+'/'+file);
+          }else{
+              fs.unlinkSync(fileUrl+'/'+file);
+              console.log("删除文件"+fileUrl+'/'+file+"成功");
+          }
+      });
+  }
+  emptyDir(__dirname + '/output') 
+  
   //保存html 
   if(typeof (pagehtmlNew) == 'string'){
     var htmlAll = contentHead + pagehtmlNew + contentFooter
@@ -106,20 +121,20 @@ app.post('/output', function(req, res){
                                            "unformatted": ['span', 'label', 'b', 'strong', 'h1', 'h3', 'pre']  //unformatted (defaults to inline tags),if tag not in [] ,so it is not inline, example "a"
                                          })
         
-    fs.writeFile('output/'+ pagenameNew  +'.html', htmlAll ,function(err){
+    fs.writeFile('output/'+ pagenameNew  +'.html', htmlAll,function(err){
         if (err) throw err
     })
     
   }else{
     for (var i=0; i<pagehtmlNew.length; i++){
-      var htmlAll = contentHead + pagehtmlNew[i] + contentFooter
+      var htmlAll2 = contentHead + pagehtmlNew[i] + contentFooter
       //js-beautify
-      htmlAll = beautify_html(htmlAll, { "indent_size": 2,
+      htmlAll2 = beautify_html(htmlAll2, { "indent_size": 2,
                                          "extra_liners": [],
                                          "unformatted": ['span', 'label', 'b', 'strong', 'h1', 'h3', 'pre']  
                                        })
       
-      fs.writeFile('output/'+ pagenameNew[i]  +'.html', htmlAll, function(err){
+      fs.writeFile('output/'+ pagenameNew[i] +'.html', htmlAll2, function(err){
         if (err) throw err
       }) 
     }

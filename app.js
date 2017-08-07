@@ -86,6 +86,7 @@ app.post('/output', function(req, res){
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no" />
 <title>creator</title>
+<link rel="stylesheet" href="global.css">
 <link rel="stylesheet" href="smui.css">
 <link rel="stylesheet" href="css/output.css">
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
@@ -101,14 +102,13 @@ app.post('/output', function(req, res){
   var emptyDir = function(fileUrl){
       var files = fs.readdirSync(fileUrl);//读取该文件夹
       files.forEach(function(file){
-          var stats = fs.statSync(fileUrl+'/'+file);
+          var stats = fs.statSync(fileUrl+'/'+file)
           if(stats.isDirectory()){
-              emptyDir(fileUrl+'/'+file);
+              emptyDir(fileUrl+'/'+file)
           }else{
-              fs.unlinkSync(fileUrl+'/'+file);
-              console.log("删除文件"+fileUrl+'/'+file+"成功");
+              fs.unlinkSync(fileUrl+'/'+file)
           }
-      });
+      })
   }
   emptyDir(__dirname + '/output') 
   
@@ -160,8 +160,10 @@ app.post('/output', function(req, res){
   archive.pipe(output)
   
   var smuiCss = __dirname + '/public/stylesheets/smui.css'
+  var globalCss = __dirname + '/public/stylesheets/global.css'
   var readme = __dirname + '/public/README.txt'
   archive.append(fs.createReadStream(smuiCss), { name: 'smui.css' })
+  archive.append(fs.createReadStream(globalCss), { name: 'global.css' })
   archive.append(fs.createReadStream(readme), { name: 'README.txt' })
   archive.directory('output/', false)
   archive.finalize()

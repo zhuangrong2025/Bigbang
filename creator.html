@@ -262,6 +262,7 @@ $(function(){
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
         <div class="canvas" id="canvas">
+          
           <!--vue comp-->
           <component v-bind:is="comp.name"  v-on:increment="selectComp($event, comp)"  :comp="comp" v-for="comp in comps"></component>
           <!--//vue comp-->
@@ -369,6 +370,7 @@ $(function(){
       <!--//**************html property**************-->
       <!--**************page property**************-->
       <div v-if=" panelProp == 'page'">
+       <!--page name-->
         <div class="pro-item">
           <div class="pro-box">
             <div class="form-group">
@@ -415,7 +417,7 @@ var HtmlComp = {
       template: ` 
                   <div class="html-box" v-on:click = "increment" >
                    <span v-html="comp.vcss"></span>
-                   <span v-html="comp.vhtml"></span>
+                   <span class="box-wp" v-html="comp.vhtml"></span>
                   </div>
                 `,
       methods: {
@@ -689,9 +691,10 @@ var vm = new Vue({
     
     //获取html
     pageOfHtml.find(".html-box").each(function(){
-      var  box = $(this).find(".box")
-      $(this).replaceWith(box)
+      var boxWp = $(this).find(".box-wp")
+      $(this).replaceWith(boxWp.children())
     })
+    
     this.generateHtml[this.pageIdx].getHtml = pageOfHtml.html()
   }
 })

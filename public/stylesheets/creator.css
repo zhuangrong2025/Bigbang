@@ -858,6 +858,7 @@ h3.title button i{
 
 /*canvas*/
 .canvas{
+  display: block;
   height: -webkit-calc(100% - 64px);
   overflow: scroll;  
   position: relative;

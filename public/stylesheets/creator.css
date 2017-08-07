@@ -104,6 +104,9 @@ em, h3 {
 .tc {
   text-align: center;
 }
+.tr {
+  text-align: right;
+}
 .pull-left{
   float: left;
 }
@@ -734,6 +737,52 @@ h3.title button i{
   background-position: 0 -785px;
   background-size: 28px auto !important;
 }
+
+/*switch*/
+.ct-switch {
+  position: relative;
+  width: 38px;
+  height: 18px;
+  border: 1px solid #DFDFDF;
+  outline: 0;
+  border-radius: 10px;
+  background-color: #DFDFDF;
+  transition: background-color .1s, border .1s; }
+.ct-switch:before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 16px;
+  border-radius: 10px;
+  background-color: #FDFDFD;
+  transition: transform 0.35s cubic-bezier(0.45, 1, 0.4, 1);
+}
+.ct-switch:after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: transform 0.35s cubic-bezier(0.4, 0.4, 0.25, 1.35);
+}
+.ct-switch:checked {
+  border-color: #6795f5;
+  background-color: #6795f5;
+}
+.ct-switch:checked:before {
+  transform: scale(0); 
+}
+.ct-switch:checked:after {
+  transform: translateX(20px); 
+}
+
+
 /*---------------canvas/simulator-----------------*/
 /*device bar*/
 .device-bar{
@@ -846,15 +895,6 @@ h3.title button i{
   margin-left: 0;
   background-image: url(../images/ios-statusbar-right.png);
 }
-.app-navbar{
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
-  font-size: 14px;
-  color: #000;
-  background-color: #fff;
-  border-bottom: 1px solid  #ddd;
-}
 
 /*canvas*/
 .canvas{
@@ -862,7 +902,7 @@ h3.title button i{
   height: -webkit-calc(100% - 64px);
   overflow: scroll;  
   position: relative;
-  padding: 10px;
+  padding: 0;
 }
 .canvas::-webkit-scrollbar{ /*set scrollbar width 0 to hide it*/
 	width: 0 !important;

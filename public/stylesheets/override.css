@@ -1,0 +1,29 @@
+/**
+ * override smui
+ */
+/**
+ * sm-tabbar
+ * 修改position:static
+ */
+.sm-tabbar{
+	position: static;
+}
+/**
+ * sm-container
+ * 修改滚动属性，是tabbar能固定底部
+ */
+.sm-container{ 
+  height: 100%;
+  overflow: scroll; 
+  padding: 10px;
+}
+/**
+ * sm-btn
+ * 修改尺寸，在creator按比例缩小
+ */
+.sm-btn{
+  font-size: 14px;
+}
+.sm-btn + .sm-btn{
+  margin-top: 8px;
+}

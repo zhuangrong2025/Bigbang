@@ -1,5 +1,4 @@
 @charset "UTF-8";
-/********************图标********************/
 @font-face {
   font-family: 'smui';
   src: url("data:application/octet-stream;base64,AAEAAAALAIAAAwAwT1MvMg8SDdcAAAC8AAAAYGNtYXDwTsQhAAABHAAAAHRnYXNwAAAAEAAAAZAAAAAIZ2x5ZgREOiwAAAGYAAAC9GhlYWQMv8G8AAAEjAAAADZoaGVhB3kDygAABMQAAAAkaG10eBTuABoAAAToAAAAJGxvY2ECDAL0AAAFDAAAABRtYXhwAAwAOwAABSAAAAAgbmFtZZRjAgoAAAVAAAABYnBvc3QAAwAAAAAGpAAAACAAAwLSAZAABQAAApkCzAAAAI8CmQLMAAAB6wAzAQkAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAABAAADx2wPA/8AAQAPAAEAAAAABAAAAAAAAAAAAAAAgAAAAAAADAAAAAwAAABwAAQADAAAAHAADAAEAAAAcAAQAWAAAABIAEAADAAIAAQAg8AXwB/BY8QTx2//9//8AAAAAACDwBfAH8FjxBPHb//3//wAB/+MP/w/+D64PAw4tAAMAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAH//wAPAAEAAAAAAAAAAAACAAA3OQEAAAAAAQAAAAAAAAAAAAIAADc5AQAAAAABAAAAAAAAAAAAAgAANzkBAAAAAAEAAAAaA7cDpQAuAAABFAYPARMcARUUBiMiJiclBQ4BIyImNTQ2NRMnLgE1NDY3JRM+ATMyFhcTBR4BFQO3CQbPMQsMBgwF/v//AAYLBgwMATHQBQkVCwEfgAQPCQoPA4EBHwoWAkUIDgXL/uMDBgMLEQQDhoYDBBELAwYDAR3LBQ4IDQwBKgEECBAQCP78KgEMDQACAAAAAALbA24AFwArAAAlFAYjISImNTQ+AjMeATMyNjcyHgIVAxQOAiMiLgI1ND4CMzIeAgLbRzL+GDJIECpJOCNbNTRcIzhIKhCSIjxQLS5QOyMjO1AuLVA8Ipc+WVk+OXNdOyEoKCE7XXM5AfstUDwiIjxQLS5QOyMjO1AAAAIAAAAAA24DbgAkADgAAAE0Ji8BLgEjIgYPAScuASMiBg8BDgEVFBYfAR4BMzI2NwE+ATUXFA4CIyIuAjU0PgIzMh4CAt4FBjQFDQcIDQXpgQUOBwcOBTQFBQUFzwUOBwcOBQE2BgWQRXegW1ugd0VFd6BbW6B3RQITCA4FMwUGBgXogQUGBgU0BQ4HBw4FzwUFBQUBNwUNB1xboHdFRXegW1ugd0VFd6AAAAABABoAdQFmAq8AJAAAARQGDwEXHgEVFAYPAQ4BIyImJwEuATU0NjcBPgEzMhYfAR4BFQFmAwLh4QIDAwIdAwcDBAcC/vUCAwMCAQsCBwQDBwMdAgMCgAMIAuHgAwcDBAcDHAMDAwMBCgMHAwQHAgELAgMDAh0CBwQAAAAAAgAAAAADbgNuABQAKQAAASIOAhUUHgIzMj4CNTQuAiMBFA4CIyIuAjU0PgIzMTIeAgG3TIVjOjpjhUxLhmM6OmOGSwG3RXegW1ugd0VFd6BbW6B3RQMlOmOGS0yFYzo6Y4VMS4ZjOv6SW6B3RUV3oFtboHdFRXegAAAAAAEAAAABAAC3olxFXw889QALBAAAAAAA1PU+jQAAAADU9T6NAAAAAAO3A6UAAAAIAAIAAAAAAAAAAQAAA8D/wAAABAAAAAAAA7cAAQAAAAAAAAAAAAAAAAAAAAkEAAAAAAAAAAAAAAACAAAAA7cAAALbAAADbgAAAYAAGgNuAAAAAAAAAAoAFAAeAGgAqAD+ATwBegABAAAACQA5AAIAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAADgCuAAEAAAAAAAEABAAAAAEAAAAAAAIABwBFAAEAAAAAAAMABAAtAAEAAAAAAAQABABaAAEAAAAAAAUACwAMAAEAAAAAAAYABAA5AAEAAAAAAAoAGgBmAAMAAQQJAAEACAAEAAMAAQQJAAIADgBMAAMAAQQJAAMACAAxAAMAAQQJAAQACABeAAMAAQQJAAUAFgAXAAMAAQQJAAYACAA9AAMAAQQJAAoANACAc211aQBzAG0AdQBpVmVyc2lvbiAxLjAAVgBlAHIAcwBpAG8AbgAgADEALgAwc211aQBzAG0AdQBpc211aQBzAG0AdQBpUmVndWxhcgBSAGUAZwB1AGwAYQByc211aQBzAG0AdQBpRm9udCBnZW5lcmF0ZWQgYnkgSWNvTW9vbi4ARgBvAG4AdAAgAGcAZQBuAGUAcgBhAHQAZQBkACAAYgB5ACAASQBjAG8ATQBvAG8AbgAuAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==") format("truetype");
@@ -32,18 +31,16 @@ i {
 .icon-circle-thin:before {
   content: "\f1db"; }
 
-/********************组件********************/
-/*button*/
 .sm-btn {
   position: relative;
   display: block;
   margin: 0 auto;
   padding-left: 1em;
   padding-right: 1em;
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   text-decoration: none;
-  line-height: 2.55556;
+  line-height: 2.875;
   border: 1px solid transparent;
   border-radius: 5px; }
   .sm-btn.disabled, .sm-btn:disabled {
@@ -53,29 +50,29 @@ i {
 
 .sm-btn.primary {
   color: #fff;
-  background-color: #7D8A90;
-  border-color: #7D8A90; }
+  background-color: #008AD5;
+  border-color: #008AD5; }
   .sm-btn.primary:active, .sm-btn.primary.active {
     color: rgba(255, 255, 255, 0.6);
-    background-color: #758389;
-    border-color: #758389; }
+    background-color: #0080c6;
+    border-color: #0080c6; }
 
 .sm-btn.warning {
   color: #fff;
-  background-color: #DEF7FE;
-  border-color: #DEF7FE; }
+  background-color: #E64340;
+  border-color: #E64340; }
   .sm-btn.warning:active, .sm-btn.warning.active {
     color: rgba(255, 255, 255, 0.6);
-    background-color: #cff3fe;
-    border-color: #cff3fe; }
+    background-color: #e43632;
+    border-color: #e43632; }
 
 .sm-btn.outline-primary {
-  color: #7D8A90;
+  color: #008AD5;
   background-color: transparent;
-  border-color: #7D8A90; }
+  border-color: #008AD5; }
   .sm-btn.outline-primary:active, .sm-btn.outline-primary.active {
-    color: rgba(125, 138, 144, 0.6);
-    border-color: rgba(125, 138, 144, 0.6); }
+    color: rgba(0, 138, 213, 0.6);
+    border-color: rgba(0, 138, 213, 0.6); }
 
 .sm-btn.outline-secondary {
   color: #363636;
@@ -95,7 +92,7 @@ i {
   display: inline-block;
   padding: 0;
   line-height: auto;
-  color: #7D8A90; }
+  color: #008AD5; }
 
 button.sm-btn, input.sm-btn {
   width: 100%;
@@ -107,7 +104,6 @@ button.sm-btn, input.sm-btn {
 .sm-btn + .sm-btn {
   margin-top: 15px; }
 
-/*dialog*/
 /*对话框15*/
 .dialog {
   position: fixed;
@@ -142,7 +138,6 @@ button.sm-btn, input.sm-btn {
   display: -webkit-flex;
   display: flex; }
 
-/*checkbox*/
 .sm-check-common, .sm-checkbox, .sm-radio {
   display: inline-block;
   vertical-align: middle;
@@ -172,7 +167,6 @@ button.sm-btn, input.sm-btn {
 .sm-radio:before {
   content: "\f1db"; }
 
-/*switch*/
 .sm-switch {
   position: relative;
   width: 52px;
@@ -212,7 +206,6 @@ button.sm-btn, input.sm-btn {
   .sm-switch:checked:after {
     transform: translateX(20px); }
 
-/*list*/
 .sm-list-header {
   margin-top: .77em;
   margin-bottom: .3em;
@@ -279,3 +272,61 @@ button.sm-btn, input.sm-btn {
 
 .sm-list ul li.nolink:active {
   background-color: #fff; }
+
+/**
+ * Header 20170807
+ * --------------------------------------------------
+ */
+.sm-header {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  font-size: 14px;
+  color: #000;
+  background-color: #fff;
+  border-bottom: 1px solid  #ddd; }
+
+/**
+ * Tabbar 20170808
+ * --------------------------------------------------
+ */
+.sm-tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  height: 44px;
+  background-color: #00f;
+  border-top: 1px solid  #ccc; }
+
+.sm-tabbar a {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #808080; }
+
+.sm-tabbar a.active {
+  color: #f30; }
+
+.sm-tabbar a i {
+  width: 20px;
+  height: 35px;
+  margin-bottom: 5px; }
+
+.sm-tabbar a i.icon-tb01 {
+  background-image: url(images/icon-tb01.png); }
+
+/*page padd*/
+.sm-container {
+  padding: 0 10px; }

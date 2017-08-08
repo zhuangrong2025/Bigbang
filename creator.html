@@ -6,7 +6,7 @@
 <title>creator</title>
 <link rel="stylesheet" href="/stylesheets/smui.css">
 <link rel="stylesheet" href="/stylesheets/creator.css">
-<link rel="stylesheet" href="/stylesheets/scale.css">
+<link rel="stylesheet" href="/stylesheets/override.css">
 <script src="/javascripts/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/javascripts/jqColorPicker.min.js"></script>
 <script src="/javascripts/store.js"></script>
@@ -188,8 +188,8 @@ $(function(){
 </header>
 <!--//header-->
 <!--container-->
-<section class="container" style="opacity: 0.3">
-  <aside class="aside-bar">
+<section class="container" style="opacity: 0.7">
+  <aside class="aside-bar" style="opacity: 0.3">
     <!--pages-->
     <div class="pages">
       <h3 class="title"><span>Pages</span> <button id="addpages" @click="addPage"><i class="new-page"></i>Add Page</button></h3>
@@ -258,18 +258,20 @@ $(function(){
     <div class="simulator-wrap">
       <div class="simulator" style="width: 320px; height: 568px" id="simulator">
         <div class="app-status"></div>
-        <!--<div class="app-navbar">page</div>-->
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
         <div class="canvas" id="canvas">
-          <!--header comp-->
+          <!--sm-header-->
           <sm-header :name="pages[pageIdx].name" v-if="pages[pageIdx].isHeader" ></sm-header>
-          <!--//header comp-->
+          <!--sm-header-->
           <!--vue comp-->
-          <div class="page-padd">
+          <div class="sm-container"  :class="{isHd: pages[pageIdx].isHeader, isTb: pages[pageIdx].isTabbar, isHdTb: (pages[pageIdx].isHeader == true && pages[pageIdx].isTabbar == true)}">
             <component v-bind:is="comp.name"  v-on:increment="selectComp($event, comp)"  :comp="comp" v-for="comp in comps"></component>
           </div>
           <!--//vue comp-->
+          <!--sm-tabbar-->
+          <sm-tabbar v-if="pages[pageIdx].isTabbar"></sm-tabbar>
+          <!--sm-tabbar-->
         </div>
         <!--****************//Canvas****************-->
         </form>
@@ -390,6 +392,12 @@ $(function(){
               </div>
             </div>
             <div class="form-group">
+              <label>Tabbar</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="pages[pageIdx].isTabbar"/>
+              </div>
+            </div>
+            <div class="form-group">
               <label>Background</label>
               <div>
                 <input type="text" class="c-ipt"/>
@@ -460,6 +468,20 @@ Vue.component('sm-header', {
   props: ["name"],
   template: `
             <div class="sm-header">{{name}}</div>
+            `
+  })
+
+
+/******************sm-tabbar组件******************/
+Vue.component('sm-tabbar', {
+//  props: ["tabbar"],
+  template: `
+            <div class="sm-tabbar">
+              <a href="#" class="active"><i class="icon-t01"></i><span>home</span></a>
+              <a href="#"><i class="icon-t01"></i><span>home</span></a>
+              <a href="#"><i class="icon-t01"></i><span>home</span></a>
+              <a href="#"><i class="icon-t01"></i><span>home</span></a>
+            </div>
             `
   })
 
@@ -619,6 +641,8 @@ var vm = new Vue({
            name: "page" + this.pages.length,
            id: "page" + Math.round(Math.random() * 10000),
            isHeader: true,
+           isTabbar: true,
+           tabbar: ["Home", "Category", "Service", "User" ]
          })
       window.localStorage.setItem(this.pages[this.pages.length - 2 ].id, JSON.stringify([{}]))
       

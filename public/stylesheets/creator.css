@@ -895,18 +895,26 @@ h3.title button i{
   margin-left: 0;
   background-image: url(../images/ios-statusbar-right.png);
 }
-
+#form-cvs{
+  height: 100%;
+}
 /*canvas*/
 .canvas{
-  display: block;
-  height: -webkit-calc(100% - 64px);
-  overflow: scroll;  
-  position: relative;
-  padding: 0;
+  height: 100%;
 }
-.canvas::-webkit-scrollbar{ /*set scrollbar width 0 to hide it*/
+.canvas .sm-container::-webkit-scrollbar{ /*set scrollbar width 0 to hide it*/
 	width: 0 !important;
 	height: 0 !important;
+}
+
+.isHd{ 
+  height: -webkit-calc(100% - 44px) !important;
+}
+.isTb{ 
+  height: -webkit-calc(100% - 44px) !important;
+}
+.isHdTb{ 
+  height: -webkit-calc(100% - 88px) !important;
 }
 
 /*-------------------------component of creator-------------------------*/

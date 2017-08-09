@@ -54,3 +54,7 @@ input, button, textarea {
 
 em, h3 {
   font: inherit; }
+
+i{
+  font-style: normal;
+}

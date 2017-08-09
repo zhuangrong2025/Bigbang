@@ -70,19 +70,23 @@ $btn-height-mini:2.3;
 // 链接按钮
 
 
-
 // 多选框，单选框变量
 //
 //-------------------------------------------------
-$checkedColor: #f60;
-$checkDefaultColor: #ccc;
-
-$checkFontSize: 23px;
+$checkedColor:                   #f60;
+$checkDefaultColor:              #ccc;
+$checkFontSize:                  23px;
 
 
 // 开关
 //
 //-------------------------------------------------
+$switchHeight:                   32px;
+$switchedColor:                  #78BB05;
 
-$switchHeight: 32px;
-$switchedColor: #78BB05;
+//iconfont
+//
+//-------------------------------------------------
+//$iconfontLink:                   32px;
+$iconTabbar01:                   "\e702";
+

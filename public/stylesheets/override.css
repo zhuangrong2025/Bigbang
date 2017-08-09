@@ -1,26 +1,32 @@
 /**
  * override smui
  */
-/**
- * sm-tabbar
- * 修改position:static
- */
+
+
+/*sm-tabbar:修改position:static*/
 .sm-tabbar{
 	position: static;
 }
-/**
- * sm-container
- * 修改滚动属性，是tabbar能固定底部
- */
+.sm-tabbar a{
+	font-size: 12px;
+}
+.sm-tabbar a i{
+  font-family:"iconfont" !important;
+  font-size:18px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+}
+.sm-tabbar a.active{
+  color: #6795f5;
+}
+/*sm-container:修改滚动属性，是tabbar能固定底部*/
 .sm-container{ 
   height: 100%;
   overflow: scroll; 
   padding: 10px;
 }
-/**
- * sm-btn
- * 修改尺寸，在creator按比例缩小
- */
+
+/*sm-btn:修改尺寸，在creator按比例缩小*/
 .sm-btn{
   font-size: 14px;
 }

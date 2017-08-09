@@ -12,8 +12,8 @@
 	display: -webkit-flex;
 	display: flex;
 	height: 44px;
-	background-color: #00f;
-	border-top: 1px solid  #ccc;
+	background-color: #F7F7FA;
+	border-top: 1px solid  #ddd;
 }
 .sm-tabbar a{
 	-webkit-box-flex:1;
@@ -30,12 +30,11 @@
 	color: #808080;
 }
 .sm-tabbar a.active{
-	color: #f30;
+	color: #6795f5;
 }
 .sm-tabbar a i{
-	width: 20px;
-	height: 35px;
-	margin-bottom: 5px;
+	width: 22px;
+	height: 22px;
 }
 .sm-tabbar a i.icon-tb01{	
 	background-image: url(images/icon-tb01.png);

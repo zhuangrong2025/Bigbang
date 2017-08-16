@@ -1371,10 +1371,31 @@ h3.title button i{
   z-index: 999999999999;
 }
 
-
-
-
-
+/*show all iconfont icon*/
+.iconfont-show{
+  position: absolute;
+  top:50%;
+  left: 50%;
+  width: 520px;
+  height: 520px;
+  margin-left: -260px;
+  margin-top: -260px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid  #ddd;
+  font-family:"iconfont" !important;
+  font-size:32px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #6795f5;
+  z-index: 99999;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.175);
+}
+.iconfont-show i{
+  display: inline-block;
+  margin: 10px  
+}
 
 
 

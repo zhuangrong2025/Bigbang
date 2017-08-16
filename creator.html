@@ -82,11 +82,31 @@ $(function(){
       }
     })
   }
+  
+  //get iconfont classname
+  $("#geticon").on("click",function(){
+    $.ajax({  
+      type:"get",  
+      url:"http://at.alicdn.com/t/font_kulqm6gru91thuxr.css", 
+      success:function(data){  
+            var arr = data.match(/i(\S*)before/g);
+            arr.forEach(function(item){ 
+              var cls = item.substring(0, item.indexOf(":")) 
+              $(".iconfont-show").append("<i class=" + cls  + "></i>")
+            }) 
+         } 
+      })	
+  })
 	
 })
 </script>
+<html>
+
+</html>
 </head>
 <body>
+<button id="geticon">getIcon</button>
+<div class="iconfont-show"></div>
 <span id="app">
 <!--modal theme-->
 <div class="modal" id="modal-theme">

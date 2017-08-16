@@ -425,20 +425,24 @@ $(function(){
             </div>
             <div class="sub-group" v-for="item in tabbar.items.slice(0, tabbar.number)">
               <div class="form-group">
-                <label>Icon-Title</label>
+                <label>Icon&Title</label>
                 <div class="group-collapse">
                   <input type="text" class="c-ipt" placeholder="Icon" v-model="item.icon">
                   <input type="text" class="c-ipt" placeholder="Title" v-model="item.title">
                 </div>
               </div> 
               <div class="form-group">
-                <label>LinkTo</label>
+                <label>icon active</label>
                 <div>
-                  <select class="select" >
-                    <option>page1</option>
-                    <option>page2</option>
-                    <option>page3</option>
-                    <option>page4</option>
+                  <input type="text" class="c-ipt" placeholder="" v-model="item.active">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>linkto</label>
+                <div>
+                  <select class="select" v-model="item.linkto">
+                    <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                    <option value="#">#</option>
                   </select>
                 </div>
               </div> 
@@ -517,8 +521,10 @@ Vue.component('sm-tabbar', {
   props: ["tabbar"],
   template: `
             <div class="sm-tabbar">
-              <a href="#" v-for="tab in tabbar.items.slice(0, tabbar.number)">
-                <i :class="tab.icon"></i><span>{{tab.title}}</span>
+              <a :href="tab.linkto + '.html'" v-for="(tab, index) in tabbar.items.slice(0, tabbar.number)" :class ="{active: tabbar.items[index].active != ''}" >
+                <i :class="tab.icon" v-if=" tabbar.items[index].active == ''"></i>
+                <i :class="tab.active"  v-if=" tabbar.items[index].active != ''"></i>
+                <span>{{tab.title}}</span>
               </a>
             </div>
             `
@@ -545,10 +551,10 @@ var vm = new Vue({
     tabbar:{
       number: 4,
       items: [
-              {icon: "icon-home", title: "Home"},
-              {icon: "icon-category", title: "Category"},
-              {icon: "icon-service", title: "Service"},
-              {icon: "icon-user", title: "User"},
+              {icon: "icon-home", title: "Home", linkto: "home", active: ""},
+              {icon: "icon-category", title: "Category", linkto: "category", active: ""},
+              {icon: "icon-service", title: "Service", linkto: "service", active: ""},
+              {icon: "icon-user", title: "User", linkto: "user", active: ""},
              ]
     }
   },

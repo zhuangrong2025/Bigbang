@@ -83,20 +83,14 @@ $(function(){
     })
   }
   
-  //get iconfont classname
-  $("#geticon").on("click",function(){
-    $.ajax({  
-      type:"get",  
-      url:"http://at.alicdn.com/t/font_kulqm6gru91thuxr.css", 
-      success:function(data){  
-            var arr = data.match(/i(\S*)before/g);
-            arr.forEach(function(item){ 
-              var cls = item.substring(0, item.indexOf(":")) 
-              $(".iconfont-show").append("<i class=" + cls  + "></i>")
-            }) 
-         } 
-      })	
+  //iconfont select
+  $(".select-icon").each(function(){
+    $(this).on("click", function(){
+     
+    })
   })
+  //icon bind click
+ 
 	
 })
 </script>
@@ -105,8 +99,6 @@ $(function(){
 </html>
 </head>
 <body>
-<button id="geticon">getIcon</button>
-<div class="iconfont-show"></div>
 <span id="app">
 <!--modal theme-->
 <div class="modal" id="modal-theme">
@@ -185,6 +177,17 @@ $(function(){
   </div>
 </div>
 <!--//modal delete page-->
+<!--modal iconfont show-->
+<div class="modal bgw" id="modal-iconfont">
+  <div class="modal-header">
+    <h3>Select Icon</h3>
+    <i class="icon-modal-close"></i>
+  </div>
+  <div class="modal-body iconfont-show bgw">
+    
+  </div>
+</div>
+<!--//modal iconfont show-->
 <div class="modal-mask"></div>
 <!--header-->
 <header style="opacity: .3">
@@ -209,7 +212,7 @@ $(function(){
 <!--//header-->
 <!--container-->
 <section class="container" style="opacity: 1.7">
-  <aside class="aside-bar" style="opacity: 0.3; display: none">
+  <aside class="aside-bar" style="opacity: 0.3; display:">
     <!--pages-->
     <div class="pages">
       <h3 class="title"><span>Pages</span> <button id="addpages" @click="addPage"><i class="new-page"></i>Add Page</button></h3>
@@ -282,7 +285,7 @@ $(function(){
         <!--****************Canvas****************-->
         <div class="canvas" id="canvas">
           <!--iconfont-->
-          <link rel="stylesheet" href="http://at.alicdn.com/t/font_kulqm6gru91thuxr.css">
+          <link rel="stylesheet" href="http://at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css">
           <!--//iconfont-->
           <!--sm-header-->
           <sm-header :title="pages[pageIdx].title" v-if="pages[pageIdx].isHeader" ></sm-header>
@@ -376,8 +379,8 @@ $(function(){
       <!--**************html property **************-->
       <div v-if=" panelProp == 'htmlComp'">
         <!--html-->
-        <div class="pro-item" @click="toggleCls">
-          <h3>
+        <div class="pro-item">
+          <h3 @click="toggleCls">
             html <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
@@ -385,8 +388,8 @@ $(function(){
           </div>
         </div>
         <!--css-->
-        <div class="pro-item" @click="toggleCls">
-          <h3>
+        <div class="pro-item">
+          <h3 @click="toggleCls">
             css <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
@@ -430,8 +433,8 @@ $(function(){
           </div>
         </div>
         <!--Tabbar-->
-        <div class="pro-item" @click="toggleCls"  v-if="pages[pageIdx].isTabbar">
-          <h3>
+        <div class="pro-item"  v-if="pages[pageIdx].isTabbar">
+          <h3 @click="toggleCls">
             Tabbar <span class="caret"></span>
           </h3>
           <div class="pro-box">
@@ -443,12 +446,18 @@ $(function(){
                 </select>
               </div>
             </div>
-            <div class="sub-group" v-for="item in tabbar.items.slice(0, tabbar.number)">
+            <div class="sub-group" v-for="(item, index) in tabbar.items.slice(0, tabbar.number)">
               <div class="form-group">
-                <label>Icon&Title</label>
-                <div class="group-collapse">
-                  <input type="text" class="c-ipt" placeholder="Icon" v-model="item.icon">
+                <label>Title</label>
+                <div>
                   <input type="text" class="c-ipt" placeholder="Title" v-model="item.title">
+                </div>
+              </div> 
+              <div class="form-group">
+                <label>Icon</label>
+                <div>
+                  <input type="text" class="c-ipt" placeholder="Icon" v-model="item.icon">
+                  <button class="select-icon" @click="selectIcon($event)" :title="index"></button>
                 </div>
               </div> 
               <div class="form-group">
@@ -688,7 +697,7 @@ var vm = new Vue({
     //属性展开收缩
     toggleCls(event){
       var ele = $(event.target)
-      ele.parent().toggleClass("category-toggle")
+      ele.parents(".pro-item").toggleClass("category-toggle")
     },
     
     //监听html编辑器文本框滚动
@@ -801,7 +810,35 @@ var vm = new Vue({
        
        Store.save('html-list', this.generateHtml)
        $("#form-cvs").submit()
+    },
+    //iconfont select
+    selectIcon(event){
+      var $el = $(event.target)
+      $("#modal-iconfont").addClass("in")
+      $(".modal-mask").addClass("in")
+     
+      $.ajax({  
+        type:"get",  
+        url:"http://at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css", 
+        success:function(data){  
+          var arr = data.match(/i(\S*)before/g); //get classname from character i to before
+          var iconlist = ''
+          arr.forEach(function(item){ 
+           var cls = item.substring(0, item.indexOf(":"))
+           iconlist +=  "<i class=" + cls  + "></i>"
+          }) 
+          $(".iconfont-show").html(iconlist).find("i").on("click", function(){
+            var tabbarIdx = $el.attr("title")
+            var clsName = $(this).attr("class")
+            $el.prev().val(clsName)
+            vm.tabbar.items[tabbarIdx].icon = clsName
+            $("#modal-iconfont").removeClass("in")
+            $(".modal-mask").removeClass("in")
+          })
+        } 
+      })
     }
+    
   },
   updated:function() {
     var pageOfHtml = $("#canvas").clone()

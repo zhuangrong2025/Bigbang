@@ -104,6 +104,9 @@ i{
 .c01 {
   color: #4E8EF7;
 }
+.bgw{
+  background-color: #fff !important;
+}
 .tc {
   text-align: center;
 }
@@ -432,6 +435,7 @@ h3.title button i{
   height: -webkit-calc(100% - 32px);
   overflow: auto;
 }
+.iconfont-show::-webkit-scrollbar-thumb,
 .page-list:hover::-webkit-scrollbar-thumb,
 .component:hover::-webkit-scrollbar-thumb{ /*鼠标滑过，显示滚动条颜色*/
 	background: #D8D8D8; 
@@ -640,6 +644,7 @@ h3.title button i{
   webkit-box-flex: 1;
 	-webkit-flex: 1;
 	flex: 1;
+  position: relative;
 }
 .form-group .c-ipt{
   font-size: 12px;
@@ -1135,7 +1140,7 @@ h3.title button i{
 	z-index: 9;
   overflow: hidden;
   height: 0;
-  transition: opacity 1s, height 0.0s 1s; /*退出动画：高度延迟1s后播放*/
+  transition: opacity .3s, height 0.0s 1s; /*退出动画：高度延迟1s后播放*/
 }
 .modal-mask.in{
   opacity: .5;
@@ -1373,31 +1378,53 @@ h3.title button i{
 
 /*show all iconfont icon*/
 .iconfont-show{
-  position: absolute;
-  top:50%;
-  left: 50%;
-  width: 520px;
-  height: 520px;
-  margin-left: -260px;
-  margin-top: -260px;
-  background-color: #fff;
-  border-radius: 10px;
-  border: 1px solid  #ddd;
+  padding: 10px 0 10px 30px;
   font-family:"iconfont" !important;
-  font-size:32px;
+  font-size:36px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/*  -webkit-text-stroke-width: 0.2px;*/
   color: #6795f5;
-  z-index: 99999;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.175);
+  overflow: auto;
+  height: 550px;
 }
 .iconfont-show i{
   display: inline-block;
-  margin: 10px  
+  width: 100px;
+  line-height: 100px;
+  text-align: center; 
+  position: relative;
+}
+.iconfont-show i:hover:after{
+  content: '';
+  display: block;
+  position: absolute;
+  text-align: center;
+  line-height: 100px;
+  color: #0ff;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,12,39,0.6);
+  border-radius: 8px;
+  cursor: pointer;
+  background-image: url(../images/icon-check.png);
+  background-position: center center;
+  background-size: 64px;
 }
 
-
+/*tabbar select icon*/
+.select-icon{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  background-color: #0ff;
+  border: none;
+  cursor: pointer;
+}
 
 
 

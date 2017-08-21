@@ -12,13 +12,8 @@
 	font-size: 12px;
 }
 .sm-tabbar a i{
-  font-family:"iconfont" !important;
-  font-size:18px;
-  font-style:normal;
-  -webkit-font-smoothing: antialiased;
-}
-.sm-tabbar a.active{
-  color: #6795f5;
+	width: 22px;
+	height: 22px;
 }
 .sm-tabbar:after{
 	position: absolute;

@@ -82,14 +82,7 @@ $(function(){
       }
     })
   }
-  
-  //iconfont select
-  $(".select-icon").each(function(){
-    $(this).on("click", function(){
-     
-    })
-  })
-  //icon bind click
+ 
  
 	
 })
@@ -455,15 +448,18 @@ $(function(){
               </div> 
               <div class="form-group">
                 <label>Icon</label>
-                <div>
+                <div class="choose-icon">
+                  <i class="iconfont" :class="item.icon"></i>
                   <input type="text" class="c-ipt" placeholder="Icon" v-model="item.icon">
-                  <button class="select-icon" @click="selectIcon($event)" :title="index"></button>
+                  <button @click="chooseIcon($event)" :title="index"></button>
                 </div>
               </div> 
               <div class="form-group">
                 <label>icon active</label>
-                <div>
+                <div class="choose-icon">
+                  <i class="iconfont" :class="item.active"></i>
                   <input type="text" class="c-ipt" placeholder="" v-model="item.active">
+                  <button @click="chooseIcon($event)" name="active" :title="index"></button>
                 </div>
               </div>
               <div class="form-group">
@@ -551,7 +547,7 @@ Vue.component('sm-tabbar', {
   template: `
             <div class="sm-tabbar">
               <a :href="tab.linkto + '.html'" v-for="(tab, index) in tabbar.items.slice(0, tabbar.number)" :class ="{active: tabbar.items[index].active != ''}" >
-                <i :class="tab.icon" v-if=" tabbar.items[index].active == ''"></i>
+                <i :class="tab.icon"></i>
                 <i :class="tab.active"  v-if=" tabbar.items[index].active != ''"></i>
                 <span>{{tab.title}}</span>
               </a>
@@ -577,15 +573,8 @@ var vm = new Vue({
     pages: Store.fetch('pages-list', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),
     generateHtml: Store.fetch('html-list', '[{}]'),
-    tabbar:{
-      number: 4,
-      items: [
-              {icon: "icon-home", title: "Home", linkto: "home", active: ""},
-              {icon: "icon-category", title: "Category", linkto: "category", active: ""},
-              {icon: "icon-service", title: "Service", linkto: "service", active: ""},
-              {icon: "icon-user", title: "User", linkto: "user", active: ""},
-             ]
-    }
+    tabbar: Store.fetch('tabbar', '{"number": 4,"items": [{"icon": "icon-homepage", "title": "Home", "linkto": "#", "active": ""},{"icon": "icon-label", "title": "Category", "linkto": "#", "active": ""},{"icon": "icon-service", "title": "Service", "linkto": "#", "active": ""},{"icon": "icon-people", "title": "User", "linkto": "#", "active": ""}]}')
+    
   },
   /*监听data*/
   watch: {
@@ -618,6 +607,12 @@ var vm = new Vue({
     generateHtml: {
        handler: function(newVal){
           Store.save('html-list', newVal)
+       },
+       deep: true
+    },
+    tabbar: {
+       handler: function(newVal){
+          Store.save('tabbar', newVal)
        },
        deep: true
     }
@@ -812,7 +807,7 @@ var vm = new Vue({
        $("#form-cvs").submit()
     },
     //iconfont select
-    selectIcon(event){
+    chooseIcon(event){
       var $el = $(event.target)
       $("#modal-iconfont").addClass("in")
       $(".modal-mask").addClass("in")
@@ -827,11 +822,18 @@ var vm = new Vue({
            var cls = item.substring(0, item.indexOf(":"))
            iconlist +=  "<i class=" + cls  + "></i>"
           }) 
+          //click icon
           $(".iconfont-show").html(iconlist).find("i").on("click", function(){
             var tabbarIdx = $el.attr("title")
             var clsName = $(this).attr("class")
-            $el.prev().val(clsName)
-            vm.tabbar.items[tabbarIdx].icon = clsName
+            var tabbarName = $el.attr("name")
+            if( tabbarName != "active"){
+              $el.prev().val(clsName)
+              vm.tabbar.items[tabbarIdx].icon = clsName
+            }else{
+              $el.prev().val(clsName)
+              vm.tabbar.items[tabbarIdx].active = clsName
+            }
             $("#modal-iconfont").removeClass("in")
             $(".modal-mask").removeClass("in")
           })

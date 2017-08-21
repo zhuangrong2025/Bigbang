@@ -33,8 +33,19 @@
 	color: #6795f5;
 }
 .sm-tabbar a i{
-	width: 22px;
-	height: 22px;
+  font-family:"iconfont" !important;
+  font-size:18px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+}
+.sm-tabbar a i:nth-child(2){
+  display: none;
+}
+.sm-tabbar a.active i:nth-child(1){
+  display: none;
+}
+.sm-tabbar a.active i:nth-child(2){
+  display: block;
 }
 .sm-tabbar a i.icon-tb01{	
 	background-image: url(images/icon-tb01.png);

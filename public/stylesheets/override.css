@@ -23,15 +23,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.00);
+  background-color: rgba(0,0,0,0.0);
 }
 /*sm-container:修改滚动属性，是tabbar能固定底部*/
 .sm-container{ 
+  position: relative;
   height: 100%;
   overflow: scroll; 
   padding: 10px;
 }
-
 /*sm-btn:修改尺寸，在creator按比例缩小*/
 .sm-btn{
   font-size: 14px;

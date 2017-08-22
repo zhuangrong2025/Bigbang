@@ -83,7 +83,8 @@ $(function(){
     })
   }
  
- 
+
+
 	
 })
 </script>
@@ -276,15 +277,22 @@ $(function(){
         <div class="app-status"></div>
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
-        <div class="canvas" id="canvas">
+        <div class="canvas" id="canvas"  >
           <!--iconfont-->
           <link rel="stylesheet" href="http://at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css">
           <!--//iconfont-->
+          
           <!--sm-header-->
           <sm-header :title="pages[pageIdx].title" v-if="pages[pageIdx].isHeader" ></sm-header>
           <!--sm-header-->
           <!--vue comp-->
-          <div class="sm-container"  :class="{isHd: pages[pageIdx].isHeader, isTb: pages[pageIdx].isTabbar, isHdTb: (pages[pageIdx].isHeader == true && pages[pageIdx].isTabbar == true)}">
+          <div class="sm-container" :class="{isHd: pages[pageIdx].isHeader, isTb: pages[pageIdx].isTabbar, isHdTb: (pages[pageIdx].isHeader == true && pages[pageIdx].isTabbar == true)}">
+            <!--select box-->
+            <div class="select-box">
+              <i @click="removeComp()" title="delete component"> &times;</i>
+              <span @click="hideSelBox()" title="hide maskbox"></span>
+            </div>
+            <!--//select box-->
             <component v-bind:is="comp.name"  v-on:increment="selectComp($event, comp)"  :comp="comp" v-for="comp in comps"></component>
           </div>
           <!--//vue comp-->
@@ -295,12 +303,6 @@ $(function(){
         </div>
         <!--****************//Canvas****************-->
         </form>
-        <!--************select box************-->
-        <div class="select-box">
-          <i @click="removeComp()" title="delete component"> &times;</i>
-          <span @click="hideSelBox()" title="hide maskbox"></span>
-        </div>
-        <!--//************select box************-->
       </div>
     </div>
     
@@ -408,7 +410,7 @@ $(function(){
             <div class="form-group">
               <label>Title</label>
               <div>
-                <input type="text" class="c-ipt" v-model="pages[pageIdx].title">
+                <input type="text" class="c-ipt" v-model="pages[pageIdx].title" :disabled="!pages[pageIdx].isHeader">
               </div>
             </div>
             <div class="form-group">
@@ -673,13 +675,13 @@ var vm = new Vue({
       if(ele.parents(".html-box")[0]){ //捕获html片段的父元素,select-box可以选中这个组件所有
         ele = ele.parents(".html-box")
       } 
-      $(".select-box").show()
-                      .css("top", ele.offset().top + "px")
-                      .css("left", ele.offset().left + "px")
-                      .css("width", ele.outerWidth() + "px")
-                      .css("height", ele.outerHeight() + "px")
-      this.compIdx = this.comps.indexOf(obj)
+      var eleScrollTop = $(".sm-container").scrollTop()
+      var marginTop = ele.css("margin-top") 
+      marginTop = marginTop.substring(0, marginTop.length - 2)
+      var eleTop = ele.position().top + eleScrollTop + parseInt(marginTop) //position的位置 + margin-top的值 + scrolltop，才是元素实际的top
+      $(".select-box").show().css({top: eleTop, height: ele.outerHeight() + "px"})
       
+      this.compIdx = this.comps.indexOf(obj)
       //选中组件的样式
       this.selectedCls = this.comps[this.compIdx].class
       
@@ -783,7 +785,7 @@ var vm = new Vue({
            pagecss += item.getCss
          }
        })
-       //将每个page的name赋值表单value
+       //将每个page的"name"赋值表单value
        $.each(this.pages, function(i, item){
          if( i == len){
            return

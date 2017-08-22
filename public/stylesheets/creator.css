@@ -656,6 +656,10 @@ h3.title button i{
   border-radius: 2px;
   color: #555;
 }
+.form-group .c-ipt:disabled{
+  background-color: #f6f6f6;
+  color: #aaa;
+}
 .form-group .select{
   width: 100%;
   height: 32px;
@@ -966,7 +970,6 @@ h3.title button i{
 	width: 0 !important;
 	height: 0 !important;
 }
-
 .isHd{ 
   height: -webkit-calc(100% - 44px) !important;
 }
@@ -1028,11 +1031,11 @@ h3.title button i{
 
 /*---------------------select box---------------------*/
 .select-box{
-  position: absolute;
-  top: 280px;
-  left: 19px;
-  right: 19px;
-  height: 48px;    
+  position:absolute;
+  top: 0;
+  left: 10px;
+  right: 10px;
+  height: 42px;  
   color: #4a87ee;
   border: 1px solid #4a87ee;
   border-radius: 3px;

@@ -53,12 +53,12 @@
 
 .sm-btn.primary {
   color: #fff;
-  background-color: #008AD5;
-  border-color: #008AD5; }
+  background-color: #4EA4F8;
+  border-color: #4EA4F8; }
   .sm-btn.primary:active, .sm-btn.primary.active {
     color: rgba(255, 255, 255, 0.6);
-    background-color: #0080c6;
-    border-color: #0080c6; }
+    background-color: #3f9cf7;
+    border-color: #3f9cf7; }
 
 .sm-btn.warning {
   color: #fff;
@@ -70,12 +70,12 @@
     border-color: #e43632; }
 
 .sm-btn.outline-primary {
-  color: #008AD5;
+  color: #4EA4F8;
   background-color: transparent;
-  border-color: #008AD5; }
+  border-color: #4EA4F8; }
   .sm-btn.outline-primary:active, .sm-btn.outline-primary.active {
-    color: rgba(0, 138, 213, 0.6);
-    border-color: rgba(0, 138, 213, 0.6); }
+    color: rgba(78, 164, 248, 0.6);
+    border-color: rgba(78, 164, 248, 0.6); }
 
 .sm-btn.outline-secondary {
   color: #363636;
@@ -95,7 +95,7 @@
   display: inline-block;
   padding: 0;
   line-height: auto;
-  color: #008AD5; }
+  color: #4EA4F8; }
 
 button.sm-btn, input.sm-btn {
   width: 100%;
@@ -323,8 +323,19 @@ button.sm-btn, input.sm-btn {
   color: #6795f5; }
 
 .sm-tabbar a i {
-  width: 22px;
-  height: 22px; }
+  font-family: "iconfont" !important;
+  font-size: 18px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased; }
+
+.sm-tabbar a i:nth-child(2) {
+  display: none; }
+
+.sm-tabbar a.active i:nth-child(1) {
+  display: none; }
+
+.sm-tabbar a.active i:nth-child(2) {
+  display: block; }
 
 .sm-tabbar a i.icon-tb01 {
   background-image: url(images/icon-tb01.png); }

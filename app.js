@@ -133,7 +133,10 @@ app.post('/output', function(req, res){
                                          "extra_liners": [],
                                          "unformatted": ['span', 'label', 'b', 'strong', 'h1', 'h3', 'pre']  
                                        })
-      
+      if (pagenameNew[i] == pagenameNew[i+1]){
+        pagenameNew[i+1] = pagenameNew[i+1] + "(1)"
+      }
+      console.log(pagenameNew[i])
       fs.writeFile('output/'+ pagenameNew[i] +'.html', htmlAll2, function(err){
         if (err) throw err
       }) 

@@ -26,17 +26,20 @@
 	-webkit-align-items: center; 
 	-webkit-box-align: center;
 	justify-content: center; 
-	font-size: 13px;
 	color: #808080;
+}
+.sm-tabbar span{
+	font-size: 12px;
 }
 .sm-tabbar a.active{
 	color: #6795f5;
 }
 .sm-tabbar a i{
   font-family:"iconfont" !important;
-  font-size:18px;
+  font-size:22px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
+  margin-bottom: -12px;
 }
 .sm-tabbar a i:nth-child(2){
   display: none;

@@ -8,12 +8,14 @@
 .sm-tabbar{
 	position: relative;
 }
-.sm-tabbar a{
+.sm-tabbar span{
 	font-size: 12px;
 }
 .sm-tabbar a i{
 	width: 22px;
 	height: 22px;
+	font-size: 18px;
+  margin-bottom: -3px;
 }
 .sm-tabbar:after{
 	position: absolute;
@@ -30,7 +32,6 @@
   position: relative;
   height: 100%;
   overflow: scroll; 
-  padding: 10px;
 }
 /*sm-btn:修改尺寸，在creator按比例缩小*/
 .sm-btn{

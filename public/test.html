@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+  /*
+  * 数组去重
+  * 1、相等：数组下标判断法, 遍历数组，利用indexOf判断元素的值是否与当前索引相等，如相等则加入
+  * 2、不相等：遍历数组，利用indexOf判断元素的值是否与当前索引不相等，则找到对应重复的元素的索引
+  */
+var arr = ["a1", "b1", "b1", "a3", "a1", "b1"]
+function removeDuplicatedItem3(ar) {
+    var ret = [];
+    console.log(ar)
+    for (var i=0; i<ar.length; i++){
+       if (ar.indexOf(ar[i]) != i) {
+//            ret.push(e + i + "x");
+            console.log(i)
+            ar[i] = ar[i] + "(" + i + ")"
+        }
+    }
+   
+
+    console.log(ar)
+}
+  removeDuplicatedItem3(arr)
+</script>
+</head>
+
+<body>
+数组重复的个数：
+</body>
+</html>

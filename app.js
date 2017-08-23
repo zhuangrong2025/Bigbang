@@ -133,14 +133,17 @@ app.post('/output', function(req, res){
                                          "extra_liners": [],
                                          "unformatted": ['span', 'label', 'b', 'strong', 'h1', 'h3', 'pre']  
                                        })
-      if (pagenameNew[i] == pagenameNew[i+1]){
-        pagenameNew[i+1] = pagenameNew[i+1] + "(1)"
+      //相同name的page，重命名
+      if (pagenameNew.indexOf(pagenameNew[i]) != i) {
+        pagenameNew[i] = pagenameNew[i] + "(" + (i + 1) + ")"
       }
-      console.log(pagenameNew[i])
+      
+      console.log(pagenameNew)
       fs.writeFile('output/'+ pagenameNew[i] +'.html', htmlAll2, function(err){
         if (err) throw err
       }) 
     }
+  
   }
   //js-beautify
   pagecssNew = beautify_css(pagecssNew, { "indent_size": 2, "newline_between_rules": false})

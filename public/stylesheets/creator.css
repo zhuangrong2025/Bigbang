@@ -435,6 +435,7 @@ h3.title button i{
   height: -webkit-calc(100% - 32px);
   overflow: auto;
 }
+.property-list::-webkit-scrollbar-thumb,
 .iconfont-show::-webkit-scrollbar-thumb,
 .page-list:hover::-webkit-scrollbar-thumb,
 .component:hover::-webkit-scrollbar-thumb{ /*鼠标滑过，显示滚动条颜色*/
@@ -612,7 +613,7 @@ h3.title button i{
 }
 .pro-item .pro-box{
   display: block;
-  max-height: 500px;
+  max-height: 900px;
   overflow: visible;
   position: relative;
 }
@@ -1441,7 +1442,10 @@ h3.title button i{
   cursor: pointer;
 }
 
-
+.remark a,
+.remark{
+  color: #ADADAD
+}
 
 
 

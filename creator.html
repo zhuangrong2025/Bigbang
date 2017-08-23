@@ -273,13 +273,13 @@ $(function(){
     <!--//device bar-->
     <!--simulator-->
     <div class="simulator-wrap">
-      <div class="simulator" style="width: 320px; height: 568px" id="simulator">
+      <div class="simulator" style="width: 320px; height: 568px" id="simulator" >
         <div class="app-status"></div>
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
         <div class="canvas" id="canvas" >
           <!--iconfont-->
-          <link rel="stylesheet" href="https://at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css">
+          <link rel="stylesheet" :href=" 'https:' + iconfont ">
           <!--//iconfont-->          
           <!--sm-header-->
           <sm-header :title="pages[pageIdx].title" v-if="pages[pageIdx].isHeader" ></sm-header>
@@ -395,7 +395,7 @@ $(function(){
       <!--//**************html property**************-->
       <!--**************page property**************-->
       <div v-if=" panelProp == 'page'">
-       <!--page name-->
+        <!--page name-->
         <div class="pro-item">
           <div class="pro-box">
             <div class="form-group">
@@ -404,10 +404,10 @@ $(function(){
                 <input type="text" class="c-ipt" v-model="pages[pageIdx].name">
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" v-if="pages[pageIdx].isHeader">
               <label>Title</label>
               <div>
-                <input type="text" class="c-ipt" v-model="pages[pageIdx].title" :disabled="!pages[pageIdx].isHeader">
+                <input type="text" class="c-ipt" v-model="pages[pageIdx].title">
               </div>
             </div>
             <div class="form-group">
@@ -471,6 +471,18 @@ $(function(){
                 </div>
               </div> 
             </div> 
+          </div>
+        </div>
+        <!--Iconfont-->
+        <div class="pro-item">
+          <h3>
+            Iconfont
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <input type="text" class="c-ipt" v-model="iconfont" >
+            </div>
+            <em class="remark">custom the icon to visit <a target="_blank" href="http://www.iconfont.cn">iconfont.cn</a></em>
           </div>
         </div>
       </div>
@@ -572,8 +584,8 @@ var vm = new Vue({
     pages: Store.fetch('pages-list', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),
     generateHtml: Store.fetch('html-list', '[{}]'),
-    tabbar: Store.fetch('tabbar', '{"number": 4,"items": [{"icon": "icon-homepage", "title": "Home", "linkto": "#", "active": ""},{"icon": "icon-label", "title": "Category", "linkto": "#", "active": ""},{"icon": "icon-service", "title": "Service", "linkto": "#", "active": ""},{"icon": "icon-people", "title": "User", "linkto": "#", "active": ""}]}')
-    
+    tabbar: Store.fetch('tabbar', '{"number": 4,"items": [{"icon": "icon-homepage", "title": "Home", "linkto": "#", "active": ""},{"icon": "icon-label", "title": "Category", "linkto": "#", "active": ""},{"icon": "icon-service", "title": "Service", "linkto": "#", "active": ""},{"icon": "icon-people", "title": "User", "linkto": "#", "active": ""}]}'),
+    iconfont: Store.fetch('iconfont', '["//at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css"]')
   },
   /*监听data*/
   watch: {
@@ -612,6 +624,12 @@ var vm = new Vue({
     tabbar: {
        handler: function(newVal){
           Store.save('tabbar', newVal)
+       },
+       deep: true
+    },
+    iconfont: {
+       handler: function(newVal){
+          Store.save('iconfont', newVal)
        },
        deep: true
     }
@@ -687,7 +705,6 @@ var vm = new Vue({
       
       
     },
-    
     //属性展开收缩
     toggleCls(event){
       var ele = $(event.target)
@@ -815,7 +832,7 @@ var vm = new Vue({
      
       $.ajax({  
         type:"get",  
-        url:"https://at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css", 
+        url:"https:" + this.iconfont, 
         success:function(data){  
           var arr = data.match(/i(\S*)before/g); //get classname from character i to before
           var iconlist = ''

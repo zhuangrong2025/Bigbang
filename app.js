@@ -89,7 +89,7 @@ app.post('/output', function(req, res){
 <link rel="stylesheet" href="global.css">
 <link rel="stylesheet" href="smui.css">
 <link rel="stylesheet" href="css/output.css">
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="jquery-2.1.4.min.js"></script>
 </head>
 <body>
 `
@@ -167,9 +167,11 @@ app.post('/output', function(req, res){
   
   var smuiCss = __dirname + '/public/stylesheets/smui.css'
   var globalCss = __dirname + '/public/stylesheets/global.css'
+  var jquery = __dirname + '/public/javascripts/jquery-2.1.4.min.js'
   var readme = __dirname + '/public/README.txt'
   archive.append(fs.createReadStream(smuiCss), { name: 'smui.css' })
   archive.append(fs.createReadStream(globalCss), { name: 'global.css' })
+  archive.append(fs.createReadStream(jquery), { name: 'jquery-2.1.4.min.js' })
   archive.append(fs.createReadStream(readme), { name: 'README.txt' })
   archive.directory('output/', false)
   archive.finalize()

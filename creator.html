@@ -675,6 +675,12 @@ var vm = new Vue({
     },
     //删除组件
     removeComp(){
+      //undo:存储删除的comp信息
+      this.undo = {}
+      this.undo['type'] = "undoComp"
+      this.undo['index'] = this.compIdx
+      this.undo['compinfo'] = this.comps[this.compIdx]
+      
       this.comps.splice(this.compIdx,1)
       $(".select-box").hide()
     },
@@ -765,7 +771,9 @@ var vm = new Vue({
       
     },    
     delectPageConfirm(){
-      //undo:存储删除的信息
+      //undo:存储删除的page信息
+      this.undo = {}
+      this.undo['type'] = "undoPage"
       this.undo['index'] = this.pageIdx
       this.undo['pageinfo'] = this.pages[this.pageIdx]
       this.undo['pagecomps'] = Store.fetch(this.undo.pageinfo.id)
@@ -883,15 +891,21 @@ var vm = new Vue({
       if(JSON.stringify(this.undo) == "{}"){
         return 
       }else{
-        //把删除的数据undo{}重新插入
-        this.pages.splice(this.undo.index, 0, this.undo.pageinfo)
-        this.generateHtml.splice(this.undo.index, 0, this.undo.htmlinfo)
-        window.localStorage.setItem(this.undo.pageinfo.id, JSON.stringify(this.undo.pagecomps))
-        //删除的是第一个撤消时要trigger一下
-        if(this.undo.index == 0){
-           setTimeout(function(){ 
-            $(".page-list li").eq(0).trigger("click")
-           },100)
+        
+        if(this.undo.type == "undoPage"){
+          //undo:把删除的数据pages重新插入
+          this.pages.splice(this.undo.index, 0, this.undo.pageinfo)
+          this.generateHtml.splice(this.undo.index, 0, this.undo.htmlinfo)
+          window.localStorage.setItem(this.undo.pageinfo.id, JSON.stringify(this.undo.pagecomps))
+          /*删除的是第一个撤消时要trigger一下,新的第一个li*/
+          if(this.undo.index == 0){
+             setTimeout(function(){ 
+              $(".page-list li").eq(0).trigger("click")
+             },100)
+          }
+        }else if(this.undo.type == "undoComp"){
+          //undo:把删除的数据pages重新插入
+          this.comps.splice(this.undo.index, 0, this.undo.compinfo)
         }
         this.undo = {}
       }
@@ -929,6 +943,7 @@ var vm = new Vue({
   },
   created:function(){
     
+    //撤消快捷键ctrl+z
     let _this = this;
     document.onkeydown = function(){
       if(event.ctrlKey == true && event.keyCode == 90){

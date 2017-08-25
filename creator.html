@@ -199,7 +199,7 @@ $(function(){
       <li id="openModal"><i class="theme icon-h" title="themes"></i></li>
       <li @click="submit"><i class="export icon-h"  title="export"></i></li>
       <li><i class="help icon-h"  title="help"></i></li>
-      <li><i class="user icon-h"  title="user"></i></li>
+      <li><i class="user icon-h"  title="user" @click="undoThis"></i></li>
     </ul>
   </div>
 </header>
@@ -404,16 +404,16 @@ $(function(){
                 <input type="text" class="c-ipt" v-model="pages[pageIdx].name">
               </div>
             </div>
-            <div class="form-group" v-if="pages[pageIdx].isHeader">
-              <label>Title</label>
-              <div>
-                <input type="text" class="c-ipt" v-model="pages[pageIdx].title">
-              </div>
-            </div>
             <div class="form-group">
               <label>Header</label>
               <div class="tr">
                 <input class="ct-switch" type="checkbox" v-model="pages[pageIdx].isHeader"/>
+              </div>
+            </div>
+            <div class="form-group" v-if="pages[pageIdx].isHeader">
+              <label>Title</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="pages[pageIdx].title">
               </div>
             </div>
             <div class="form-group">
@@ -585,7 +585,8 @@ var vm = new Vue({
     pageIdx: Store.fetch('pageIdx', 0),
     generateHtml: Store.fetch('html-list', '[{}]'),
     tabbar: Store.fetch('tabbar', '{"number": 4,"items": [{"icon": "icon-homepage", "title": "Home", "linkto": "#", "active": ""},{"icon": "icon-label", "title": "Category", "linkto": "#", "active": ""},{"icon": "icon-service", "title": "Service", "linkto": "#", "active": ""},{"icon": "icon-people", "title": "User", "linkto": "#", "active": ""}]}'),
-    iconfont: Store.fetch('iconfont', '["//at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css"]')
+    iconfont: Store.fetch('iconfont', '["//at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css"]'),
+    undo: {}
   },
   /*监听data*/
   watch: {
@@ -764,14 +765,33 @@ var vm = new Vue({
       
     },    
     delectPageConfirm(){
-      this.pages.splice(this.pageIdx, 1)  
+      //undo:存储删除的信息
+      this.undo['index'] = this.pageIdx
+      this.undo['pageinfo'] = this.pages[this.pageIdx]
+      this.undo['pagecomps'] = Store.fetch(this.undo.pageinfo.id)
+      this.undo['htmlinfo'] = this.generateHtml[this.pageIdx]
+      
       //删除对应的generateHtml
       this.generateHtml.splice(this.pageIdx, 1)  
       
+      //删除 page
       var ele = $(".page-list li").eq(this.pageIdx)
+      this.pages.splice(this.pageIdx, 1)
+      
+      if(this.pageIdx == 0 && this.pages.length !=1){
+        setTimeout(function(){ //如果没有延迟100ms，模拟器显示的是删除前的this.pages[0]的内容
+          ele.trigger("click")
+        },100)
+      }else{
+        ele.prev().trigger("click") //trigger对应的是LI元素，所以select中event.target也要是LI  
+      }
+      
+      //删除 localstorage中的对应的page 内容    
       var liId = ele.attr("id") 
       window.localStorage.removeItem(liId)
-      ele.prev().trigger("click") //trigger对应的是LI元素，所以select中event.target也要是LI  
+      
+      
+      
       if(this.pages.length == 1){ //删除最后一个
         this.comps = [{}]
       }
@@ -857,27 +877,69 @@ var vm = new Vue({
           })
         } 
       })
+    },
+    //undo:撤消
+    undoThis(){
+      if(JSON.stringify(this.undo) == "{}"){
+        return 
+      }else{
+        //把删除的数据undo{}重新插入
+        this.pages.splice(this.undo.index, 0, this.undo.pageinfo)
+        this.generateHtml.splice(this.undo.index, 0, this.undo.htmlinfo)
+        window.localStorage.setItem(this.undo.pageinfo.id, JSON.stringify(this.undo.pagecomps))
+        //删除的是第一个撤消时要trigger一下
+        if(this.undo.index == 0){
+           setTimeout(function(){ 
+            $(".page-list li").eq(0).trigger("click")
+           },100)
+        }
+        this.undo = {}
+      }
     }
     
   },
   updated:function() {
+     /*
+     * 在每个page生成的html中过滤html编辑生成冗余代码
+     */
     var pageOfHtml = $("#canvas").clone()
     var pageOfCss = ""
+   
     //获取css
-    pageOfHtml.find("style").each(function(){
-      pageOfCss += $(this).html()
-    })
-    this.generateHtml[this.pageIdx].getCss = pageOfCss
+    if(!pageOfHtml.find("style")){
+      
+      pageOfHtml.find("style").each(function(){
+        pageOfCss += $(this).html()
+      })
+      this.generateHtml[this.pageIdx].getCss = pageOfCss
+    }
     
     //获取html
-    pageOfHtml.find(".html-box").each(function(){
-      var boxWp = $(this).find(".box-wp")
-      $(this).replaceWith(boxWp.children())
-    })
+    if(pageOfHtml.find(".html-box")){
+      pageOfHtml.find(".html-box").each(function(){
+        var boxWp = $(this).find(".box-wp")
+        $(this).replaceWith(boxWp.children())
+      })
+    }
     //删除select box
     pageOfHtml.find(".select-box").remove()
     
+    
     this.generateHtml[this.pageIdx].getHtml = pageOfHtml.html()
+  },
+  created:function(){
+    
+    let _this = this;
+    document.onkeydown = function(){
+      if(event.ctrlKey == true && event.keyCode == 90){
+        if($(".c-ipt").is(":focus") || $("textarea").is(":focus")){
+          return
+        }else{
+          event.preventDefault()
+          _this.undoThis()
+        }
+      }
+    }    
   }
 })
 

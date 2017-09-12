@@ -213,14 +213,14 @@ $(function(){
       <div class="page-list">
         <ul>
           <li v-for="(page,index) in pages" @click="selectPage($event,index)" :id="page.id" :class="{active: pageIdx==index}">
-            <a href="#"><i class="icon-page"></i><em>{{page.name}}</em> <span class="del-page" @click="delectPage" title="delete"></span></a>
+            <a href="javascript:;"><i class="icon-page"></i><em>{{page.name}}</em> <span class="del-page" @click="delectPage" title="delete"></span></a>
           </li>
         </ul>
       </div>
     </div>
     <!--//pages-->
     <!--component-->
-    <div class="component-wrap" style="opacity: 0.0">
+    <div class="component-wrap" style="opacity: 0.5">
       <h3 class="title">Components</h3>
       <div class="component">
         <ul>
@@ -290,7 +290,7 @@ $(function(){
               <i @click="removeComp()" title="delete component"> &times;</i>
               <span @click="hideSelBox()" title="hide maskbox"></span>
             </div>
-            <component v-bind:is="comp.name"  v-on:increment="selectComp($event, comp)"  :comp="comp" v-for="comp in comps"></component>
+            <component v-bind:is="comp.name"  v-on:increment="selectComp($event, comp)" v-on:drag='drag($event)' v-on:dragover='handleDragover($event)' v-on:dragend="handleDragend($event)"  :comp="comp" :id="index" v-for="(comp, index) in comps"></component>
           </div>
           <!--//vue comp-->
           <!--sm-tabbar-->
@@ -501,16 +501,28 @@ $(function(){
 
 /******************按钮组件******************/
 var ButtonComp = {
-      props: ["comp"],
-      template: `<a href="#" 
+      props: ["comp", "id"],
+      template: `<a href="javascript:;" 
                      class="sm-btn"
+                     data-comp="drag-div"
+                     v-bind:id="id"
                      v-bind:class="comp.class"
+                     draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"
                      v-on:click = "increment" >{{ comp.text }}</a>
                 `,
   
       methods: {
         increment: function(event){
-          this.$emit('increment', event)  //触发v-on:increment，并传回当前对象event
+          this.$emit('increment', event)   //触发v-on:increment，并传回当前对象event
+        },
+        drag: function(event){
+          this.$emit('drag', event) 
+        },
+        dragover: function(event){
+          this.$emit('dragover', event) 
+        },
+        dragend: function(event){
+          this.$emit('dragend', event) 
         }
       }
     }
@@ -852,7 +864,10 @@ var vm = new Vue({
        Store.save('html-list', this.generateHtml)
        $("#form-cvs").submit()
     },
-    //iconfont select
+    
+    /*===========================
+      iconfont select
+    =============================*/
     chooseIcon(event){
       var $el = $(event.target)
       $("#modal-iconfont").addClass("in")
@@ -886,7 +901,9 @@ var vm = new Vue({
         } 
       })
     },
-    //undo:撤消
+    /*===========================
+      undo:撤消
+    =============================*/
     undoThis(){
       if(JSON.stringify(this.undo) == "{}"){
         return 
@@ -909,7 +926,46 @@ var vm = new Vue({
         }
         this.undo = {}
       }
-    }
+    },
+    /*===========================
+      组件拖放排序
+    =============================*/
+    drag:function(event){
+      //当前拖动的对象
+      dom = event.currentTarget
+      domId = $(dom).attr("id")
+      $clonedom = $(dom).clone(true)
+      cloneId =  $clonedom.attr("id")
+      this.comps.forEach(function(val){
+            console.log(val)
+      }) 
+    },
+    handleDragover:function(event){ 
+      //拖动经过时，添加拖动对象
+      var ele = $(event.target).closest('[data-comp="drag-div"]')
+      overId = ele.attr("id")
+      $(dom).hide()
+      $(".select-box").remove()
+      if(cloneId < overId){
+        ele.after($clonedom[0])
+        cloneId++
+      }else{
+        ele.before($clonedom[0])
+        cloneId--
+      }
+      //拖动经过时，设置拖动对象的样式
+      $clonedom.css({"border":"1px dashed #5bc0de","opacity":"0.5"})
+      cloneIndex =  $clonedom.index('[data-comp="drag-div"]:visible')
+//      console.log(cloneIndex)
+
+    },
+    handleDragend:function(event){ 
+      $clonedom.remove()
+      $(dom).show()
+//      this.comps.splice(cloneIndex, 0, this.comps.splice(domId, 1)[0])
+      
+      console.log("******************")
+    },
     
   },
   updated:function() {
@@ -937,7 +993,6 @@ var vm = new Vue({
     }
     //删除select box
     pageOfHtml.find(".select-box").remove()
-    
     
     this.generateHtml[this.pageIdx].getHtml = pageOfHtml.html()
   },

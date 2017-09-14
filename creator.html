@@ -225,7 +225,8 @@ $(function(){
       <div class="component">
         <ul>
           <li><i class="heading"></i>Heading</li>
-          <li @click="addBtnComp('btnComp', 'warning', '警告')"><i class="button"></i>Button</li>
+<!--          <li @click="addBtnComp('btnComp', 'warning', '警告')"><i class="button"></i>Button</li>-->
+          <li draggable='true' @dragstart.stop='dragItem($event)' @dragend.prevent="dragendItem($event)"><i class="button"></i>Button</li>
           <li @click="addHtmlComp('htmlComp')"><i class="button-bar"></i>Button Bar</li>
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
@@ -277,7 +278,7 @@ $(function(){
         <div class="app-status"></div>
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
-        <div class="canvas" id="canvas" >
+        <div class="canvas" id="canvas" @dragover.prevent="dragoverItem">
           <!--iconfont-->
           <link rel="stylesheet" :href=" 'https:' + iconfont ">
           <!--//iconfont-->          
@@ -930,22 +931,54 @@ var vm = new Vue({
     /*===========================
       组件拖放排序
     =============================*/
+    //拖动当前组件
     drag:function(event){
-      //当前拖动的对象
       dom = event.currentTarget
       domId = $(dom).attr("id")
       $clonedom = $(dom).clone(true)
       cloneId =  $clonedom.attr("id")
-      this.comps.forEach(function(val){
-            console.log(val)
-      }) 
+      dragIn = false
+    },
+    //拖动组件库-start
+    dragItem:function(event){
+      dom = $('<a href="javascript:;" data-comp="drag-div" id="0" draggable="true" class="sm-btn warning" style="">警告0</a>')
+      domId = $(dom).attr("id")
+      $clonedom = $(dom).clone(true)
+      cloneId = $clonedom.attr("id")
+      dragIn = false
+    },
+    //拖动组件库-over
+    dragoverItem:function(){
+      if(dragIn == false){
+        dragIn = !dragIn
+      }
+    },
+    //拖动组件库-end
+    dragendItem:function(){
+      if(dragIn == true){
+        if($clonedom.css("opacity") != "0.5"){
+            this.comps.splice((this.comps.length-1), 0, {
+               name: "btnComp",
+               class: "warning",
+               text: "主要" + this.comps.length
+             })
+        }else{
+             $clonedom.remove()
+            this.comps.splice(cloneIndex, 0, {
+                 name: "btnComp",
+                 class: "warning",
+                 text: "主要" + this.comps.length
+               })
+          }  
+      }
+      
+      
     },
     handleDragover:function(event){ 
       //拖动经过时，添加拖动对象
       var ele = $(event.target).closest('[data-comp="drag-div"]')
       overId = ele.attr("id")
       $(dom).hide()
-      $(".select-box").remove()
       if(cloneId < overId){
         ele.after($clonedom[0])
         cloneId++
@@ -956,16 +989,13 @@ var vm = new Vue({
       //拖动经过时，设置拖动对象的样式
       $clonedom.css({"border":"1px dashed #5bc0de","opacity":"0.5"})
       cloneIndex =  $clonedom.index('[data-comp="drag-div"]:visible')
-//      console.log(cloneIndex)
 
     },
     handleDragend:function(event){ 
       $clonedom.remove()
       $(dom).show()
-//      this.comps.splice(cloneIndex, 0, this.comps.splice(domId, 1)[0])
-      
-      console.log("******************")
-    },
+      this.comps.splice(cloneIndex, 0, this.comps.splice(domId, 1)[0])
+    }
     
   },
   updated:function() {

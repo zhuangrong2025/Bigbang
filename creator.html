@@ -226,8 +226,9 @@ $(function(){
         <ul>
           <li><i class="heading"></i>Heading</li>
 <!--          <li @click="addBtnComp('btnComp', 'warning', '警告')"><i class="button"></i>Button</li>-->
-          <li draggable='true' @dragstart.stop='dragItem($event)' @dragend.prevent="dragendItem($event)"><i class="button"></i>Button</li>
-          <li @click="addHtmlComp('htmlComp')"><i class="button-bar"></i>Button Bar</li>
+          <li draggable='true' @dragstart.stop='dragItem("btnComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
+          <li draggable='true' @dragstart.stop='dragItem("htmlComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="button-bar"></i>Button Bar</li>
+<!--          <li @click="addHtmlComp('htmlComp')"><i class="button"></i>Button</li>-->
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
           <li><i class="input"></i>Input</li>
@@ -477,7 +478,7 @@ $(function(){
         <!--Iconfont-->
         <div class="pro-item">
           <h3>
-            Iconfont
+            Icon Resource
           </h3>
           <div class="pro-box">
             <div class="form-group">
@@ -530,9 +531,9 @@ var ButtonComp = {
 
 /******************自定义html组件******************/
 var HtmlComp = {
-      props: ["comp"],
+      props: ["comp", "id"],
       template: ` 
-                  <div class="html-box" v-on:click = "increment" >
+                  <div class="html-box" v-on:click = "increment"  data-comp="drag-div" v-bind:id="id"  draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
                    <span v-html="comp.vcss"></span>
                    <span class="box-wp" v-html="comp.vhtml"></span>
                   </div>
@@ -540,6 +541,15 @@ var HtmlComp = {
       methods: {
         increment: function(event){
           this.$emit('increment', event)  
+        },
+        drag: function(event){
+          this.$emit('drag', event) 
+        },
+        dragover: function(event){
+          this.$emit('dragover', event) 
+        },
+        dragend: function(event){
+          this.$emit('dragend', event) 
         }
       }
     }
@@ -659,33 +669,6 @@ var vm = new Vue({
   
   methods:{
 
-    //添加按钮组件
-    addBtnComp(comp, classname, text){
-       this.comps.splice((this.comps.length-1), 0, {
-           name: comp,
-           class: classname,
-           text: text + this.comps.length
-         })
-    },
-    
-    //添加html组件
-    addHtmlComp(comp){
-       this.comps.splice((this.comps.length-1), 0, {
-           name: comp,
-           vhtml: `<div class='box'>
-请在右边编辑框中插入html,实时预览效果 →
-</div>`,
-           vcss: `<style>
-.box{
-  font-size: 12px;
-  padding: 10px;
-  margin: 10px 0;
-  background-color: #fff;
-  border: 1px dashed #0cf;
-}
-</style>`
-         })
-    },
     //删除组件
     removeComp(){
       //undo:存储删除的comp信息
@@ -937,38 +920,74 @@ var vm = new Vue({
       domId = $(dom).attr("id")
       $clonedom = $(dom).clone(true)
       cloneId =  $clonedom.attr("id")
-      dragIn = false
+      isDragin = false
+      $(".select-box").hide()
     },
     //拖动组件库-start
-    dragItem:function(event){
-      dom = $('<a href="javascript:;" data-comp="drag-div" id="0" draggable="true" class="sm-btn warning" style="">警告0</a>')
+    dragItem:function(compType){
+      //组件类型判断
+      switch(compType) {
+          case "btnComp":
+            dom = $('<a href="javascript:;" data-comp="drag-div" id="0" draggable="true" class="sm-btn warning" style="">警告0</a>')
+            break
+          case "htmlComp":
+            dom =$('<div class="html-box" id="0"><span><style>.box{font-size: 12px; padding: 10px; margin: 10px 0; background-color: #fff; border: 1px dashed #0cf;}</style></span> <span class="box-wp"><div class="box">请在右边编辑框中插入html,实时预览效果 →</div></span></div>')
+            break
+      }
       domId = $(dom).attr("id")
       $clonedom = $(dom).clone(true)
       cloneId = $clonedom.attr("id")
-      dragIn = false
+      isDragin = false
+      $(".select-box").hide()
     },
     //拖动组件库-over
     dragoverItem:function(){
-      if(dragIn == false){
-        dragIn = !dragIn
+      if(isDragin == false){
+        isDragin = !isDragin
       }
     },
     //拖动组件库-end
-    dragendItem:function(){
-      if(dragIn == true){
+    dragendItem:function(compType){
+      var compObj
+      //button组件
+      var btnCompObj = {
+                         name: "btnComp",
+                         class: "warning",
+                         text: "主要" + this.comps.length
+                       }
+      //html组件
+      var htmlCompObj = {
+           name: "htmlComp",
+           vhtml: `<div class='box'>
+请在右边编辑框中插入html,实时预览效果 →
+</div>`,
+           vcss: `<style>
+.box{
+  font-size: 12px;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #fff;
+  border: 1px dashed #0cf;
+}
+</style>`
+         }
+      
+      //组件类型判断
+      switch(compType) {
+          case "btnComp":
+            compObj = btnCompObj
+            break
+          case "htmlComp":
+            compObj = htmlCompObj
+            break
+      }
+      
+      if(isDragin == true){
         if($clonedom.css("opacity") != "0.5"){
-            this.comps.splice((this.comps.length-1), 0, {
-               name: "btnComp",
-               class: "warning",
-               text: "主要" + this.comps.length
-             })
+            this.comps.splice((this.comps.length-1), 0, compObj)
         }else{
-             $clonedom.remove()
-            this.comps.splice(cloneIndex, 0, {
-                 name: "btnComp",
-                 class: "warning",
-                 text: "主要" + this.comps.length
-               })
+            $clonedom.remove()
+            this.comps.splice(cloneIndex, 0, compObj)
           }  
       }
       

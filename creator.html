@@ -898,7 +898,7 @@ var vm = new Vue({
           this.pages.splice(this.undo.index, 0, this.undo.pageinfo)
           this.generateHtml.splice(this.undo.index, 0, this.undo.htmlinfo)
           window.localStorage.setItem(this.undo.pageinfo.id, JSON.stringify(this.undo.pagecomps))
-          /*删除的是第一个撤消时要trigger一下,新的第一个li*/
+          /*删除的是第一个撤消时要trigger一下,新的第一个li,data更新有延迟*/
           if(this.undo.index == 0){
              setTimeout(function(){ 
               $(".page-list li").eq(0).trigger("click")
@@ -931,7 +931,7 @@ var vm = new Vue({
             dom = $('<a href="javascript:;" data-comp="drag-div" id="0" draggable="true" class="sm-btn warning" style="">警告0</a>')
             break
           case "htmlComp":
-            dom =$('<div class="html-box" id="0"><span><style>.box{font-size: 12px; padding: 10px; margin: 10px 0; background-color: #fff; border: 1px dashed #0cf;}</style></span> <span class="box-wp"><div class="box">请在右边编辑框中插入html,实时预览效果 →</div></span></div>')
+            dom =$('<div class="html-box"  data-comp="drag-div" id="0"><span><style>.box{font-size: 12px; padding: 10px; margin: 10px 0; background-color: #fff; border: 1px dashed #0cf;}</style></span> <span class="box-wp"><div class="box">请在右边编辑框中插入html,实时预览效果 →</div></span></div>')
             break
       }
       domId = $(dom).attr("id")
@@ -990,7 +990,6 @@ var vm = new Vue({
             this.comps.splice(cloneIndex, 0, compObj)
           }  
       }
-      
       
     },
     handleDragover:function(event){ 

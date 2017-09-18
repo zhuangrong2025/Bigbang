@@ -279,7 +279,7 @@ $(function(){
         <div class="app-status"></div>
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
-        <div class="canvas" id="canvas" @dragover.prevent="dragoverItem">
+        <div class="canvas" id="canvas" @dragover.prevent="dragoverItem" @dragleave.prevent="dragleaveItem">
           <!--iconfont-->
           <link rel="stylesheet" :href=" 'https:' + iconfont ">
           <!--//iconfont-->          
@@ -389,7 +389,7 @@ $(function(){
           <div class="pro-box"> 
             <textarea v-model="comps[compIdx].vcss" class="codeMirror" @scroll="codeScroll"></textarea>
             <span class="codeMirror codeMask" v-code-highlight="comps[compIdx].vcss"></span>
-            <div class="attention">/*禁止光标在最后一行结尾处回车*/</div>
+            <div class="attention">/*Don't press "enter”in the end of textarea*/</div>
             <em title="fullscreen" class="icon-h fullscreen" @click="fullscreen"></em>
           </div>
         </div>
@@ -501,19 +501,10 @@ $(function(){
 <script src="/javascripts/codeHightLight.js"></script>
 <script>
 
-/******************按钮组件******************/
-var ButtonComp = {
-      props: ["comp", "id"],
-      template: `<a href="javascript:;" 
-                     class="sm-btn"
-                     data-comp="drag-div"
-                     v-bind:id="id"
-                     v-bind:class="comp.class"
-                     draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"
-                     v-on:click = "increment" >{{ comp.text }}</a>
-                `,
-  
-      methods: {
+/**
+ *****************自定义组件*****************
+ */
+var compMethods = {
         increment: function(event){
           this.$emit('increment', event)   //触发v-on:increment，并传回当前对象event
         },
@@ -526,10 +517,22 @@ var ButtonComp = {
         dragend: function(event){
           this.$emit('dragend', event) 
         }
-      }
+    }
+//button
+var ButtonComp = {
+      props: ["comp", "id"],
+      template: `<a href="javascript:;" 
+                     class="sm-btn"
+                     data-comp="drag-div"
+                     v-bind:id="id"
+                     v-bind:class="comp.class"
+                     draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"
+                     v-on:click = "increment" >{{ comp.text }}</a>
+                `,
+      methods: compMethods
     }
 
-/******************自定义html组件******************/
+//html
 var HtmlComp = {
       props: ["comp", "id"],
       template: ` 
@@ -538,35 +541,10 @@ var HtmlComp = {
                    <span class="box-wp" v-html="comp.vhtml"></span>
                   </div>
                 `,
-      methods: {
-        increment: function(event){
-          this.$emit('increment', event)  
-        },
-        drag: function(event){
-          this.$emit('drag', event) 
-        },
-        dragover: function(event){
-          this.$emit('dragover', event) 
-        },
-        dragend: function(event){
-          this.$emit('dragend', event) 
-        }
-      }
+      methods: compMethods
     }
 
-/*----------利用自定义指令处理高亮css代码----------*/
-Vue.directive('codeHighlight', {
-  bind(el, binding) {
-    var code = binding.value
-    el.innerHTML = codeHightLight(code)
-  },
-  update(el, binding){
-    var code = binding.value
-    el.innerHTML = codeHightLight(code)
-  }
-})
-
-/******************sm-header组件******************/
+//header
 Vue.component('sm-header', {
   props: ["title"],
   template: `
@@ -574,8 +552,7 @@ Vue.component('sm-header', {
             `
   })
 
-
-/******************sm-tabbar组件******************/
+//tabbar
 Vue.component('sm-tabbar', {
   props: ["tabbar"],
   template: `
@@ -589,8 +566,25 @@ Vue.component('sm-tabbar', {
             `
 })
 
+/**
+ *****************利用自定义指令处理高亮css代码*****************
+ */
+Vue.directive('codeHighlight', {
+  bind(el, binding) {
+    var code = binding.value
+    el.innerHTML = codeHightLight(code)
+  },
+  update(el, binding){
+    var code = binding.value
+    el.innerHTML = codeHightLight(code)
+  }
+})
 
-/******************创建vue实例******************/
+
+
+/**
+ *****************创建vue实例 *****************
+ */
     
 var vm = new Vue({
   el: '#app',
@@ -928,7 +922,7 @@ var vm = new Vue({
       //组件类型判断
       switch(compType) {
           case "btnComp":
-            dom = $('<a href="javascript:;" data-comp="drag-div" id="0" draggable="true" class="sm-btn warning" style="">警告0</a>')
+            dom = $('<a href="javascript:;" data-comp="drag-div" id="0" draggable="true" class="sm-btn primary" style="">按钮' + this.comps.length + '</a>')
             break
           case "htmlComp":
             dom =$('<div class="html-box"  data-comp="drag-div" id="0"><span><style>.box{font-size: 12px; padding: 10px; margin: 10px 0; background-color: #fff; border: 1px dashed #0cf;}</style></span> <span class="box-wp"><div class="box">请在右边编辑框中插入html,实时预览效果 →</div></span></div>')
@@ -940,11 +934,14 @@ var vm = new Vue({
       isDragin = false
       $(".select-box").hide()
     },
-    //拖动组件库-over
+    //拖动组件库-over-经过模拟器区域
     dragoverItem:function(){
       if(isDragin == false){
         isDragin = !isDragin
       }
+    },
+    dragleaveItem:function(){
+      isDragin = false
     },
     //拖动组件库-end
     dragendItem:function(compType){
@@ -952,8 +949,8 @@ var vm = new Vue({
       //button组件
       var btnCompObj = {
                          name: "btnComp",
-                         class: "warning",
-                         text: "主要" + this.comps.length
+                         class: "primary",
+                         text: "按钮" + this.comps.length
                        }
       //html组件
       var htmlCompObj = {
@@ -989,6 +986,8 @@ var vm = new Vue({
             $clonedom.remove()
             this.comps.splice(cloneIndex, 0, compObj)
           }  
+      }else{
+        $clonedom.remove()
       }
       
     },

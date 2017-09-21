@@ -8,8 +8,9 @@
 <link rel="stylesheet" href="/stylesheets/creator.css">
 <link rel="stylesheet" href="/stylesheets/override.css">
 <script src="/javascripts/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="/javascripts/jqColorPicker.min.js"></script>
+<script src="/javascripts/jqColorPicker.min.js"></script>
 <script src="/javascripts/store.js"></script>
+<script src="/javascripts/codeHightLight.js"></script>
 <style>
   html,body{
     height: 100%;
@@ -498,7 +499,6 @@ $(function(){
 </span>
    
 <script src="/javascripts//vue.js"></script>
-<script src="/javascripts/codeHightLight.js"></script>
 <script>
 
 /**
@@ -1023,7 +1023,7 @@ var vm = new Vue({
     var pageOfCss = ""
    
     //获取css
-    if(!pageOfHtml.find("style")){
+    if(pageOfHtml.find("style")){
       
       pageOfHtml.find("style").each(function(){
         pageOfCss += $(this).html()

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/stylesheets/smui.css">
 <link rel="stylesheet" href="/stylesheets/creator.css">
 <link rel="stylesheet" href="/stylesheets/override.css">
-<script src="/javascripts/jquery-3.2.1.min.js"></script>
+<script src="/javascripts/jquery-2.1.4.min.js"></script>
 <script src="/javascripts/jqColorPicker.min.js"></script>
 <script src="/javascripts/store.js"></script>
 <script src="/javascripts/codeHightLight.js"></script>
@@ -83,8 +83,11 @@ $(function(){
       }
     })
   }
- 
-
+  
+  //preview pop
+	$(".pv-mask").on("click",function(){
+     $(".pv-mask").removeClass("in")
+	})
 
 	
 })
@@ -184,6 +187,15 @@ $(function(){
 </div>
 <!--//modal iconfont show-->
 <div class="modal-mask"></div>
+<!--preview-->
+<div class="preview-pop">
+  <div class="pv-frame">
+    <button id="preview-get">get</button>
+    <iframe id="previewFrame" src="/preview/page1.html" frameborder="0" width="100%" height="100%" marginheight="0" marginwidth="0" scrolling="auto" allowtransparency="true" ></iframe>
+  </div>
+  <div class="pv-mask"></div>
+</div>
+<!--//preview-->
 <!--header-->
 <header style="opacity: .3">
   <div class="header-left" >
@@ -193,7 +205,7 @@ $(function(){
   </div>
   <div class="navbar">
     <a href="#" class="build active" title="creator"></a>
-    <a href="#" class="preview" title="preview"></a>
+    <a href="#" class="preview" title="preview" @click="preview"></a>
   </div>
   <div class="header-right">
     <ul>
@@ -226,10 +238,8 @@ $(function(){
       <div class="component">
         <ul>
           <li><i class="heading"></i>Heading</li>
-<!--          <li @click="addBtnComp('btnComp', 'warning', '警告')"><i class="button"></i>Button</li>-->
           <li draggable='true' @dragstart.stop='dragItem("btnComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
           <li draggable='true' @dragstart.stop='dragItem("htmlComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="button-bar"></i>Button Bar</li>
-<!--          <li @click="addHtmlComp('htmlComp')"><i class="button"></i>Button</li>-->
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
           <li><i class="input"></i>Input</li>
@@ -801,8 +811,7 @@ var vm = new Vue({
       $("#modal-page").addClass("in")
       $(".modal-mask").addClass("in")
     },
-    submit(){
-      
+    getPageinfo(){
        var len = this.generateHtml.length - 1
        var pagecss = ""
        //将每个page的html赋值表单value
@@ -838,9 +847,31 @@ var vm = new Vue({
        }else{
          $("#form-cvs").append($('<input type="hidden" name="pagecss">').attr({"value": pagecss, "id": "pcss"}))
        }
-       
+    },
+    //export page info
+    submit(){
+       this.getPageinfo()
        Store.save('html-list', this.generateHtml)
        $("#form-cvs").submit()
+    },
+    //preview page
+    preview(){
+       this.getPageinfo()
+       var pagehtmlNew = []
+       $.each($("[name=pagehtml]"), function(i, obj){
+           pagehtmlNew.push(obj.value)
+       })
+       //todo : 数组数据传到服务器后读取不了。。。
+       console.log(pagehtmlNew)
+       $.ajax({
+          type: 'post',
+          url: 'http://10.168.1.91:3000/preview',
+          data:{ pagehtmlNew: "b"},
+          dataType: 'json',
+          success: function(data){
+             $("#preview-get").html(data.some)
+          }
+       });
     },
     
     /*===========================
@@ -1016,7 +1047,7 @@ var vm = new Vue({
     
   },
   updated:function() {
-     /*
+    /*
      * 在每个page生成的html中过滤html编辑生成冗余代码
      */
     var pageOfHtml = $("#canvas").clone()

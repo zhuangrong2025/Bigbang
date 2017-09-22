@@ -13,6 +13,7 @@ var beautify_css = require('js-beautify').css
 var index = require('./routes/index')
 var users = require('./routes/users')
 var login = require('./routes/login')
+var preview = require('./routes/preview')
 
 var app = express()
 
@@ -186,7 +187,7 @@ app.get('/download', function(req, res){
 });
 
 
-
+app.use('/preview', preview)
 app.use('/login', login)
 app.use('/users', users)
 

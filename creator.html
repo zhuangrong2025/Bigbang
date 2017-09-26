@@ -507,7 +507,8 @@ $(function(){
 <!--//container-->
 
 </span>
-   
+</body>
+</html>   
 <script src="/javascripts//vue.js"></script>
 <script>
 
@@ -858,15 +859,22 @@ var vm = new Vue({
     preview(){
        this.getPageinfo()
        var pagehtmlNew = []
+       var pagenameNew = []
+       var pagecssNew = []
        $.each($("[name=pagehtml]"), function(i, obj){
            pagehtmlNew.push(obj.value)
        })
-       //todo : 数组数据传到服务器后读取不了。。。
-       console.log(pagehtmlNew)
+       $.each($("[name=pagename]"), function(i, obj){
+           pagenameNew.push(obj.value)
+       })
+       $.each($("[name=pagecss]"), function(i, obj){
+           pagecssNew.push(obj.value)
+       })
+       
        $.ajax({
           type: 'post',
           url: 'http://10.168.1.91:3000/preview',
-          data:{ pagehtmlNew: "b"},
+          data:{ pagehtmlNew: JSON.stringify(pagehtmlNew), pagenameNew: JSON.stringify(pagenameNew), pagecssNew: JSON.stringify(pagecssNew)},
           dataType: 'json',
           success: function(data){
              $("#preview-get").html(data.some)
@@ -1055,7 +1063,6 @@ var vm = new Vue({
    
     //获取css
     if(pageOfHtml.find("style")){
-      
       pageOfHtml.find("style").each(function(){
         pageOfCss += $(this).html()
       })
@@ -1093,5 +1100,3 @@ var vm = new Vue({
 
   
 </script>
-</body>
-</html>

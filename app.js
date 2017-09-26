@@ -139,7 +139,6 @@ app.post('/output', function(req, res){
         pagenameNew[i] = pagenameNew[i] + "(" + (i + 1) + ")"
       }
       
-      console.log(pagenameNew)
       fs.writeFile('output/'+ pagenameNew[i] +'.html', htmlAll2, function(err){
         if (err) throw err
       }) 
@@ -186,6 +185,9 @@ app.get('/download', function(req, res){
   res.download(file); // Set disposition and send it.
 });
 
+app.get('/', function(req, res){
+   res.sendFile(__dirname + '/creator.html')
+})
 
 app.use('/preview', preview)
 app.use('/login', login)

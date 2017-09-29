@@ -18,6 +18,7 @@ router.post('/', function(req, res, next) {
   var pagecssNew = JSON.parse(req.body.pagecssNew)
   showName = pagenameNew
   
+  
   var contentHead = `<!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -57,12 +58,18 @@ router.post('/', function(req, res, next) {
   for (var i=0; i<pagehtmlNew.length; i++){
       var htmlAll2 = contentHead + pagehtmlNew[i] + contentFooter
       fs.writeFile('public/preview/'+ pagenameNew[i] +'.html', htmlAll2, function(err){
-        if (err) throw err
+        //if (err) throw err
+        if(err){
+            console.log('失败')
+        }
       }) 
     }
   
   fs.writeFile('public/preview/css/output.css', pagecssNew,function(err){ if (err) throw err}) 
-  res.send({ some: 'json1111' });
+  
+  //向客户端发送或返回数据
+  res.send({ some: 'json' });
+  
 })
 
 /* GET preview page. */

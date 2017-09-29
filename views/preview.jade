@@ -3,13 +3,67 @@ html
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no')
-    title index
+    script(src='/javascripts/jquery-2.1.4.min.js')
+    script.
+      $(function(){
+          var pagenum = window.localStorage.getItem("pageIdx")
+          $(".pagelist a").eq(pagenum).css("font-size","20px").append("<span>current page</span>")
+      })
   style.
     *{
-    margin: 0;
-    padding: 0;
+      margin: 0;
+      padding: 0;
+    }
+    body{
+      color: #333;
+      background-color: #F2F2F2;
+      font-size: 16px;
+    }
+    a{
+      color: #333;
+      text-decoration: none;
+    }
+    a:active{
+      color: #333;
+    }
+    h3{
+      background-color: #fff;
+      height: 48px;
+      line-height: 48px;
+      font-size:16px;
+      border-bottom:1px solid #ddd;
+      text-align: center;
+    }
+    .pagelist{
+      clear: both;
+    }
+    .pagelist a{
+      display:block;
+      border-bottom:1px solid #ddd;
+      padding:10px;
+      background:#fff;
+    }
+    .pagelist a:active{
+      background:#f3f3f3;
+    }
+    .pagelist span{
+      display: block;
+      font-size: 13px;
+      color: #f30;
+      float: right;
+      margin: 5px 0 0 0;
+    }
+    .pagelist span em{
+      font-size: 16px;
+      font-style: normal;
     }
   body
+    h3 preview
     .pagelist
       each val in title
         a(href='#{val}.html') #{val}
+        
+        
+        
+        
+        

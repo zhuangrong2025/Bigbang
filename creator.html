@@ -259,9 +259,9 @@ function previewClose(){
       <h3 class="title">Components</h3>
       <div class="component">
         <ul>
-          <li><i class="heading"></i>Heading</li>
+          <li><i class="heading"></i>ActionSheet</li>
           <li draggable='true' @dragstart.stop='dragItem("btnComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
-          <li draggable='true' @dragstart.stop='dragItem("htmlComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="button-bar"></i>Button Bar</li>
+          <li draggable='true' @dragstart.stop='dragItem("htmlComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="button-bar"></i>Html</li>
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
           <li><i class="input"></i>Input</li>
@@ -400,6 +400,34 @@ function previewClose(){
               </div>
             </div>
           </div>
+        </div>
+        <!--Case-->
+        <div class="pro-item">
+          <h3>
+            Case <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <div>
+                <select class="select" v-on:change="caseSelect($event)"  v-model="comps[compIdx].type">
+                  <option :value="ct" v-for="ct in caseTypes">{{ct}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!--case information-->
+          <div>
+            <div class="pro-box">
+              <div class="form-group">
+                <label>to-title</label>
+                <div>
+                  <input type="text" class="c-ipt">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--//case information-->
         </div>
       </div>
       <!--//**************button property**************-->
@@ -577,6 +605,24 @@ var HtmlComp = {
       methods: compMethods
     }
 
+//actionSheet
+var ActionsheetComp = {
+      props: ["comp", "id"],
+      template: ` 
+                  <div>
+                    这是Actionsheet---
+                  </div>
+                `
+    }
+//toast
+var ToastComp = {
+      props: ["comp", "id"],
+      template: ` 
+                  <div>
+                    这是Toast
+                  </div>
+                `
+    }
 //header
 Vue.component('sm-header', {
   props: ["title"],
@@ -623,7 +669,9 @@ var vm = new Vue({
   el: '#app',
   components: {
     btnComp: ButtonComp,
-    htmlComp: HtmlComp
+    htmlComp: HtmlComp,
+    actionsheetComp: ActionsheetComp,
+    toastComp: ToastComp
   },
   data:{
     compIdx: 0,
@@ -637,7 +685,10 @@ var vm = new Vue({
     tabbar: Store.fetch('tabbar', '{"number": 4,"items": [{"icon": "icon-homepage", "title": "Home", "linkto": "#", "active": ""},{"icon": "icon-label", "title": "Category", "linkto": "#", "active": ""},{"icon": "icon-service", "title": "Service", "linkto": "#", "active": ""},{"icon": "icon-people", "title": "User", "linkto": "#", "active": ""}]}'),
     iconfont: Store.fetch('iconfont', '["//at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css"]'),
     undo: {},
-    isPreview: false
+    isPreview: false,
+    caseInfo:{none: {title: ""},actionSheet: {title: "as-title11"},toast: {title: "to-title22"}},
+    caseTypes:["none", "actionSheet", "toast"],
+    caseIdx: 0
   },
   /*监听data*/
   watch: {
@@ -705,8 +756,15 @@ var vm = new Vue({
       this.undo['index'] = this.compIdx
       this.undo['compinfo'] = this.comps[this.compIdx]
       
+      
+      //删除相关联的事件
+      this.caseDel("cid1")
       this.comps.splice(this.compIdx,1)
       $(".select-box").hide()
+      
+      
+      
+      
     },
 
     //隐藏select-box
@@ -1022,7 +1080,8 @@ var vm = new Vue({
       var btnCompObj = {
                          name: "btnComp",
                          class: "primary",
-                         text: "按钮" + this.comps.length
+                         text: "按钮" + this.comps.length,
+                         caseId: ""
                        }
       //html组件
       var htmlCompObj = {
@@ -1040,6 +1099,9 @@ var vm = new Vue({
 }
 </style>`
          }
+      
+    
+      
       
       //组件类型判断
       switch(compType) {
@@ -1084,6 +1146,36 @@ var vm = new Vue({
       $clonedom.remove()
       $(dom).show()
       this.comps.splice(cloneIndex, 0, this.comps.splice(domId, 1)[0])
+    },
+    
+    /*===========================
+      case 操作事件
+    =============================*/
+    //下拉选择
+    caseSelect:function(event){
+      var casetype = event.target.value
+      
+      if( event.target.value == "actionSheet"){
+        this.comps.splice((this.comps.length-1), 0, {name: "actionsheetComp", caseId: "cid1"})
+      }
+      if( event.target.value == "toast"){
+        this.comps.splice((this.comps.length-1), 0, {name: "toastComp", caseId: "cid2"})
+      }
+      if(event.target.value == "none"){
+        this.caseDel("cid1")
+      }
+    },
+    //删除事件函数-传递事件id
+    caseDel:function(caseid){
+      let _this = this
+      $.each(_this.comps, function(i, item){
+         if(item.caseId == caseid){
+             if(_this.compIdx != i){
+               _this.comps.splice(i, 1)
+               return false
+             }
+         }
+      })
     }
     
   },

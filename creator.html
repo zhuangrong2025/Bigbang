@@ -384,7 +384,7 @@ function previewClose(){
             <div class="form-group">
               <label>Class</label>
               <div>
-                <select class="select" v-model="comps[compIdx].class">
+                <select class="select" v-model="comps[compIdx].class" >
                   <option :value="cls" v-for="cls in classes">{{cls}}</option>
                 </select>
               </div>
@@ -409,7 +409,7 @@ function previewClose(){
           <div class="pro-box">
             <div class="form-group">
               <div>
-                <select class="select" v-on:change="caseSelect($event)"  v-model="comps[compIdx].type">
+                <select class="select" v-on:change="caseSelect($event)" v-model="comps[compIdx].type">
                   <option :value="ct" v-for="ct in caseTypes">{{ct}}</option>
                 </select>
               </div>
@@ -686,9 +686,9 @@ var vm = new Vue({
     iconfont: Store.fetch('iconfont', '["//at.alicdn.com/t/font_378141_8cl3a5vspzo7p66r.css"]'),
     undo: {},
     isPreview: false,
-    caseInfo:{none: {title: ""},actionSheet: {title: "as-title11"},toast: {title: "to-title22"}},
-    caseTypes:["none", "actionSheet", "toast"],
-    caseIdx: 0
+    caseTypes:["none", "actionsheet", "toast"],
+    caseIdx: null,
+    currCaseid: null,
   },
   /*监听data*/
   watch: {
@@ -756,15 +756,11 @@ var vm = new Vue({
       this.undo['index'] = this.compIdx
       this.undo['compinfo'] = this.comps[this.compIdx]
       
-      
       //删除相关联的事件
-      this.caseDel("cid1")
+      this.caseDel(this.comps[this.compIdx].caseid)
+      
       this.comps.splice(this.compIdx,1)
       $(".select-box").hide()
-      
-      
-      
-      
     },
 
     //隐藏select-box
@@ -1081,7 +1077,8 @@ var vm = new Vue({
                          name: "btnComp",
                          class: "primary",
                          text: "按钮" + this.comps.length,
-                         caseId: ""
+                         caseid: "caseid" + Math.round(Math.random() * 100),
+                         type: "none"
                        }
       //html组件
       var htmlCompObj = {
@@ -1154,27 +1151,60 @@ var vm = new Vue({
     //下拉选择
     caseSelect:function(event){
       var casetype = event.target.value
+      var currCaseid = this.comps[this.compIdx].caseid
+      let _this = this
+      var tempCaseid
       
-      if( event.target.value == "actionSheet"){
-        this.comps.splice((this.comps.length-1), 0, {name: "actionsheetComp", caseId: "cid1"})
+      //当buttonComp没有关联caseComp时并删除，对应buttonComp的type为undefined
+      //buttonComp删除时type没有了，关联v-modal会触发caseSelect事件
+      if(_this.comps[_this.compIdx].type == undefined){
+        return
       }
-      if( event.target.value == "toast"){
-        this.comps.splice((this.comps.length-1), 0, {name: "toastComp", caseId: "cid2"})
-      }
-      if(event.target.value == "none"){
-        this.caseDel("cid1")
+      if(event.target.value != "none" ){ 
+        //to fix: 将currCaseid删除后选择的buttonComp后，未将当前buttonCompd id赋值于this.currCaseid
+         _this.currCaseid = currCaseid
+        
+        //第一次添加case组件
+        if(_this.caseIdx == null){
+           _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid}) 
+           _this.caseIdx = _this.comps.length-2
+        }else{
+          
+          $.each(_this.comps, function(i, item){
+            if(!item.caseId){
+              return 
+            }else{
+              if(item.caseId == currCaseid){
+                 if(_this.compIdx != i){
+                   _this.caseIdx = i
+                   tempCaseid = _this.comps[i].caseId
+                   _this.comps.splice(i, 1)
+                   _this.comps.splice(i, 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid}) 
+                 }
+              }
+            }
+          })
+          
+          //添加第二个case组件时，判断选中的buttonComp没有对应case组件，则新增一个case组件
+          if(tempCaseid != currCaseid){
+            _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid}) 
+          }
+        }
+        
+      }else{
+        this.caseDel(currCaseid)
       }
     },
-    //删除事件函数-传递事件id
+    //删除事件函数-判断选中id与关联事件组件id是否一致
     caseDel:function(caseid){
       let _this = this
       $.each(_this.comps, function(i, item){
-         if(item.caseId == caseid){
+           if(item.caseId == caseid){
              if(_this.compIdx != i){
                _this.comps.splice(i, 1)
                return false
              }
-         }
+           }
       })
     }
     

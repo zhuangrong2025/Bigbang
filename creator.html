@@ -418,12 +418,23 @@ function previewClose(){
           <!--case information-->
           <div>
             <div class="pro-box">
-              <div class="form-group">
-                <label>to-title</label>
+              <!--actionsheet-->
+              <div class="form-group"  v-if="comps[compIdx].type == 'actionsheet'">
+                <label>actionsheet-info</label>
                 <div>
-                  <input type="text" class="c-ipt">
+                  caseIdx: {{caseIdx}}
+                  <input type="text" class="c-ipt" v-model="comps[caseIdx].title" >
                 </div>
               </div>
+              <!--toast-->
+              <div class="form-group"  v-if="comps[compIdx].type == 'toast'">
+                <label>toast-info</label>
+                <div>
+                  caseIdx: {{caseIdx}}
+                  <input type="text" class="c-ipt" v-model="comps[caseIdx].title">
+                </div>
+              </div>
+              
             </div>
           </div>
 
@@ -610,7 +621,7 @@ var ActionsheetComp = {
       props: ["comp", "id"],
       template: ` 
                   <div>
-                    这是Actionsheet---
+                    这是Actionsheet---{{comp.title}}
                   </div>
                 `
     }
@@ -757,8 +768,9 @@ var vm = new Vue({
       this.undo['compinfo'] = this.comps[this.compIdx]
       
       //删除相关联的事件
-      this.caseDel(this.comps[this.compIdx].caseid)
-      
+      if(this.comps[this.compIdx].caseid){
+        this.caseDel(this.comps[this.compIdx].caseid)
+      }
       this.comps.splice(this.compIdx,1)
       $(".select-box").hide()
     },
@@ -788,6 +800,8 @@ var vm = new Vue({
       //切换属性面板
       this.panelProp = this.comps[this.compIdx].name
       
+      //选择对应的caseComp的id
+      this.caseidSet(this.comps[this.compIdx].caseid)
       
     },
     //属性展开收缩
@@ -1155,39 +1169,35 @@ var vm = new Vue({
       let _this = this
       var tempCaseid
       
-      //当buttonComp没有关联caseComp时并删除，对应buttonComp的type为undefined
+      //当buttonComp没有关联caseComp并删除时，对应buttonComp的type为undefined
       //buttonComp删除时type没有了，关联v-modal会触发caseSelect事件
       if(_this.comps[_this.compIdx].type == undefined){
         return
       }
       if(event.target.value != "none" ){ 
-        //to fix: 将currCaseid删除后选择的buttonComp后，未将当前buttonCompd id赋值于this.currCaseid
          _this.currCaseid = currCaseid
         
         //第一次添加case组件
         if(_this.caseIdx == null){
-           _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid}) 
+           _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title"}) 
            _this.caseIdx = _this.comps.length-2
         }else{
           
           $.each(_this.comps, function(i, item){
-            if(!item.caseId){
-              return 
-            }else{
-              if(item.caseId == currCaseid){
-                 if(_this.compIdx != i){
-                   _this.caseIdx = i
-                   tempCaseid = _this.comps[i].caseId
-                   _this.comps.splice(i, 1)
-                   _this.comps.splice(i, 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid}) 
-                 }
-              }
+            if(item.caseId == currCaseid){
+               if(_this.compIdx != i){
+                 _this.caseIdx = i
+                 tempCaseid = _this.comps[i].caseId
+                 _this.comps.splice(i, 1)
+                 _this.comps.splice(i, 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title"}) 
+               }
             }
           })
           
           //添加第二个case组件时，判断选中的buttonComp没有对应case组件，则新增一个case组件
           if(tempCaseid != currCaseid){
-            _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid}) 
+            _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title"}) 
+           _this.caseIdx = _this.comps.length-2
           }
         }
         
@@ -1202,6 +1212,18 @@ var vm = new Vue({
            if(item.caseId == caseid){
              if(_this.compIdx != i){
                _this.comps.splice(i, 1)
+               return false
+             }
+           }
+      })
+    },
+    //选择buttonComp时就关联了对应的caseComp的id
+    caseidSet:function(caseid){
+      let _this = this
+      $.each(_this.comps, function(i, item){
+           if(item.caseId == caseid){
+             if(_this.compIdx != i){
+               _this.caseIdx = i
                return false
              }
            }

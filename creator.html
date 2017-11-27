@@ -419,11 +419,18 @@ function previewClose(){
           <div>
             <div class="pro-box">
               <!--actionsheet-->
-              <div class="form-group"  v-if="comps[compIdx].type == 'actionsheet'">
-                <label>actionsheet-info</label>
-                <div>
-                  caseIdx: {{caseIdx}}
-                  <input type="text" class="c-ipt" v-model="comps[caseIdx].title" >
+              <div v-if="comps[compIdx].type == 'actionsheet'">
+                <div class="form-group">
+                  <label>title</label>
+                  <div>
+                    <input type="text" class="c-ipt" v-model="comps[caseIdx].title" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>toggle</label>
+                  <div class="tr">
+                    <input class="ct-switch" type="checkbox" v-model="comps[caseIdx].isToggle"/>
+                  </div>
                 </div>
               </div>
               <!--toast-->
@@ -434,7 +441,6 @@ function previewClose(){
                   <input type="text" class="c-ipt" v-model="comps[caseIdx].title">
                 </div>
               </div>
-              
             </div>
           </div>
 
@@ -572,7 +578,7 @@ function previewClose(){
 </html>   
 <script src="/javascripts//vue.js"></script>
 <script>
-
+  
 /**
  *****************自定义组件*****************
  */
@@ -596,6 +602,7 @@ var ButtonComp = {
       template: `<a href="javascript:;" 
                      class="sm-btn"
                      data-comp="drag-div"
+                     v-bind:data-case="comp.caseid"
                      v-bind:id="id"
                      v-bind:class="comp.class"
                      draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"
@@ -621,7 +628,17 @@ var ActionsheetComp = {
       props: ["comp", "id"],
       template: ` 
                   <div>
-                    这是Actionsheet---{{comp.title}}
+                    <div class="sm-mask" :data-case="comp.caseId" :class=" {toggle: comp.isToggle}"></div>
+                    <div class="sm-actionSheet" :data-case="comp.caseId" :class=" {toggle: comp.isToggle}" >
+                      <h3>{{comp.title}}</h3>
+                      <ul>
+                        <li>示例菜单一</li>
+                        <li>示例菜单一</li>
+                        <li>示例菜单一</li>
+                      </ul>
+                      <a href="javascript:;" class="action-cancel">取消</a>
+                    </div>
+                    <div v-html="comp.script"></div>
                   </div>
                 `
     }
@@ -699,7 +716,6 @@ var vm = new Vue({
     isPreview: false,
     caseTypes:["none", "actionsheet", "toast"],
     caseIdx: null,
-    currCaseid: null,
   },
   /*监听data*/
   watch: {
@@ -860,6 +876,13 @@ var vm = new Vue({
       
       this.panelProp = "page"
       $(".select-box").hide()
+      
+      console.log("1this.caseIdx" + this.caseIdx)
+      //to fix:切换page的时候隐藏相应caseComp弹出层
+      if(this.caseIdx != null){
+        console.log("2this.caseIdx" + this.caseIdx)
+        this.comps[this.caseIdx].isToggle = false
+      }
       
     },    
     delectPageConfirm(){
@@ -1175,11 +1198,25 @@ var vm = new Vue({
         return
       }
       if(event.target.value != "none" ){ 
-         _this.currCaseid = currCaseid
+        
+        //actionsheet组件信息和相应脚本
+        var actionsheetCont = `
+                              <script>
+$(":not(div)[data-case=${currCaseid}]").on("click",function(e){
+  $(".sm-mask[data-case=${currCaseid}]").fadeIn(200)
+  $(".sm-actionSheet[data-case=${currCaseid}]").addClass('toggle')	
+})
+$(".sm-mask, .action-cancel").on("click",function(e){
+  e.stopPropagation()
+  $(".sm-mask").fadeOut(300)
+  $(".sm-actionSheet").removeClass('toggle')			
+})
+<\/script>
+`
         
         //第一次添加case组件
         if(_this.caseIdx == null){
-           _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title"}) 
+           _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title", script: actionsheetCont, isToggle: true}) 
            _this.caseIdx = _this.comps.length-2
         }else{
           
@@ -1189,14 +1226,14 @@ var vm = new Vue({
                  _this.caseIdx = i
                  tempCaseid = _this.comps[i].caseId
                  _this.comps.splice(i, 1)
-                 _this.comps.splice(i, 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title"}) 
+                 _this.comps.splice(i, 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title", script: actionsheetCont, isToggle: true}) 
                }
             }
           })
           
           //添加第二个case组件时，判断选中的buttonComp没有对应case组件，则新增一个case组件
           if(tempCaseid != currCaseid){
-            _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title"}) 
+            _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title", script: actionsheetCont, isToggle: true}) 
            _this.caseIdx = _this.comps.length-2
           }
         }

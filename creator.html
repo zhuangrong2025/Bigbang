@@ -427,6 +427,12 @@ function previewClose(){
                   </div>
                 </div>
                 <div class="form-group">
+                  <label>menu</label>
+                  <div>
+                    <input type="text" class="c-ipt" v-model="comps[caseIdx].menu" >
+                  </div>
+                </div>
+                <div class="form-group">
                   <label>toggle</label>
                   <div class="tr">
                     <input class="ct-switch" type="checkbox" v-model="comps[caseIdx].isToggle"/>
@@ -436,9 +442,15 @@ function previewClose(){
               <!--toast-->
               <div v-if="comps[compIdx].type == 'toast'">
                 <div class="form-group">
-                  <label>title</label>
+                  <label>tips</label>
                   <div>
-                    <input type="text" class="c-ipt" v-model="comps[caseIdx].title">
+                    <input type="text" class="c-ipt" v-model="comps[caseIdx].tips">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>icon</label>
+                  <div>
+                    <input type="text" class="c-ipt" v-model="comps[caseIdx].icon">
                   </div>
                 </div>
                 <div class="form-group">
@@ -639,7 +651,7 @@ var ActionsheetComp = {
                     <div class="sm-actionSheet" :data-case="comp.caseId" :class=" {toggle: comp.isToggle}" >
                       <h3>{{comp.title}}</h3>
                       <ul>
-                        <li>示例菜单一</li>
+                        <li>{{comp.menu}}</li>
                         <li>示例菜单一</li>
                         <li>示例菜单一</li>
                       </ul>
@@ -653,8 +665,11 @@ var ActionsheetComp = {
 var ToastComp = {
       props: ["comp", "id"],
       template: ` 
-                  <div>
-                    <div>toast-{{comp.title}}</div>
+                  <div class="sm-toast" :data-case="comp.caseId" :class=" {toggle: comp.isToggle}">
+                    <div>
+                      <i :class="comp.icon"></i>
+                      <p>{{comp.tips}}</p>
+                    </div>
                     <div v-html="comp.script"></div>
                   </div>
                 `
@@ -1206,7 +1221,7 @@ var vm = new Vue({
         return
       }
       if(casetype != "none" ){ 
-        var caseScript
+        var caseObj
         
         
         //actionsheet脚本
@@ -1226,23 +1241,29 @@ $(".sm-mask, .action-cancel").on("click",function(e){
         //toast脚本
         var toastScript = `
                           <script>
-
-console.log("toast")
+$(":not(div)[data-case=${currCaseid}]").on("click",function(){		
+   var  $toast = $(".sm-toast[data-case=${currCaseid}]")
+   if ($toast.css('display') != 'none') return;		
+   $toast.fadeIn(100)
+   setTimeout(function(){
+     $toast.fadeOut(100)
+   },2000)
+})
 <\/script>
 `
-        //根据选择的case类型，添加对应的脚本
+        //根据选择的case类型，添加对应的脚本; to do: 在这里为每个事件类型添加不同的数据，变量为{...}，用splice添加
         switch(casetype) {
           case "actionsheet":
-            caseScript = actionsheetScript
+            caseObj = {name: casetype + "Comp", caseId: currCaseid, title: "标题", menu: "示例菜单一", script: actionsheetScript, isToggle: true}
             break
           case "toast":
-            caseScript = toastScript
+            caseObj = {name: casetype + "Comp", caseId: currCaseid, tips: "加载中", icon: "sm-icon-loading", script: toastScript, isToggle: true}
             break
         }
         
         //第一次添加case组件
         if(_this.caseIdx == null){
-           _this.comps.splice((_this.comps.length-1), 0, {name: casetype + "Comp", caseId: currCaseid, title: "标题", script: caseScript, isToggle: true}) 
+           _this.comps.splice((_this.comps.length-1), 0, caseObj) 
            _this.caseIdx = _this.comps.length-2
         }else{
           
@@ -1252,14 +1273,14 @@ console.log("toast")
                  _this.caseIdx = i
                  tempCaseid = _this.comps[i].caseId
                  _this.comps.splice(i, 1)
-                 _this.comps.splice(i, 0, {name: casetype + "Comp", caseId: currCaseid, title: "标题", script: caseScript, isToggle: true}) 
+                 _this.comps.splice(i, 0, caseObj) 
                }
             }
           })
           
           //添加第二个case组件时，判断选中的buttonComp没有对应case组件，则新增一个case组件
           if(tempCaseid != currCaseid){
-            _this.comps.splice((_this.comps.length-1), 0, {name: casetype + "Comp", caseId: currCaseid, title: "标题", script: caseScript, isToggle: true}) 
+            _this.comps.splice((_this.comps.length-1), 0, caseObj) 
             _this.caseIdx = _this.comps.length-2
           }
         }

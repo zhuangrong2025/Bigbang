@@ -434,11 +434,18 @@ function previewClose(){
                 </div>
               </div>
               <!--toast-->
-              <div class="form-group"  v-if="comps[compIdx].type == 'toast'">
-                <label>toast-info</label>
-                <div>
-                  caseIdx: {{caseIdx}}
-                  <input type="text" class="c-ipt" v-model="comps[caseIdx].title">
+              <div v-if="comps[compIdx].type == 'toast'">
+                <div class="form-group">
+                  <label>title</label>
+                  <div>
+                    <input type="text" class="c-ipt" v-model="comps[caseIdx].title">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>toggle</label>
+                  <div class="tr">
+                    <input class="ct-switch" type="checkbox" v-model="comps[caseIdx].isToggle"/>
+                  </div>
                 </div>
               </div>
             </div>
@@ -647,7 +654,8 @@ var ToastComp = {
       props: ["comp", "id"],
       template: ` 
                   <div>
-                    这是Toast
+                    <div>toast-{{comp.title}}</div>
+                    <div v-html="comp.script"></div>
                   </div>
                 `
     }
@@ -877,12 +885,12 @@ var vm = new Vue({
       this.panelProp = "page"
       $(".select-box").hide()
       
-      console.log("1this.caseIdx" + this.caseIdx)
-      //to fix:切换page的时候隐藏相应caseComp弹出层
-      if(this.caseIdx != null){
-        console.log("2this.caseIdx" + this.caseIdx)
-        this.comps[this.caseIdx].isToggle = false
-      }
+      //切换到其他page时，将caseComp弹出层隐藏
+      $.each(this.comps, function(i, item){
+        if(item.isToggle){
+          item.isToggle = false;
+        }
+      })
       
     },    
     delectPageConfirm(){
@@ -1197,10 +1205,12 @@ var vm = new Vue({
       if(_this.comps[_this.compIdx].type == undefined){
         return
       }
-      if(event.target.value != "none" ){ 
+      if(casetype != "none" ){ 
+        var caseScript
         
-        //actionsheet组件信息和相应脚本
-        var actionsheetCont = `
+        
+        //actionsheet脚本
+        var actionsheetScript = `
                               <script>
 $(":not(div)[data-case=${currCaseid}]").on("click",function(e){
   $(".sm-mask[data-case=${currCaseid}]").fadeIn(200)
@@ -1212,11 +1222,27 @@ $(".sm-mask, .action-cancel").on("click",function(e){
   $(".sm-actionSheet").removeClass('toggle')			
 })
 <\/script>
+`       
+        //toast脚本
+        var toastScript = `
+                          <script>
+
+console.log("toast")
+<\/script>
 `
+        //根据选择的case类型，添加对应的脚本
+        switch(casetype) {
+          case "actionsheet":
+            caseScript = actionsheetScript
+            break
+          case "toast":
+            caseScript = toastScript
+            break
+        }
         
         //第一次添加case组件
         if(_this.caseIdx == null){
-           _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title", script: actionsheetCont, isToggle: true}) 
+           _this.comps.splice((_this.comps.length-1), 0, {name: casetype + "Comp", caseId: currCaseid, title: "标题", script: caseScript, isToggle: true}) 
            _this.caseIdx = _this.comps.length-2
         }else{
           
@@ -1226,15 +1252,15 @@ $(".sm-mask, .action-cancel").on("click",function(e){
                  _this.caseIdx = i
                  tempCaseid = _this.comps[i].caseId
                  _this.comps.splice(i, 1)
-                 _this.comps.splice(i, 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title", script: actionsheetCont, isToggle: true}) 
+                 _this.comps.splice(i, 0, {name: casetype + "Comp", caseId: currCaseid, title: "标题", script: caseScript, isToggle: true}) 
                }
             }
           })
           
           //添加第二个case组件时，判断选中的buttonComp没有对应case组件，则新增一个case组件
           if(tempCaseid != currCaseid){
-            _this.comps.splice((_this.comps.length-1), 0, {name: _this.comps[_this.compIdx].type + "Comp", caseId: currCaseid, title: "set title", script: actionsheetCont, isToggle: true}) 
-           _this.caseIdx = _this.comps.length-2
+            _this.comps.splice((_this.comps.length-1), 0, {name: casetype + "Comp", caseId: currCaseid, title: "标题", script: caseScript, isToggle: true}) 
+            _this.caseIdx = _this.comps.length-2
           }
         }
         

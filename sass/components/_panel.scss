@@ -1,0 +1,73 @@
+//面板
+.sm-panels-title{
+  margin-top: .77em;
+  margin-bottom: .3em; 
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #999;
+  font-size: 14px;
+  & + .sm-panels {
+    margin-top: 0;
+  }
+}
+.sm-panels{
+  margin-top: 20px;
+  background-color: #fff;
+  border-top: 1px solid  #ececec;
+  border-bottom: 1px solid  #ececec;
+  
+  .sm-panel{
+    display: -webkit-box; 
+    display: -webkit-flex;
+    display: flex;
+    position: relative;
+    padding: 10px 15px;
+    &:before{
+      content: " ";
+      position: absolute;
+      top: 0;
+      left: 15px;
+      right: 0;
+      height: 1px;
+      border-top: 1px solid #ececec;
+    }
+    &:first-child{
+        &:before{
+          display: none;
+        }
+    }
+    &:active{
+      background-color: #fff;
+    }
+    > figure{
+      width: 60px;
+      height: 60px;
+      margin-right: .8em;
+    }
+    > article{
+      -webkit-box-flex:1;
+      -webkit-flex:1;
+      flex:1;
+    }
+    > article h4{
+      font-weight: normal;
+      line-height: 1.4;
+    }
+    > article p{
+      font-size: 13px;
+      color: #999;
+      line-height: 1.4;
+    }
+  }
+  a.sm-panel{
+    &:active{
+      background-color: #eee;
+    }
+  }
+  div.sm-panel{
+    > article h4{
+      line-height: 2.2;
+    }
+  }
+}
+

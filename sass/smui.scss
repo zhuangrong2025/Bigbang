@@ -1,9 +1,13 @@
-@import
+@import 
+  
   // Custom
   "custom",
 
   // Variables
   "variables",
+  
+  // Variables
+  "global",
   
   // Mixins
   "mixins",
@@ -16,9 +20,21 @@
   "components/dialog",
   "components/check",
   "components/switch",
-  "components/list",
+  "components/form",
+  "components/select",
+  "components/cell",
   "components/header",
-  "components/tabbar";
+  "components/tabbar",
+  "components/panel",
+  "components/badge",
+  "components/flex",
+  "components/space",
+  "components/grid",
+  "components/actionsheet",
+  "components/toast",
+  "components/article";
+
+
 
 /*page padd*/
 .sm-container{

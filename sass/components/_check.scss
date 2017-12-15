@@ -1,22 +1,20 @@
 //checkbox,radio
-
 .sm-check-common{
   display: inline-block;
 	vertical-align: middle;
 	-webkit-appearance:none;
-  margin: 0 5px;
+  margin: 0 5px -3px;
   &:checked{
     &:before{
-      color: $checkedColor;
+      color: $checked-color;
     }
   }
   &:before{
     font-family: 'smui';
-    font-size: $checkFontSize;
-    color: $checkDefaultColor;
+    font-size: $check-font-size;
+    color: $check-default-color;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale; 
   }
 }
 /*checkbox*/
@@ -24,11 +22,11 @@
   @extend .sm-check-common; 
   &:checked{
     &:before{
-      content: "\f007";
+      content: "\EA06";
     }
   }
   &:before{
-    content: "\f005";
+    content: "\EA01";
   }
 }
 
@@ -37,11 +35,11 @@
   @extend .sm-check-common; 
   &:checked{
     &:before{
-      content: "\f058";
+      content: "\EA08";
     }
   }
   &:before{
-    content: "\f1db";
+    content: "";
   }
 }
 

@@ -1,0 +1,68 @@
+//badge
+.sm-actionSheet{
+	position: fixed;
+	z-index: 9999;
+	bottom: 0;
+	left: 0;
+	right: 0;
+  -webkit-transform: translate(0, 100%);
+  -webkit-backface-visibility: hidden;
+	-webkit-transition: -webkit-transform .3s;
+  background-color: #EFEFF4;
+  
+  h3{
+    position: relative;
+    padding: 0 20px;
+    line-height: 1.4;
+    font-size: 14px;
+    height: 65px;
+    text-align: center;
+    color: #888;   
+    background: #fff;
+    border-bottom: 1px solid #ececec;	 
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }  
+  
+  li{
+    padding: 12px 0;
+    text-align: center;
+    border-bottom: 1px solid #ececec;	
+    background-color: #fff;
+  }
+  a{
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    margin:5px 0 0;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    background-color: #fff;
+  }
+  a:active,
+  li:active{
+    background-color: #eee;
+  }
+  @at-root &.toggle{
+    -webkit-transform: translate(0, 0);
+  }
+}
+.sm-mask{
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.6);
+	display: none;
+}

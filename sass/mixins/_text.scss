@@ -5,3 +5,7 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: $line;
 }
+@mixin textwrap() {
+    word-wrap:break-word;
+    word-break:break-all;
+}

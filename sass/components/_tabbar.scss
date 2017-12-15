@@ -51,6 +51,7 @@
   display: block;
 }
 .sm-tabbar a i.icon-tb01{	
-	background-image: url(images/icon-tb01.png);
+  //有图片，webpack没有安装相应loader无法编译
+	//background-image: url(images/icon-tb01.png);
 }
 

@@ -1,0 +1,38 @@
+//toast
+.sm-toast {
+	position: fixed;
+  display: none;
+	top: 180px;
+	left: 50%;
+	z-index: 5000;
+	width: 122px;
+	min-height: 122px;
+	margin-left: -60px;
+	background: rgba(17, 17, 17, 0.7);
+	text-align: center;
+	border-radius: 5px;
+	color: #fff;
+  i{
+    display: block;
+    width: 38px;
+    height: 38px;
+    margin: 30px auto 5px;
+    vertical-align: baseline;
+    &:before{
+      color: #fff;
+      font-size: 45px;
+      line-height: 38px;
+      margin-left: -3px;
+    }
+  }
+  &:after{
+    content: '';
+    display: block;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
+}

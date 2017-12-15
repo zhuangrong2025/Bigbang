@@ -1,0 +1,33 @@
+//select
+.sm-select{
+  select {
+    -webkit-appearance: none;
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    width: 100%;
+    font-size: inherit;
+    height: 1.5em;
+    line-height: 1.5em;
+    position: relative;
+    z-index: 1;
+  }
+  &:after{
+    content: " ";
+    display: inline-block;
+    height: 9px;
+    width: 9px;
+    border-width: 1px 1px 0 0;
+    border-color: #C8C8CD;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    top: -2px;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    margin-top: -4px;
+  }
+}
+
+

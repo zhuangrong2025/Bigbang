@@ -38,7 +38,7 @@ $border-radius:       5px !default;
 
 
 
-//button
+//按钮 - button
 //
 //-------------------------------------------------
 
@@ -70,23 +70,28 @@ $btn-height-mini:2.3;
 // 链接按钮
 
 
-// 多选框，单选框变量
-//
-//-------------------------------------------------
-$checkedColor:                   #f60;
-$checkDefaultColor:              #ccc;
-$checkFontSize:                  23px;
+//checkbox，radio - 多选框，单选框
+
+$checked-color:                   $brand-success;
+$check-default-color:             #c9c9c9;
+$check-font-size:                 23px;
 
 
 // 开关
-//
-//-------------------------------------------------
-$switchHeight:                   32px;
-$switchedColor:                  #78BB05;
+
+$switchHeight:                    32px;
+$switchedColor:                   $brand-success;
 
 //iconfont
-//
-//-------------------------------------------------
+
 //$iconfontLink:                   32px;
-$iconTabbar01:                   "\e702";
+$iconTabbar01:                    "\e702";
+
+//grid
+
+$grid-columns:                    3;
+
+
+
+
 

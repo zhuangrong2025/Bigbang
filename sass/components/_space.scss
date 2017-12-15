@@ -1,0 +1,17 @@
+//badge
+.sm-space{
+  font-size: 1px;
+  height: 15px;
+  clear: both;
+  overflow: hidden;
+  @at-root &.s10{
+    height: 10px;
+  }
+  @at-root &.s20{
+    height: 20px;
+  }
+  @at-root &.s30{
+    height: 30px;
+  }
+}
+

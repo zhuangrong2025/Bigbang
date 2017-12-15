@@ -1,0 +1,31 @@
+
+//input
+.sm-input{
+  width: 100%;
+  border: 0;
+  outline: 0;
+  -webkit-appearance: none;
+  background-color: transparent;
+  font-size: inherit;
+  color: inherit;
+  height: 1.5em;
+  line-height: 1.5em;
+
+  // hides the spin-button
+  &::-webkit-outer-spin-button, &::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+  }
+}
+
+//textarea
+.sm-textarea {
+  width: 100%;
+  display: block;
+  border: 0;
+  resize: none;
+  color: inherit;
+  font-size: 1em;
+  line-height: inherit;
+  outline: 0;
+}

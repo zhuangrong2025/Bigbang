@@ -1,0 +1,27 @@
+//badge
+.sm-grids{
+  display: -webkit-box; 
+	display: -webkit-flex;
+	display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid  #ececec;
+  border-left: 1px solid  #ececec;
+  .sm-grid{
+    flex: 0 0 percentage(1/$grid-columns);
+    padding: 20px 10px;
+    font-size: 14px;
+    border-right: 1px solid  #ececec;
+    border-bottom: 1px solid  #ececec;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center; 
+    -webkit-box-align: center;
+    justify-content: center;
+    flex-direction:column; /*纵向*/
+    &:active{
+      background-color: #eee;
+    }
+  }
+}
+

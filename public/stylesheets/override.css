@@ -40,3 +40,19 @@
 .sm-btn + .sm-btn{
   margin-top: 8px;
 }
+
+/*定位 覆盖fixed*/
+.sm-toast:after,
+.sm-toast,
+.sm-mask,
+.sm-actionSheet{
+	position: absolute;
+}
+
+/*弹出层显示隐藏覆盖*/
+.sm-toast.toggle,
+.sm-mask.toggle{
+	display: block !important;
+}
+
+

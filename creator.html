@@ -241,7 +241,7 @@ function previewClose(){
 <!--//header-->
 <!--container-->
 <section class="container" style="opacity: 1.7">
-  <aside class="aside-bar" style="opacity: 0.3; display:">
+  <aside class="aside-bar" style="opacity: 0.5; display:">
     <!--pages-->
     <div class="pages">
       <h3 class="title"><span>Pages</span> <button id="addpages" @click="addPage"><i class="new-page"></i>Add Page</button></h3>
@@ -259,18 +259,30 @@ function previewClose(){
       <h3 class="title">Components</h3>
       <div class="component">
         <ul>
-          <li><i class="heading"></i>ActionSheet</li>
+          <!--表单组件-->
+          <li class="divider"><span>Form</span></li>
           <li draggable='true' @dragstart.stop='dragItem("btnComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
-          <li draggable='true' @dragstart.stop='dragItem("htmlComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="button-bar"></i>Html</li>
+          <li><i class="input"></i>Input</li>
+          <li><i class="list"></i>List</li>
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
-          <li><i class="input"></i>Input</li>
-          <li><i class="select"></i>Select</li>
-          <li><i class="toggle"></i>Toggle</li>
-          <li><i class="search"></i>Search</li>
+          <li><i class="switch"></i>Switch</li>
           <li><i class="textarea"></i>Textarea</li>
-          <li><i class="slider"></i>Slider</li>
-          <li><i class="range"></i>Range</li>
+          <li><i class="select"></i>Select</li>
+          <!--基础组件-->
+          <li class="divider"><span>Base</span></li>
+          <li draggable='true' @dragstart.stop='dragItem("htmlComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
+          <li><i class="panel"></i>Panel</li>
+          <li><i class="article"></i>Article</li>
+          <li><i class="badge"></i>Badge</li>
+          <li><i class="flex"></i>Flex</li>
+          <li><i class="space"></i>White space</li>
+          <li><i class="grid"></i>Grid</li>
+          <li><i class="icon"></i>Icon</li>
+          <!--导航和搜索-->
+          <li class="divider"><span>navigation | search</span></li>
+          <li><i class="navbar"></i>Navbar</li>
+          <li><i class="searchbar"></i>Searchbar</li>
         </ul>
       </div>
     </div>
@@ -404,9 +416,10 @@ function previewClose(){
         <!--Case-->
         <div class="pro-item">
           <h3>
-            Case <span class="caret"></span>
+            Event <span class="caret"></span>
           </h3>
           <div class="pro-box">
+            <em class="remark">add the events: actionsheet, toast, dialog, message, picker, datePicker.</em>
             <div class="form-group">
               <div>
                 <select class="select" v-on:change="caseSelect($event)" v-model="comps[compIdx].type">
@@ -433,7 +446,7 @@ function previewClose(){
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>toggle</label>
+                  <label>show</label>
                   <div class="tr">
                     <input class="ct-switch" type="checkbox" v-model="comps[caseIdx].isToggle"/>
                   </div>
@@ -454,7 +467,7 @@ function previewClose(){
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>toggle</label>
+                  <label>show</label>
                   <div class="tr">
                     <input class="ct-switch" type="checkbox" v-model="comps[caseIdx].isToggle"/>
                   </div>
@@ -595,7 +608,7 @@ function previewClose(){
 </span>
 </body>
 </html>   
-<script src="/javascripts//vue.js"></script>
+<script src="/javascripts/vue.js"></script>
 <script>
   
 /**

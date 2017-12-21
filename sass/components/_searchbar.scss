@@ -1,0 +1,98 @@
+//searchbar
+.sm-searchbar{
+	padding: 8px 10px;
+	background-color: #eee;
+  position: relative;
+  
+  > label{
+    display: block;
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    right: 10px;
+    bottom: 8px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    justify-content: center;
+    color: #b2b2b2;
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 3px;
+    z-index: 9;
+      
+    &:before{
+      font-family:"smui" !important;
+      content: '\EA0E';
+      display: inline-block;
+      margin-right: 2px;
+      margin-bottom: -2px;
+      vertical-align: middle;
+    }
+      
+    &:after{
+      content: '搜索';
+      display: inline-block;
+      margin-left: 2px;
+    }
+  }
+  
+  > div{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  
+  input[type=text]{
+    -webkit-box-flex:1;
+    -webkit-flex:1;
+    flex:1;
+    width: 100%;
+    height: 26px;
+    line-height: 26px;
+    padding-left: 26px;
+    border-radius: 3px;
+    text-align: left;
+    font-size: 14px;
+    color: #000;
+    background: #fff;
+  }
+  i{
+    display: inline-block;
+    width: 26px;
+    height: 24px;
+    line-height: 26px;
+    font-size: 14px;
+    margin-right: -36px;
+    margin-left: 10px;
+    z-index: 5;
+    color: #b2b2b2;
+    vertical-align: middle;
+  }
+  button{
+    padding-left: 10px;
+    text-align: center;
+    color: #555;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+  }
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+

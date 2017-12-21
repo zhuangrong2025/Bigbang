@@ -1,40 +1,73 @@
 //dialog
-
-/*对话框15*/
-.dialog {
-	position: fixed;
-	z-index: 9999;
-	width: 80%;
-	max-width: 300px;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	background-color: #fff;
-	text-align: center;
-	border-radius: 5px;
-	overflow: hidden;		
+.sm-dialog {
+  position: fixed;
+  display: none;
+  z-index: 9999;
+  width: 80%;
+  max-width: 300px;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  overflow: hidden;
+  .dialog-header{
+    padding: 20px 10px 10px;
+    font-size: 18px;
+  }
+  .dialog-body{
+    padding: 0 20px 20px;
+    text-align: left;
+    min-height: 108px;
+    font-size: 15px;
+    line-height: 1.3;
+    color: #999;
+  }
+  .dialog-footer{
+    position: relative;
+    text-align: center;
+    line-height: 48px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    a{
+      display: block;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      color: $brand-primary;
+      text-decoration: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      position: relative;
+      background-color: transparent;
+      &:after{
+        content: " ";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1px;
+        bottom: 0;
+        border-left: 1px solid $gray-lighter;
+      }
+      &:first-child{
+        &:after {
+            display: none;
+        }
+      }
+      &.primary{
+        color: $brand-primary;
+      }
+    }
+    &:after{
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      height: 1px;
+      border-top: 1px solid $gray-lighter;
+    }
+  }
 }
-.dialog .dialog-header{
-	padding: 20px 10px 10px;
-	font-size: 18px;
-}
-.dialog .dialog-body{
-	padding: 0 20px 20px;
-	text-align: left;
-	min-height: 140px;
-	font-size: 15px;
-	line-height: 1.3;
-	color: #999;
-}	
-.dialog .dialog-footer{
-	text-align: center;
-	min-height: 48px;
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: flex;
-}
-
-
-
-

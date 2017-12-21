@@ -4,13 +4,13 @@
   height: 15px;
   clear: both;
   overflow: hidden;
-  @at-root &.s10{
+  @at-root &.sm{
     height: 10px;
   }
-  @at-root &.s20{
+  @at-root &.md{
     height: 20px;
   }
-  @at-root &.s30{
+  @at-root &.lg{
     height: 30px;
   }
 }

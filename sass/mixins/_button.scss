@@ -20,7 +20,7 @@
 @mixin button-outline-variant($color) {
   $active-color: rgba($color, .6);
   color: $color;
-  background-color: transparent;
+  background-color: #fff;
   border-color: $color;
   
   &:active,

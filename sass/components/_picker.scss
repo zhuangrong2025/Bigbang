@@ -1,0 +1,80 @@
+//picer
+.sm-picker{
+	position: fixed;
+	z-index: 9999;
+	bottom: 0;
+	left: 0;
+	right: 0;
+  -webkit-transform: translate(0, 100%);
+  -webkit-backface-visibility: hidden;
+	-webkit-transition: -webkit-transform .3s;
+  background-color: #fff;
+  
+  .picker-header{
+    padding:9px 15px; 
+    border-bottom: 1px solid  $gray-lighter;
+    display: -webkit-box; 
+    display: -webkit-flex;
+    display: flex;
+    a{
+      color: $brand-primary;
+      -webkit-box-flex:1;
+      -webkit-flex:1;
+      flex:1;
+    }
+    a:last-child{
+      text-align: right;
+    }
+  }
+  .picker-body{
+    display: -webkit-box; 
+    display: -webkit-flex;
+    display: flex;
+    .swiper-container{
+      -webkit-box-flex:1;
+      -webkit-flex:1;
+      flex:1;
+      height: 238px;
+      &:before{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        z-index: 3;
+        background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7)), -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7)), linear-gradient(0deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
+        background-position: top, bottom;
+        background-size: 100% 102px; /*swiper-container高度（119px） 减去  indicator高度的一半（17px） = 102px*/
+        background-repeat: no-repeat;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+      }
+      &:after{
+        content: '';
+        width: 100%;
+        height: 34px;
+        position: absolute;
+        left: 0;
+        top: 102px;
+        z-index: 3;
+        border-top: 1px solid $gray-lighter;
+        border-bottom: 1px solid $gray-lighter;
+      }
+    }
+    .swiper-slide {
+      font-size: 18px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center; 
+      -webkit-box-align: center;
+      justify-content: center;
+    }
+  }
+  @at-root &.toggle{
+    -webkit-transform: translate(0, 0);
+  }
+}

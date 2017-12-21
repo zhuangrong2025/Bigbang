@@ -45,13 +45,9 @@
   display: none;
 }
 .sm-tabbar a.active i:nth-child(1){
-  display: none;
+//  display: none;
 }
 .sm-tabbar a.active i:nth-child(2){
   display: block;
-}
-.sm-tabbar a i.icon-tb01{	
-  //有图片，webpack没有安装相应loader无法编译
-	//background-image: url(images/icon-tb01.png);
 }
 

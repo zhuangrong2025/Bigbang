@@ -55,4 +55,7 @@
 	display: block !important;
 }
 
-
+/*Tabbar*/
+.sm-tabbar a.active i:nth-child(1){
+  display: none;
+}

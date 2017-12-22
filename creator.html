@@ -261,8 +261,8 @@ function previewClose(){
         <ul>
           <!--表单组件-->
           <li class="divider"><span>Form</span></li>
-          <li draggable='true' @dragstart.stop='dragItem("btnComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
-          <li><i class="input"></i>Input</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("inputComp")'><i class="input"></i>Input</li>
           <li><i class="list"></i>List</li>
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
@@ -271,7 +271,7 @@ function previewClose(){
           <li><i class="select"></i>Select</li>
           <!--基础组件-->
           <li class="divider"><span>Base</span></li>
-          <li draggable='true' @dragstart.stop='dragItem("htmlComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
           <li><i class="panel"></i>Panel</li>
           <li><i class="article"></i>Article</li>
           <li><i class="badge"></i>Badge</li>
@@ -480,6 +480,39 @@ function previewClose(){
         </div>
       </div>
       <!--//**************button property**************-->
+      <!--**************input property zhuang**************-->
+      <div v-if=" panelProp == 'inputComp'">
+        <!--Link-->
+        <div class="pro-item">
+          <h3>
+            title <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>title</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isToggle"/>
+              </div>
+            </div>
+            <div class="form-group" v-if="comps[compIdx].isToggle">
+              <label>Title</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
+              </div>
+            </div>
+            <button @click="addInputCompCont">添加</button>
+            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
+              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag" placeholder="请输入"></label>
+              <span>&nbsp;</span>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入">
+              </div>
+              <span @click="delInputCompCont(index)">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************input property**************-->
       <!--**************html property **************-->
       <div v-if=" panelProp == 'htmlComp'"  v-cloak>
         <!--html-->
@@ -628,6 +661,9 @@ var compMethods = {
           this.$emit('dragend', event) 
         }
     }
+/*
+ * 表单组件 
+ */
 //button
 var ButtonComp = {
       props: ["comp", "id"],
@@ -640,6 +676,23 @@ var ButtonComp = {
                      draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"
                      v-on:click = "increment" >{{ comp.text }}</a>
                 `,
+      methods: compMethods
+    }
+//input--zhuang
+var InputComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <div class="sm-cells-title" v-if="comp.isToggle">{{comp.title}}</div>
+  <div class="sm-cells">
+    <div class="sm-cell" v-for="(cell, index) in comp.cells" >
+      <label class="sm-cell-label">{{comp.cells[index].tag}}</label>
+      <div>
+        <input type="text" :value="comp.cells[index].control" placeholder="请输入">
+      </div>
+    </div>
+  </div>
+</div>
+`,
       methods: compMethods
     }
 
@@ -733,6 +786,7 @@ var vm = new Vue({
   el: '#app',
   components: {
     btnComp: ButtonComp,
+    inputComp: InputComp,
     htmlComp: HtmlComp,
     actionsheetComp: ActionsheetComp,
     toastComp: ToastComp
@@ -1107,7 +1161,7 @@ var vm = new Vue({
     /*===========================
       组件拖放排序
     =============================*/
-    //拖动当前组件
+    //拖动当前组件-在画布中拖动
     drag:function(event){
       dom = event.currentTarget
       domId = $(dom).attr("id")
@@ -1116,17 +1170,15 @@ var vm = new Vue({
       isDragin = false
       $(".select-box").hide()
     },
-    //拖动组件库-start
+    //拖动组件库-start-在组件库中开始拖
     dragItem:function(compType){
-      //组件类型判断
+      //此函数作用主要是更新id和dom，没有实际作用
       switch(compType) {
-          case "btnComp":
-            dom = $('<a href="javascript:;" data-comp="drag-div" id="0" draggable="true" class="sm-btn primary" style="">按钮' + this.comps.length + '</a>')
-            break
-          case "htmlComp":
-            dom =$('<div class="html-box"  data-comp="drag-div" id="0"><span><style>.box{font-size: 12px; padding: 10px; margin: 10px 0; background-color: #fff; border: 1px dashed #0cf;}</style></span> <span class="box-wp"><div class="box">请在右边编辑框中插入html,实时预览效果 →</div></span></div>')
+          case "anyComp":
+            dom = $('<div data-comp="drag-div" id="0" draggable="true"></div>')
             break
       }
+      
       domId = $(dom).attr("id")
       $clonedom = $(dom).clone(true)
       cloneId = $clonedom.attr("id")
@@ -1153,6 +1205,13 @@ var vm = new Vue({
                          caseid: "caseid" + Math.round(Math.random() * 100),
                          type: "none"
                        }
+      //input组件 zhuang
+      var inputCompObj = {
+                         name: "inputComp",
+                         title: "标题",
+                         cells: [{tag: "姓名", control: ""}, {tag: "地址", control: ""}],
+                         isToggle: true
+                       }
       //html组件
       var htmlCompObj = {
            name: "htmlComp",
@@ -1177,6 +1236,9 @@ var vm = new Vue({
       switch(compType) {
           case "btnComp":
             compObj = btnCompObj
+            break
+          case "inputComp":
+            compObj = inputCompObj
             break
           case "htmlComp":
             compObj = htmlCompObj
@@ -1325,6 +1387,18 @@ $(":not(div)[data-case=${currCaseid}]").on("click",function(){
              }
            }
       })
+    },
+    /*===========================
+      新增inputComp组件内容 zhuang
+    =============================*/
+    addInputCompCont:function(){
+      let _this = this
+      var inputLength = _this.comps[_this.compIdx].cells.length
+      _this.comps[_this.compIdx].cells.splice(inputLength, 0, {tag: "名称", control: ""})
+    },
+    delInputCompCont:function(idx){
+      let _this = this
+      _this.comps[_this.compIdx].cells.splice(idx, 1)
     }
     
   },

@@ -453,7 +453,7 @@ h3.title button i{
 }
 .component li{
   flex:0 0 -webkit-calc(50% - 10px);
-  height: 106px;
+  height: 86px;
   margin: 0 5px;
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -1172,8 +1172,8 @@ h3.title button i{
 .select-box{
   position:absolute;
   top: 0;
-  left: 10px;
-  right: 10px;
+  left: 0;
+  right: 0;
   height: 42px;  
   color: #4a87ee;
   border: 1px solid #4a87ee;
@@ -1677,7 +1677,32 @@ h3.title button i{
   background-position: 0 0;
   z-index: 999999;
 }
-
+.icon-cell-del{
+  display: block;
+  margin-left: 3px;
+  background-image: url(../images/small-icons-sprite.png);
+  background-position: 0 -736px;
+  background-size: 16px;
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+}
+.icon-cell-add{
+  color: #3a7ef5;
+  cursor: pointer;
+}
+.icon-cell-add:before{
+  content: '';
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 3px;
+  background-image: url(../images/small-icons-sprite.png);
+  background-position: 0 -752px;
+  background-size: 16px;
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+}
 
 
 

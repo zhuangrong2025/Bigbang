@@ -289,7 +289,7 @@ function previewClose(){
     <!--//component-->
   </aside>
   <!--content-->
-  <section class="content" style="opacity: .3">
+  <section class="content" style="opacity: 1.3">
     <!--device bar-->
     <h3 class="device-bar">
       <div class="choose-device">
@@ -356,7 +356,7 @@ function previewClose(){
   <!--proerty-->
   <aside class="property" style="opacity: .7">
     <h3 class="title path">
-      <a href="#">index</a> <label>/</label> Button
+      <a href="#">index</a> <label>/</label> {{panelProp | propname}}
     </h3>
     <div class="property-list">
       <!--**************button property**************-->
@@ -482,32 +482,43 @@ function previewClose(){
       <!--//**************button property**************-->
       <!--**************input property zhuang**************-->
       <div v-if=" panelProp == 'inputComp'">
-        <!--Link-->
+        <!--cell title-->
         <div class="pro-item">
-          <h3>
+          <h3 @click="toggleCls">
             title <span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <div class="form-group">
-              <label>title</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isToggle"/>
-              </div>
-            </div>
             <div class="form-group" v-if="comps[compIdx].isToggle">
               <label>Title</label>
               <div>
                 <input type="text" class="c-ipt" v-model="comps[compIdx].title">
               </div>
             </div>
-            <button @click="addInputCompCont">添加</button>
+            <div class="form-group">
+              <label>show</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isToggle"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell content-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            cells <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
             <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
-              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag" placeholder="请输入"></label>
+              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
               <span>&nbsp;</span>
               <div>
                 <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入">
               </div>
-              <span @click="delInputCompCont(index)">-</span>
+              <span class="icon-cell-del" @click="delInputCompCont(index)"></span>
+            </div>
+            <div class="form-group">
+              <button  class="icon-cell-add" @click="addInputCompCont">add cell</button>
+              <div></div>
             </div>
           </div>
         </div>
@@ -518,7 +529,7 @@ function previewClose(){
         <!--html-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            html <span class="caret"></span>
+            html / js <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
             <textarea v-model="comps[compIdx].vhtml" class="codeMirror opa1"></textarea>
@@ -776,7 +787,12 @@ Vue.directive('codeHighlight', {
   }
 })
 
-
+/**
+ *****************自定义字符处理过滤器*****************
+ */
+ Vue.filter( 'propname' , function(value) {
+        return value.substring(value.length-4,0);
+  });
 
 /**
  *****************创建vue实例 *****************
@@ -890,8 +906,8 @@ var vm = new Vue({
     selectComp(event, obj){
       var ele = $(event.target)
        
-      if(ele.parents(".html-box")[0]){ //捕获html片段的父元素,select-box可以选中这个组件所有
-        ele = ele.parents(".html-box")
+      if(ele.parents("[data-comp=drag-div]")[0]){ //捕获html片段的父元素,data-comp="drag-div"可以选中这个组件所有
+        ele = ele.parents("[data-comp=drag-div]")
       } 
       var eleScrollTop = $(".sm-container").scrollTop()
       var marginTop = ele.css("margin-top") 
@@ -939,8 +955,8 @@ var vm = new Vue({
       this.pages.splice((this.pages.length - 1), 0, {
            name: "page" + this.pages.length,
            id: "page" + Math.round(Math.random() * 10000),
-           title: "Title",
-           isHeader: false,
+           title: "导航栏",
+           isHeader: true,
            isTabbar: false
          })
       window.localStorage.setItem(this.pages[this.pages.length - 2 ].id, JSON.stringify([{}]))
@@ -1209,7 +1225,7 @@ var vm = new Vue({
       var inputCompObj = {
                          name: "inputComp",
                          title: "标题",
-                         cells: [{tag: "姓名", control: ""}, {tag: "地址", control: ""}],
+                         cells: [{tag: "名称", control: ""}, {tag: "地址", control: ""}],
                          isToggle: true
                        }
       //html组件

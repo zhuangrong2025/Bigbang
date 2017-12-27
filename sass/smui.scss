@@ -17,7 +17,6 @@
 
   // Components
   "components/button",
-  "components/dialog",
   "components/check",
   "components/switch",
   "components/form",
@@ -32,13 +31,18 @@
   "components/grid",
   "components/actionsheet",
   "components/toast",
+  "components/dialog",
+  "components/message",
+  "components/picker",
+  "components/navbar",
+  "components/searchbar",
   "components/article";
 
 
 
 /*page padd*/
 .sm-container{
-  padding: 0 10px
+  padding: 0 0
 }
 .sm-container.isTb{
   padding-bottom: 50px;

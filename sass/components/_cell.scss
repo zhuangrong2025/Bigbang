@@ -62,6 +62,10 @@
       line-height: 25px;
       margin-right: 5px;
   }
+  > i:not([class]),
+  > i[class=""]{
+      display: none;
+  }
   .sm-cell-label{
       display: block;
       width: 105px;

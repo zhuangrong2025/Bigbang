@@ -263,7 +263,7 @@ function previewClose(){
           <li class="divider"><span>Form</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("inputComp")'><i class="input"></i>Input</li>
-          <li><i class="list"></i>List</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("listComp")'><i class="list"></i>List</li>
           <li><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
           <li><i class="switch"></i>Switch</li>
@@ -520,6 +520,51 @@ function previewClose(){
         </div>
       </div>
       <!--//**************input property**************-->
+      <!--**************list property zhuang**************-->
+      <div v-if=" panelProp == 'listComp'">
+        <!--cell title-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            title <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-if="comps[compIdx].isShow">
+              <label>Title</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>show</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell content-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            cells <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
+              <div><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].class"></div>
+              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
+              <span>&nbsp;</span>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="请输入">
+              </div>
+              <span class="icon-cell-del" @click="delInputCompCont(index)"></span>
+            </div>
+            <div class="form-group">
+              <button  class="icon-cell-add" @click="addInputCompCont">add cell</button>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************input property**************-->
       <!--**************html property **************-->
       <div v-if=" panelProp == 'htmlComp'"  v-cloak>
         <!--html-->
@@ -545,7 +590,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************html property**************-->
-      <!--**************space property zhuang **************-->
+      <!--**************space property **************-->
       <div v-if=" panelProp == 'spaceComp'"  v-cloak>
         <!--html-->
         <div class="pro-item">
@@ -739,6 +784,23 @@ var InputComp = {
       methods: compMethods
     }
 
+//list zhuang
+var ListComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <div class="sm-cells-title" id="text">{{comp.title}}</div>
+  <div class="sm-cells">
+    <div class="sm-cell" v-for="(cell, index) in comp.cells" >
+      <i :class="comp.cells[index].class"></i>
+      <div>{{comp.cells[index].tag}}</div>
+      <span>{{comp.cells[index].tip}}</span>
+    </div>
+  </div>
+</div>
+`,
+      methods: compMethods
+    }
+
 /*
  * 基础组件 
  */
@@ -754,7 +816,7 @@ var HtmlComp = {
       methods: compMethods
     }
 
-//white-space  zhuang
+//white-space
 var SpaceComp = {
       props: ["comp", "id"],
       template: `<div class="sm-space" v-bind:class="comp.size" v-on:click = "increment"  data-comp="drag-div" v-bind:id="id"  draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"></div>`,
@@ -852,6 +914,7 @@ var vm = new Vue({
   components: {
     btnComp: ButtonComp,
     inputComp: InputComp,
+    listComp: ListComp,
     spaceComp: SpaceComp,
     htmlComp: HtmlComp,
     actionsheetComp: ActionsheetComp,
@@ -1280,6 +1343,13 @@ var vm = new Vue({
                          cells: [{tag: "名称", control: ""}, {tag: "地址", control: ""}],
                          isShow: true
                        }
+      //list组件 zhuang
+      var listCompObj = {
+                         name: "listComp",
+                         title: "标题",
+                         cells: [{tag: "名称", tip: "说明文字", class: ""}],
+                         isShow: true
+                       }
       
       /*******基础组件*******/
       //html组件
@@ -1299,7 +1369,7 @@ var vm = new Vue({
 </style>`
          }
       
-      //space组件 zhuang
+      //space组件
       var spaceCompObj = {
                          name: "spaceComp",
                          sizes: ["default","sm","md","lg"],
@@ -1313,6 +1383,9 @@ var vm = new Vue({
             break
           case "inputComp":
             compObj = inputCompObj
+            break
+          case "listComp":
+            compObj = listCompObj
             break
           case "htmlComp":
             compObj = htmlCompObj

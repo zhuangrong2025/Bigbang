@@ -549,11 +549,19 @@ function previewClose(){
           </h3>
           <div class="pro-box">
             <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
-              <div><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].class"></div>
-              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
-              <span>&nbsp;</span>
+              <div><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></div>
               <div>
                 <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="请输入">
+              </div>
+              <div>
+                <select class="select"  v-model="comps[compIdx].cells[index].linkto">
+                  <option value="#">#</option>
+                  <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                </select>
+              </div>
+              <div class="choose-icon sm">
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].icon" v-on:click=" comps[compIdx].cells[index].icon = $event.target.value" :title="comps[compIdx].cells[index].icon" placeholder="图标名">
+                <button @click="chooseIcon($event)"></button>
               </div>
               <span class="icon-cell-del" @click="delInputCompCont(index)"></span>
             </div>
@@ -681,16 +689,16 @@ function previewClose(){
                 <label>Icon</label>
                 <div class="choose-icon">
                   <i class="iconfont" :class="item.icon"></i>
-                  <input type="text" class="c-ipt" placeholder="Icon" v-model="item.icon">
-                  <button @click="chooseIcon($event)" :title="index"></button>
+                  <input type="text" class="c-ipt" placeholder="Icon" v-model="item.icon" v-on:click=" item.icon = $event.target.value">
+                  <button @click="chooseIcon($event)"></button>
                 </div>
               </div> 
               <div class="form-group">
                 <label>icon active</label>
                 <div class="choose-icon">
                   <i class="iconfont" :class="item.active"></i>
-                  <input type="text" class="c-ipt" placeholder="" v-model="item.active">
-                  <button @click="chooseIcon($event)" name="active" :title="index"></button>
+                  <input type="text" class="c-ipt" placeholder="" v-model="item.active" v-on:click=" item.active = $event.target.value">
+                  <button @click="chooseIcon($event)"></button>
                 </div>
               </div>
               <div class="form-group">
@@ -787,14 +795,14 @@ var InputComp = {
 //list zhuang
 var ListComp = {
       props: ["comp", "id"],
-      template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+      template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" id="text">{{comp.title}}</div>
   <div class="sm-cells">
-    <div class="sm-cell" v-for="(cell, index) in comp.cells" >
-      <i :class="comp.cells[index].class"></i>
+    <a :href="comp.cells[index].linkto | isLink" class="sm-cell" v-for="(cell, index) in comp.cells" >
+      <i :class="comp.cells[index].icon"></i>
       <div>{{comp.cells[index].tag}}</div>
       <span>{{comp.cells[index].tip}}</span>
-    </div>
+    </a>
   </div>
 </div>
 `,
@@ -899,10 +907,19 @@ Vue.directive('codeHighlight', {
 })
 
 /**
- *****************自定义字符处理过滤器*****************
+ *****************自定义字符处理过滤器--属性面板字符串过滤*****************
  */
  Vue.filter( 'propname' , function(value) {
-        return value.substring(value.length-4,0);
+    return value.substring(value.length-4, 0);
+  });
+
+/**
+ *****************自定义字符处理过滤器--page链接过滤如果是#，那么就不加.html后缀*****************
+ */
+ Vue.filter( 'isLink' , function(value) {
+    if( value != "#"){
+      return value + ".html";
+    }
   });
 
 /**
@@ -1223,7 +1240,6 @@ var vm = new Vue({
            $("#form-cvs input[type=hidden]").remove()
          }
     },
-    
     /*===========================
       iconfont select
     =============================*/
@@ -1244,16 +1260,11 @@ var vm = new Vue({
           }) 
           //click icon
           $(".iconfont-show").html(iconlist).find("i").on("click", function(){
-            var tabbarIdx = $el.attr("title")
             var clsName = $(this).attr("class")
-            var tabbarName = $el.attr("name")
-            if( tabbarName != "active"){
-              $el.prev().val(clsName)
-              vm.tabbar.items[tabbarIdx].icon = clsName
-            }else{
-              $el.prev().val(clsName)
-              vm.tabbar.items[tabbarIdx].active = clsName
-            }
+            
+            $el.prev().val(clsName)
+            $el.prev().trigger("click")
+            
             $("#modal-iconfont").removeClass("in")
             $(".modal-mask").removeClass("in")
           })
@@ -1347,7 +1358,7 @@ var vm = new Vue({
       var listCompObj = {
                          name: "listComp",
                          title: "标题",
-                         cells: [{tag: "名称", tip: "说明文字", class: ""}],
+                         cells: [{tag: "名称", tip: "说明", icon: "", linkto: "#"}],
                          isShow: true
                        }
       

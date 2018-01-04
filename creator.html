@@ -510,10 +510,10 @@ function previewClose(){
               <div>
                 <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入">
               </div>
-              <span class="icon-cell-del" @click="delInputCompCont(index)"></span>
+              <span class="icon-cell-del" @click="delCell(index)"></span>
             </div>
             <div class="form-group">
-              <button  class="icon-cell-add" @click="addInputCompCont">add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", control: ""})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -554,7 +554,7 @@ function previewClose(){
                 <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="请输入">
               </div>
               <div>
-                <select class="select"  v-model="comps[compIdx].cells[index].linkto">
+                <select class="select"  v-model="comps[compIdx].cells[index].linkto" title="link">
                   <option value="#">#</option>
                   <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
                 </select>
@@ -563,10 +563,10 @@ function previewClose(){
                 <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].icon" v-on:click=" comps[compIdx].cells[index].icon = $event.target.value" :title="comps[compIdx].cells[index].icon" placeholder="图标名">
                 <button @click="chooseIcon($event)"></button>
               </div>
-              <span class="icon-cell-del" @click="delInputCompCont(index)"></span>
+              <span class="icon-cell-del" @click="delCell(index)"></span>
             </div>
             <div class="form-group">
-              <button  class="icon-cell-add" @click="addInputCompCont">add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", tip: "说明", linkto: "#", icon: ""})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -1550,14 +1550,16 @@ $(":not(div)[data-case=${currCaseid}]").on("click",function(){
       })
     },
     /*===========================
-      新增inputComp组件内容 
+      新增组件cell
     =============================*/
-    addInputCompCont:function(){
+    //input组件 
+    addCell:function(cell){
       let _this = this
       var inputLength = _this.comps[_this.compIdx].cells.length
-      _this.comps[_this.compIdx].cells.splice(inputLength, 0, {tag: "名称", control: ""})
+      _this.comps[_this.compIdx].cells.splice(inputLength, 0, cell)
     },
-    delInputCompCont:function(idx){
+    //删除组件cell
+    delCell:function(idx){
       let _this = this
       _this.comps[_this.compIdx].cells.splice(idx, 1)
     }

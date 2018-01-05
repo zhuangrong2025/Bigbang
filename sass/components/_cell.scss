@@ -78,6 +78,9 @@
   > i[class=""]{
       display: none;
   }
+  &.reverse{
+    flex-direction: row-reverse; 
+  }
   .sm-cell-label{
       display: block;
       width: 105px;

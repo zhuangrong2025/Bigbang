@@ -547,9 +547,18 @@ function previewClose(){
           </h3>
           <div class="pro-box">
             <div class="form-group" v-if="comps[compIdx].isShow">
-              <label>checkbox name</label>
+              <label>input name</label>
               <div>
                 <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city">
+              </div>
+            </div>
+            <!--位置调换-->
+            <div class="form-group">
+              <label>Reverse</label>
+              <div>
+                <select class="select" v-model="comps[compIdx].isReverse">
+                  <option :value="row.reverse" v-for="row in comps[compIdx].rows">{{row.txt}}</option>
+                </select>
               </div>
             </div>
           </div>
@@ -869,8 +878,8 @@ var CheckboxComp = {
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells">
-    <label class="sm-cell"  v-for="(cell, index) in comp.cells" >
-      <input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox">{{comp.cells[index].item}}
+    <label class="sm-cell" :class="{reverse: comp.isReverse}" v-for="(cell, index) in comp.cells" >
+      <input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox"><div>{{comp.cells[index].item}}</div>
     </label>
   </div>
 </div>
@@ -1436,7 +1445,10 @@ var vm = new Vue({
                          title: "城市",
                          inputname: "",
                          cells: [{item: "北京"},{item: "上海"}],
-                         isShow: true
+                         isShow: true,
+                         rows: [{reverse: true, txt: "文字在左"}, {reverse: false, txt: "文字在右"}],
+                         isReverse: false
+        
                        }
       
       /*******基础组件*******/

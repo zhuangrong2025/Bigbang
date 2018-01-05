@@ -264,7 +264,7 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("inputComp")'><i class="input"></i>Input</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("listComp")'><i class="list"></i>List</li>
-          <li><i class="checkbox"></i>Checkbox</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("checkboxComp")'><i class="checkbox"></i>Checkbox</li>
           <li><i class="radio"></i>Radio</li>
           <li><i class="switch"></i>Switch</li>
           <li><i class="textarea"></i>Textarea</li>
@@ -275,10 +275,8 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("spaceComp")'><i class="space"></i>White space</li>
           <li><i class="panel"></i>Panel</li>
           <li><i class="article"></i>Article</li>
-          <li><i class="badge"></i>Badge</li>
           <li><i class="flex"></i>Flex</li>
           <li><i class="grid"></i>Grid</li>
-          <li><i class="icon"></i>Icon</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
           <li><i class="navbar"></i>Navbar</li>
@@ -366,7 +364,7 @@ function previewClose(){
           <h3>
             Link <span class="caret"></span>
           </h3>
-          <div class="pro-box"> 
+          <div class="pro-box">
             <div class="form-group" >
               <select class="select"  v-model="comps[compIdx].linkto">
                 <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
@@ -520,7 +518,63 @@ function previewClose(){
         </div>
       </div>
       <!--//**************input property**************-->
-      <!--**************list property zhuang**************-->
+      <!--**************checkbox property zhuang **************-->
+      <div v-if=" panelProp == 'checkboxComp'">
+        <!--cell title-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            title <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-if="comps[compIdx].isShow">
+              <label>Title</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>show</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--input name-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            name <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-if="comps[compIdx].isShow">
+              <label>checkbox name</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell content-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            cells <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].item">
+              </div>
+              <span class="icon-cell-del" @click="delCell(index)"></span>
+            </div>
+            <div class="form-group">
+              <button  class="icon-cell-add" @click='addCell({item: "选项名称"})'>add cell</button>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************checkbox property**************-->
+      <!--**************list property**************-->
       <div v-if=" panelProp == 'listComp'">
         <!--cell title-->
         <div class="pro-item">
@@ -792,11 +846,11 @@ var InputComp = {
       methods: compMethods
     }
 
-//list zhuang
+//list
 var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
-  <div class="sm-cells-title" id="text">{{comp.title}}</div>
+  <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells">
     <a :href="comp.cells[index].linkto | isLink" class="sm-cell" v-for="(cell, index) in comp.cells" >
       <i :class="comp.cells[index].icon"></i>
@@ -809,6 +863,20 @@ var ListComp = {
       methods: compMethods
     }
 
+//checkbox zhuang
+var CheckboxComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
+  <div class="sm-cells">
+    <label class="sm-cell"  v-for="(cell, index) in comp.cells" >
+      <input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox">{{comp.cells[index].item}}
+    </label>
+  </div>
+</div>
+`,
+      methods: compMethods
+    }
 /*
  * 基础组件 
  */
@@ -932,6 +1000,7 @@ var vm = new Vue({
     btnComp: ButtonComp,
     inputComp: InputComp,
     listComp: ListComp,
+    checkboxComp: CheckboxComp,
     spaceComp: SpaceComp,
     htmlComp: HtmlComp,
     actionsheetComp: ActionsheetComp,
@@ -1354,11 +1423,19 @@ var vm = new Vue({
                          cells: [{tag: "名称", control: ""}, {tag: "地址", control: ""}],
                          isShow: true
                        }
-      //list组件 zhuang
+      //list组件 
       var listCompObj = {
                          name: "listComp",
                          title: "标题",
                          cells: [{tag: "名称", tip: "说明", icon: "", linkto: "#"}],
+                         isShow: true
+                       }
+      //checkbox组件 zhuang
+      var checkboxCompObj = {
+                         name: "checkboxComp",
+                         title: "城市",
+                         inputname: "",
+                         cells: [{item: "北京"},{item: "上海"}],
                          isShow: true
                        }
       
@@ -1397,6 +1474,9 @@ var vm = new Vue({
             break
           case "listComp":
             compObj = listCompObj
+            break
+          case "checkboxComp":
+            compObj = checkboxCompObj
             break
           case "htmlComp":
             compObj = htmlCompObj

@@ -496,7 +496,7 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--cell content-->
+        <!--cell content  zhuang -->
         <div class="pro-item">
           <h3 @click="toggleCls">
             cells <span class="caret"></span>
@@ -508,17 +508,21 @@ function previewClose(){
               <div>
                 <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入">
               </div>
+              <span>&nbsp;</span>
+              <label>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].button" placeholder="例: '获取验证码'">
+              </label>
               <span class="icon-cell-del" @click="delCell(index)"></span>
             </div>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", control: ""})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", control: "", button: ""})'>add cell</button>
               <div></div>
             </div>
           </div>
         </div>
       </div>
       <!--//**************input property**************-->
-      <!--**************checkbox property zhuang **************-->
+      <!--**************checkbox property**************-->
       <div v-if=" panelProp == 'checkboxComp'">
         <!--merge cell-->
         <div class="pro-item">
@@ -653,7 +657,7 @@ function previewClose(){
           </div>
         </div>
       </div>
-      <!--//**************input property**************-->
+      <!--//**************list property**************-->
       <!--**************html property **************-->
       <div v-if=" panelProp == 'htmlComp'"  v-cloak>
         <!--html-->
@@ -855,17 +859,18 @@ var ButtonComp = {
       methods: compMethods
     }
 
-//input
+//input zhuang
 var InputComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells">
     <div class="sm-cell" v-for="(cell, index) in comp.cells" >
-      <label class="sm-cell-label">{{comp.cells[index].tag}}</label>
+      <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
       <div>
         <input type="text" :value="comp.cells[index].control" placeholder="请输入">
       </div>
+      <a href="#" class="cell-btn" v-if="comp.cells[index].button != ''">{{comp.cells[index].button}}</a>
     </div>
   </div>
 </div>
@@ -890,7 +895,7 @@ var ListComp = {
       methods: compMethods
     }
 
-//checkbox zhuang
+//checkbox
 var CheckboxComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1443,11 +1448,11 @@ var vm = new Vue({
                          caseid: "caseid" + Math.round(Math.random() * 100),
                          type: "none"
                        }
-      //input组件 
+      //input组件  zhuang
       var inputCompObj = {
                          name: "inputComp",
                          title: "标题",
-                         cells: [{tag: "名称", control: ""}, {tag: "地址", control: ""}],
+                         cells: [{tag: "姓名", control: "", button: ""}, {tag: "手机号", control: "", button: ""}],
                          isShow: true
                        }
       //list组件 
@@ -1457,7 +1462,7 @@ var vm = new Vue({
                          cells: [{tag: "名称", tip: "说明", icon: "", linkto: "#"}],
                          isShow: true
                        }
-      //checkbox组件 zhuang
+      //checkbox组件
       var checkboxCompObj = {
                          name: "checkboxComp",
                          title: "城市",

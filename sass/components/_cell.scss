@@ -62,6 +62,9 @@
       -webkit-box-flex: 1;
       -webkit-flex: 1;
       flex: 1;
+      > input[type=text]{
+        width: 100%;
+      }
   }
   > span{
       display: block;
@@ -96,7 +99,10 @@
       display: none;
   }
   &.reverse{
-    flex-direction: row-reverse; 
+    flex-direction: row-reverse;
+    .sm-checkbox{
+      margin-right: 0;
+    }
   }
   .sm-cell-label{
       display: block;
@@ -120,4 +126,13 @@
     display: none;
   }
 }
-
+//临时
+.cell-btn{
+  display: block;
+  border-radius: 3px;
+  padding: 3px 5px 0;
+  text-align: center;
+  color: $brand-primary;
+  font-size: 13px;
+  white-space: nowrap;
+}

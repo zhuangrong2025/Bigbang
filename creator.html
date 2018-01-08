@@ -520,6 +520,17 @@ function previewClose(){
       <!--//**************input property**************-->
       <!--**************checkbox property zhuang **************-->
       <div v-if=" panelProp == 'checkboxComp'">
+        <!--merge cell-->
+        <div class="pro-item">
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Merge cell</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge"/>
+              </div>
+            </div>
+          </div>
+        </div>
         <!--cell title-->
         <div class="pro-item">
           <h3 @click="toggleCls">
@@ -546,13 +557,20 @@ function previewClose(){
             name <span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <div class="form-group" v-if="comps[compIdx].isShow">
-              <label>input name</label>
+            <div class="form-group">
+              <label>Input Name</label>
               <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city">
+                <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city" title="In order to get the element">
               </div>
             </div>
-            <!--位置调换-->
+          </div>
+        </div>
+        <!--reverse-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            reverse <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
             <div class="form-group">
               <label>Reverse</label>
               <div>
@@ -877,7 +895,7 @@ var CheckboxComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
-  <div class="sm-cells">
+  <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <label class="sm-cell" :class="{reverse: comp.isReverse}" v-for="(cell, index) in comp.cells" >
       <input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox"><div>{{comp.cells[index].item}}</div>
     </label>
@@ -1445,6 +1463,7 @@ var vm = new Vue({
                          title: "城市",
                          inputname: "",
                          cells: [{item: "北京"},{item: "上海"}],
+                         isMerge: false,
                          isShow: true,
                          rows: [{reverse: true, txt: "文字在左"}, {reverse: false, txt: "文字在右"}],
                          isReverse: false

@@ -15,6 +15,22 @@
   background-color: #fff;
   border-top: 1px solid  #ececec;
   border-bottom: 1px solid  #ececec;
+  &.merge{
+    margin-top: -1px;
+    position: relative;
+    &:before{
+      display: block;
+      content: " ";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      width: 15px;
+      border-top: 1px solid #fff;
+      z-index: 99;
+    }
+  }
 }
 .sm-cells .sm-cell{
   position: relative;

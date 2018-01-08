@@ -476,8 +476,19 @@ function previewClose(){
       <!--//**************button property**************-->
       <!--**************input property **************-->
       <div v-if=" panelProp == 'inputComp'">
-        <!--cell title-->
+        <!--merge cell-->
         <div class="pro-item">
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Merge cell</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell title-->
+        <div class="pro-item" v-if="!comps[compIdx].isMerge">
           <h3 @click="toggleCls">
             title <span class="caret"></span>
           </h3>
@@ -530,17 +541,17 @@ function previewClose(){
             <div class="form-group">
               <label>Merge cell</label>
               <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : '' "/>
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
               </div>
             </div>
           </div>
         </div>
         <!--cell title-->
-        <div class="pro-item">
+        <div class="pro-item" v-if="!comps[compIdx].isMerge">
           <h3 @click="toggleCls">
             title <span class="caret"></span>
           </h3>
-          <div class="pro-box" v-if="!comps[compIdx].isMerge">
+          <div class="pro-box">
             <div class="form-group" v-if="comps[compIdx].isShow">
               <label>Title</label>
               <div>
@@ -607,8 +618,19 @@ function previewClose(){
       <!--//**************checkbox property**************-->
       <!--**************list property**************-->
       <div v-if=" panelProp == 'listComp'">
-        <!--cell title-->
+        <!--merge cell-->
         <div class="pro-item">
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Merge cell</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell title-->
+        <div class="pro-item" v-if="!comps[compIdx].isMerge">
           <h3 @click="toggleCls">
             title <span class="caret"></span>
           </h3>
@@ -864,7 +886,7 @@ var InputComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
-  <div class="sm-cells">
+  <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <div class="sm-cell" v-for="(cell, index) in comp.cells" >
       <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
       <div>
@@ -883,7 +905,7 @@ var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
-  <div class="sm-cells">
+  <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <a :href="comp.cells[index].linkto | isLink" class="sm-cell" v-for="(cell, index) in comp.cells" >
       <i :class="comp.cells[index].icon"></i>
       <div>{{comp.cells[index].tag}}</div>
@@ -1453,6 +1475,7 @@ var vm = new Vue({
                          name: "inputComp",
                          title: "标题",
                          cells: [{tag: "姓名", control: "", button: ""}, {tag: "手机号", control: "", button: ""}],
+                         isMerge: false,
                          isShow: true
                        }
       //list组件 
@@ -1460,6 +1483,7 @@ var vm = new Vue({
                          name: "listComp",
                          title: "标题",
                          cells: [{tag: "名称", tip: "说明", icon: "", linkto: "#"}],
+                         isMerge: false,
                          isShow: true
                        }
       //checkbox组件

@@ -526,7 +526,7 @@ function previewClose(){
             <div class="form-group">
               <label>Merge cell</label>
               <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge"/>
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : '' "/>
               </div>
             </div>
           </div>
@@ -536,7 +536,7 @@ function previewClose(){
           <h3 @click="toggleCls">
             title <span class="caret"></span>
           </h3>
-          <div class="pro-box">
+          <div class="pro-box" v-if="!comps[compIdx].isMerge">
             <div class="form-group" v-if="comps[compIdx].isShow">
               <label>Title</label>
               <div>

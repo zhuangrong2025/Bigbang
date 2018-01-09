@@ -268,7 +268,7 @@ function previewClose(){
           <li><i class="radio"></i>Radio</li>
           <li><i class="switch"></i>Switch</li>
           <li><i class="textarea"></i>Textarea</li>
-          <li><i class="select"></i>Select</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("selectComp")'><i class="select"></i>Select</li>
           <!--基础组件-->
           <li class="divider"><span>Base</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
@@ -507,7 +507,7 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--cell content  zhuang -->
+        <!--cell content -->
         <div class="pro-item">
           <h3 @click="toggleCls">
             cells <span class="caret"></span>
@@ -680,6 +680,61 @@ function previewClose(){
         </div>
       </div>
       <!--//**************list property**************-->
+      <!--**************select property **************-->
+      <div v-if=" panelProp == 'selectComp'">
+        <!--merge cell-->
+        <div class="pro-item">
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Merge cell</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell title-->
+        <div class="pro-item" v-if="!comps[compIdx].isMerge">
+          <h3 @click="toggleCls">
+            title <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-if="comps[compIdx].isShow">
+              <label>Title</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>show</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell content zz -->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            cells <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
+              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
+              <span>&nbsp;</span>
+              <div>
+                <input type="text" class="c-ipt" v-on:input="comps[compIdx].cells[index].options = $event.target.value.split(',') " :value="comps[compIdx].cells[index].options" placeholder="例:'中文,英语'" >
+              </div>
+              <span class="icon-cell-del" @click="delCell(index)"></span>
+            </div>
+            <div class="form-group">
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", options: ""})'>add cell</button>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************select property**************-->
       <!--**************html property **************-->
       <div v-if=" panelProp == 'htmlComp'"  v-cloak>
         <!--html-->
@@ -881,7 +936,7 @@ var ButtonComp = {
       methods: compMethods
     }
 
-//input zhuang
+//input
 var InputComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -926,6 +981,27 @@ var CheckboxComp = {
     <label class="sm-cell" :class="{reverse: comp.isReverse}" v-for="(cell, index) in comp.cells" >
       <input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox"><div>{{comp.cells[index].item}}</div>
     </label>
+  </div>
+</div>
+`,
+      methods: compMethods
+    }
+
+//select zz
+var SelectComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
+  <div class="sm-cells" :class="{ merge: comp.isMerge}">
+    <div class="sm-cell" v-for="(cell, index) in comp.cells">
+      <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
+      <div class="sm-select">
+          <select class="select"  v-model="comp.cells[index].selected">
+            <option selected>请选择...</option>
+            <option :value="option" v-for="option in comp.cells[index].options">{{option}}</option>
+          </select>
+      </div>
+    </div>
   </div>
 </div>
 `,
@@ -1035,6 +1111,7 @@ Vue.directive('codeHighlight', {
     return value.substring(value.length-4, 0);
   });
 
+
 /**
  *****************自定义字符处理过滤器--page链接过滤如果是#，那么就不加.html后缀*****************
  */
@@ -1055,6 +1132,7 @@ var vm = new Vue({
     inputComp: InputComp,
     listComp: ListComp,
     checkboxComp: CheckboxComp,
+    selectComp: SelectComp,
     spaceComp: SpaceComp,
     htmlComp: HtmlComp,
     actionsheetComp: ActionsheetComp,
@@ -1470,7 +1548,7 @@ var vm = new Vue({
                          caseid: "caseid" + Math.round(Math.random() * 100),
                          type: "none"
                        }
-      //input组件  zhuang
+      //input组件  
       var inputCompObj = {
                          name: "inputComp",
                          title: "标题",
@@ -1497,6 +1575,14 @@ var vm = new Vue({
                          rows: [{reverse: true, txt: "文字在左"}, {reverse: false, txt: "文字在右"}],
                          isReverse: false
         
+                       }
+      //input组件  zz
+      var selectCompObj = {
+                         name: "selectComp",
+                         title: "标题",
+                         cells: [{tag: "语言", selected:"请选择...", options:""}],
+                         isMerge: false,
+                         isShow: true
                        }
       
       /*******基础组件*******/
@@ -1537,6 +1623,9 @@ var vm = new Vue({
             break
           case "checkboxComp":
             compObj = checkboxCompObj
+            break
+          case "selectComp":
+            compObj = selectCompObj
             break
           case "htmlComp":
             compObj = htmlCompObj

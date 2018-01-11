@@ -265,7 +265,7 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("inputComp")'><i class="input"></i>Input</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("listComp")'><i class="list"></i>List</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("checkboxComp")'><i class="checkbox"></i>Checkbox</li>
-          <li><i class="radio"></i>Radio</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("radioComp")'><i class="radio"></i>Radio</li>
           <li><i class="switch"></i>Switch</li>
           <li><i class="textarea"></i>Textarea</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("selectComp")'><i class="select"></i>Select</li>
@@ -533,6 +533,70 @@ function previewClose(){
         </div>
       </div>
       <!--//**************input property**************-->
+      <!--**************list property**************-->
+      <div v-if=" panelProp == 'listComp'">
+        <!--merge cell-->
+        <div class="pro-item">
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Merge cell</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell title-->
+        <div class="pro-item" v-if="!comps[compIdx].isMerge">
+          <h3 @click="toggleCls">
+            title <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-if="comps[compIdx].isShow">
+              <label>Title</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>show</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell content-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            cells <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
+              <div><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></div>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="请输入">
+              </div>
+              <div>
+                <select class="select"  v-model="comps[compIdx].cells[index].linkto" title="link">
+                  <option value="#">#</option>
+                  <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                </select>
+              </div>
+              <div class="choose-icon sm">
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].icon" v-on:click=" comps[compIdx].cells[index].icon = $event.target.value" :title="comps[compIdx].cells[index].icon" placeholder="图标名">
+                <button @click="chooseIcon($event)"></button>
+              </div>
+              <span class="icon-cell-del" @click="delCell(index)"></span>
+            </div>
+            <div class="form-group">
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", tip: "说明", linkto: "#", icon: ""})'>add cell</button>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************list property**************-->
       <!--**************checkbox property**************-->
       <div v-if=" panelProp == 'checkboxComp'">
         <!--merge cell-->
@@ -616,8 +680,8 @@ function previewClose(){
         </div>
       </div>
       <!--//**************checkbox property**************-->
-      <!--**************list property**************-->
-      <div v-if=" panelProp == 'listComp'">
+      <!--**************radio property zz**************-->
+      <div v-if=" panelProp == 'radioComp'">
         <!--merge cell-->
         <div class="pro-item">
           <div class="pro-box">
@@ -649,6 +713,20 @@ function previewClose(){
             </div>
           </div>
         </div>
+        <!--input name-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            name <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Input Name</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city" title="In order to get the element">
+              </div>
+            </div>
+          </div>
+        </div>
         <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
@@ -656,30 +734,19 @@ function previewClose(){
           </h3>
           <div class="pro-box">
             <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
-              <div><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></div>
               <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="请输入">
-              </div>
-              <div>
-                <select class="select"  v-model="comps[compIdx].cells[index].linkto" title="link">
-                  <option value="#">#</option>
-                  <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
-                </select>
-              </div>
-              <div class="choose-icon sm">
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].icon" v-on:click=" comps[compIdx].cells[index].icon = $event.target.value" :title="comps[compIdx].cells[index].icon" placeholder="图标名">
-                <button @click="chooseIcon($event)"></button>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].item">
               </div>
               <span class="icon-cell-del" @click="delCell(index)"></span>
             </div>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", tip: "说明", linkto: "#", icon: ""})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({item: "选项名称"})'>add cell</button>
               <div></div>
             </div>
           </div>
         </div>
       </div>
-      <!--//**************list property**************-->
+      <!--//**************radio property**************-->
       <!--**************select property **************-->
       <div v-if=" panelProp == 'selectComp'">
         <!--merge cell-->
@@ -713,7 +780,7 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--cell content zz -->
+        <!--cell content -->
         <div class="pro-item">
           <h3 @click="toggleCls">
             cells <span class="caret"></span>
@@ -723,13 +790,36 @@ function previewClose(){
               <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
               <span>&nbsp;</span>
               <div>
-                <input type="text" class="c-ipt" v-on:input="comps[compIdx].cells[index].options = $event.target.value.split(',') " :value="comps[compIdx].cells[index].options" placeholder="例:'中文,英语'" >
+                <input type="text" class="c-ipt" v-on:change="comps[compIdx].cells[index].options = $event.target.value.split(',') " :value="comps[compIdx].cells[index].options" placeholder="例:'中文,英语'" >
               </div>
               <span class="icon-cell-del" @click="delCell(index)"></span>
             </div>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", options: ""})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "语言", options: ""})'>add cell</button>
               <div></div>
+            </div>
+          </div>
+        </div>
+        <!--json data -->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            json<span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <div>
+                <input type="text" class="c-ipt" v-model="jsonUrl">
+              </div>
+            </div>
+            <div class="form-group">
+              <div>
+                <input type="text" class="c-ipt" placeholder="例: property:cells of cell.json">
+              </div>
+            </div>
+          </div>
+          <div class="pro-box">
+            <div class="form-groupo">
+              <button class="icon-cell-add" @click='getJson'>upadte</button>
             </div>
           </div>
         </div>
@@ -979,7 +1069,7 @@ var CheckboxComp = {
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <label class="sm-cell" :class="{reverse: comp.isReverse}" v-for="(cell, index) in comp.cells" >
-      <input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox"><div>{{comp.cells[index].item}}</div>
+      <div>{{comp.cells[index].item}}</div><input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox">
     </label>
   </div>
 </div>
@@ -987,7 +1077,22 @@ var CheckboxComp = {
       methods: compMethods
     }
 
-//select zz
+//radio zz
+var RadioComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
+  <div class="sm-cells" :class="{ merge: comp.isMerge}">
+    <label class="sm-cell" v-for="(cell, index) in comp.cells" >
+      <div>{{comp.cells[index].item}}</div><input type="radio" :name="comp.inputname" :value="comp.cells[index].item" class="sm-radio">
+    </label>
+  </div>
+</div>
+`,
+      methods: compMethods
+    }
+
+//select
 var SelectComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1132,6 +1237,7 @@ var vm = new Vue({
     inputComp: InputComp,
     listComp: ListComp,
     checkboxComp: CheckboxComp,
+    radioComp: RadioComp,
     selectComp: SelectComp,
     spaceComp: SpaceComp,
     htmlComp: HtmlComp,
@@ -1152,6 +1258,7 @@ var vm = new Vue({
     isPreview: false,
     caseTypes:["none", "actionsheet", "toast"],
     caseIdx: null,
+    jsonUrl: "http://10.168.1.91:3000/cell.json",
   },
   /*监听data*/
   watch: {
@@ -1564,19 +1671,29 @@ var vm = new Vue({
                          isMerge: false,
                          isShow: true
                        }
-      //checkbox组件
+      //checkbox组件 
       var checkboxCompObj = {
                          name: "checkboxComp",
-                         title: "城市",
-                         inputname: "",
-                         cells: [{item: "北京"},{item: "上海"}],
+                         title: "您去过的城市？",
+                         inputname: "city",
+                         cells: [{item: "福州"},{item: "厦门"},{item: "上海"}],
                          isMerge: false,
                          isShow: true,
-                         rows: [{reverse: true, txt: "文字在左"}, {reverse: false, txt: "文字在右"}],
+                         rows: [{reverse: false, txt: "文字在左"}, {reverse: true, txt: "文字在右"}],
                          isReverse: false
         
                        }
-      //input组件  zz
+      //checkbox组件 zz
+      var radioCompObj = {
+                         name: "radioComp",
+                         title: "您的性别？",
+                         inputname: "sex",
+                         cells: [{item: "男"},{item: "女"}],
+                         isMerge: false,
+                         isShow: true,
+        
+                       }
+      //input组件 
       var selectCompObj = {
                          name: "selectComp",
                          title: "标题",
@@ -1623,6 +1740,9 @@ var vm = new Vue({
             break
           case "checkboxComp":
             compObj = checkboxCompObj
+            break
+          case "radioComp":
+            compObj = radioCompObj
             break
           case "selectComp":
             compObj = selectCompObj
@@ -1791,6 +1911,30 @@ $(":not(div)[data-case=${currCaseid}]").on("click",function(){
     delCell:function(idx){
       let _this = this
       _this.comps[_this.compIdx].cells.splice(idx, 1)
+    },
+    /*===========================
+      下拉框获取json数据 
+    =============================*/
+    getJson:function(){
+      let _this = this
+      $.ajax({
+          type: 'get',
+          url: _this.jsonUrl,
+          dataType: 'json',
+          success: function(data){
+            _this.comps[_this.compIdx].cells = []
+            //变量json返回的cell数组,要写JSON Schema
+            /*to do: 
+             * 1、获取json的属性都不相同，可能是字符串，或对象，或数组；所以不能用变量，
+             * 2、要更新的data中的值也不一样不一定是cells，getJson()方法需要用参数传值
+             * 3、json中的字段和组件中的字段不一样，比如tag表示名称，json文件对应的不一定是tag标签
+             */
+            $.each(data.cells, function(i, cell){
+              _this.comps[_this.compIdx].cells.push(cell)
+            })
+          }
+       })
+      
     }
     
   },

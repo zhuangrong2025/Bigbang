@@ -358,21 +358,8 @@ function previewClose(){
     </h3>
     <div class="property-list">
       <!--**************button property**************-->
+      <!--Text-->
       <div v-if=" panelProp == 'btnComp'">
-        <!--Link-->
-        <div class="pro-item">
-          <h3>
-            Link <span class="caret"></span>
-          </h3>
-          <div class="pro-box">
-            <div class="form-group" >
-              <select class="select"  v-model="comps[compIdx].linkto">
-                <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
-                <option value="#">#</option>
-              </select>
-            </div>
-          </div>
-        </div>
         <div class="pro-item">
           <h3>
             Text <span class="caret"></span>
@@ -405,6 +392,34 @@ function previewClose(){
                   <option value="">large</option>
                   <option value="">small</option>
                 </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Link-->
+        <div class="pro-item">
+          <h3>
+            Link <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" >
+              <select class="select"  v-model="comps[compIdx].linkto">
+                <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                <option value="#">#</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!--input name-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Name <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Name</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city" title="In order to get the element">
               </div>
             </div>
           </div>
@@ -474,8 +489,8 @@ function previewClose(){
         </div>
       </div>
       <!--//**************button property**************-->
-      <!--**************input property **************-->
-      <div v-if=" panelProp == 'inputComp'">
+      <!--**************common property for merge,title,name**************-->
+      <div v-if=" panelProp == 'checkboxComp' || panelProp == 'radioComp' || panelProp == 'inputComp' || panelProp == 'listComp' || panelProp == 'selectComp'">
         <!--merge cell-->
         <div class="pro-item">
           <div class="pro-box">
@@ -490,7 +505,7 @@ function previewClose(){
         <!--cell title-->
         <div class="pro-item" v-if="!comps[compIdx].isMerge">
           <h3 @click="toggleCls">
-            title <span class="caret"></span>
+            Title <span class="caret"></span>
           </h3>
           <div class="pro-box">
             <div class="form-group" v-if="comps[compIdx].isShow">
@@ -500,17 +515,35 @@ function previewClose(){
               </div>
             </div>
             <div class="form-group">
-              <label>show</label>
+              <label>Show</label>
               <div class="tr">
                 <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
               </div>
             </div>
           </div>
         </div>
+        <!--input name-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Name <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Name</label>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city" title="In order to get the element">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************common property**************-->
+      <!--**************input property **************-->
+      <div v-if=" panelProp == 'inputComp'">
         <!--cell content -->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            cells <span class="caret"></span>
+            Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
             <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
@@ -535,41 +568,10 @@ function previewClose(){
       <!--//**************input property**************-->
       <!--**************list property**************-->
       <div v-if=" panelProp == 'listComp'">
-        <!--merge cell-->
-        <div class="pro-item">
-          <div class="pro-box">
-            <div class="form-group">
-              <label>Merge cell</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--cell title-->
-        <div class="pro-item" v-if="!comps[compIdx].isMerge">
-          <h3 @click="toggleCls">
-            title <span class="caret"></span>
-          </h3>
-          <div class="pro-box">
-            <div class="form-group" v-if="comps[compIdx].isShow">
-              <label>Title</label>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>show</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
-              </div>
-            </div>
-          </div>
-        </div>
         <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            cells <span class="caret"></span>
+            Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
             <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
@@ -598,56 +600,11 @@ function previewClose(){
       </div>
       <!--//**************list property**************-->
       <!--**************checkbox property**************-->
-      <div v-if=" panelProp == 'checkboxComp'">
-        <!--merge cell-->
-        <div class="pro-item">
-          <div class="pro-box">
-            <div class="form-group">
-              <label>Merge cell</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--cell title-->
-        <div class="pro-item" v-if="!comps[compIdx].isMerge">
-          <h3 @click="toggleCls">
-            title <span class="caret"></span>
-          </h3>
-          <div class="pro-box">
-            <div class="form-group" v-if="comps[compIdx].isShow">
-              <label>Title</label>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>show</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--input name-->
-        <div class="pro-item">
-          <h3 @click="toggleCls">
-            name <span class="caret"></span>
-          </h3>
-          <div class="pro-box">
-            <div class="form-group">
-              <label>Input Name</label>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city" title="In order to get the element">
-              </div>
-            </div>
-          </div>
-        </div>
+      <div v-if=" panelProp == 'checkboxComp'">  
         <!--reverse-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            reverse <span class="caret"></span>
+            Reverse <span class="caret"></span>
           </h3>
           <div class="pro-box">
             <div class="form-group">
@@ -663,7 +620,7 @@ function previewClose(){
         <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            cells <span class="caret"></span>
+            Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
             <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
@@ -682,55 +639,10 @@ function previewClose(){
       <!--//**************checkbox property**************-->
       <!--**************radio property zz**************-->
       <div v-if=" panelProp == 'radioComp'">
-        <!--merge cell-->
-        <div class="pro-item">
-          <div class="pro-box">
-            <div class="form-group">
-              <label>Merge cell</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--cell title-->
-        <div class="pro-item" v-if="!comps[compIdx].isMerge">
-          <h3 @click="toggleCls">
-            title <span class="caret"></span>
-          </h3>
-          <div class="pro-box">
-            <div class="form-group" v-if="comps[compIdx].isShow">
-              <label>Title</label>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>show</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--input name-->
-        <div class="pro-item">
-          <h3 @click="toggleCls">
-            name <span class="caret"></span>
-          </h3>
-          <div class="pro-box">
-            <div class="form-group">
-              <label>Input Name</label>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].inputname" placeholder="例: city" title="In order to get the element">
-              </div>
-            </div>
-          </div>
-        </div>
         <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            cells <span class="caret"></span>
+            Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
             <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
@@ -749,48 +661,17 @@ function previewClose(){
       <!--//**************radio property**************-->
       <!--**************select property **************-->
       <div v-if=" panelProp == 'selectComp'">
-        <!--merge cell-->
-        <div class="pro-item">
-          <div class="pro-box">
-            <div class="form-group">
-              <label>Merge cell</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isMerge" v-on:click=" comps[compIdx].isMerge ? comps[compIdx].isShow = false : comps[compIdx].isShow = true "/>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--cell title-->
-        <div class="pro-item" v-if="!comps[compIdx].isMerge">
-          <h3 @click="toggleCls">
-            title <span class="caret"></span>
-          </h3>
-          <div class="pro-box">
-            <div class="form-group" v-if="comps[compIdx].isShow">
-              <label>Title</label>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].title">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>show</label>
-              <div class="tr">
-                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isShow"/>
-              </div>
-            </div>
-          </div>
-        </div>
         <!--cell content -->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            cells <span class="caret"></span>
+            Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
             <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
               <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
               <span>&nbsp;</span>
               <div>
-                <input type="text" class="c-ipt" v-on:change="comps[compIdx].cells[index].options = $event.target.value.split(',') " :value="comps[compIdx].cells[index].options" placeholder="例:'中文,英语'" >
+                <input type="text" class="c-ipt" v-on:change="comps[compIdx].cells[index].options = $event.target.value.split(',') " :value="comps[compIdx].cells[index].options" placeholder="例:'中文,英语'" title="option of select" >
               </div>
               <span class="icon-cell-del" @click="delCell(index)"></span>
             </div>
@@ -803,7 +684,7 @@ function previewClose(){
         <!--json data -->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            json<span class="caret"></span>
+            Json<span class="caret"></span>
           </h3>
           <div class="pro-box">
             <div class="form-group">
@@ -830,7 +711,7 @@ function previewClose(){
         <!--html-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            html / js <span class="caret"></span>
+            Html / Js <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
             <textarea v-model="comps[compIdx].vhtml" class="codeMirror opa1"></textarea>
@@ -839,7 +720,7 @@ function previewClose(){
         <!--css-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            css <span class="caret"></span>
+            Css <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
             <textarea v-model="comps[compIdx].vcss" class="codeMirror" @scroll="codeScroll"></textarea>
@@ -855,11 +736,11 @@ function previewClose(){
         <!--html-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            space <span class="caret"></span>
+            Space <span class="caret"></span>
           </h3>
           <div class="pro-box"> 
             <div class="form-group">
-              <label>size</label>
+              <label>Size</label>
               <div>
                 <select class="select" v-model="comps[compIdx].size">
                   <option :value="size" v-for="(size, index) in comps[compIdx].sizes">{{size}}</option>
@@ -946,7 +827,7 @@ function previewClose(){
                 </div>
               </div> 
               <div class="form-group">
-                <label>icon active</label>
+                <label>Icon active</label>
                 <div class="choose-icon">
                   <i class="iconfont" :class="item.active"></i>
                   <input type="text" class="c-ipt" placeholder="" v-model="item.active" v-on:click=" item.active = $event.target.value">
@@ -954,7 +835,7 @@ function previewClose(){
                 </div>
               </div>
               <div class="form-group">
-                <label>linkto</label>
+                <label>Linkto</label>
                 <div>
                   <select class="select" v-model="item.linkto">
                     <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
@@ -972,7 +853,7 @@ function previewClose(){
           </h3>
           <div class="pro-box">
             <div class="form-group">
-              <input type="text" class="c-ipt" v-model="iconfont" >
+              <input type="text" class="c-ipt" v-model="iconfont">
             </div>
             <em class="remark">custom the icon to visit <a target="_blank" href="http://www.iconfont.cn">iconfont.cn</a></em>
           </div>
@@ -1019,6 +900,7 @@ var ButtonComp = {
                      data-comp="drag-div"
                      v-bind:data-case="comp.caseid"
                      v-bind:id="id"
+                     v-bind:name="comp.inputname"
                      v-bind:class="comp.class"
                      draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"
                      v-on:click.prevent = "increment" >{{ comp.text }}</a>
@@ -1048,7 +930,7 @@ var InputComp = {
 //list
 var ListComp = {
       props: ["comp", "id"],
-      template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+      template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <a :href="comp.cells[index].linkto | isLink" class="sm-cell" v-for="(cell, index) in comp.cells" >
@@ -1095,7 +977,7 @@ var RadioComp = {
 //select
 var SelectComp = {
       props: ["comp", "id"],
-      template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+      template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <div class="sm-cell" v-for="(cell, index) in comp.cells">
@@ -1652,13 +1534,15 @@ var vm = new Vue({
                          class: "primary",
                          linkto: "#",
                          text: "按钮" + this.comps.length,
+                         inputname: "",
                          caseid: "caseid" + Math.round(Math.random() * 100),
                          type: "none"
                        }
       //input组件  
       var inputCompObj = {
                          name: "inputComp",
-                         title: "标题",
+                         title: "个人信息",
+                         inputname: "",
                          cells: [{tag: "姓名", control: "", button: ""}, {tag: "手机号", control: "", button: ""}],
                          isMerge: false,
                          isShow: true
@@ -1667,6 +1551,7 @@ var vm = new Vue({
       var listCompObj = {
                          name: "listComp",
                          title: "标题",
+                         inputname: "",
                          cells: [{tag: "名称", tip: "说明", icon: "", linkto: "#"}],
                          isMerge: false,
                          isShow: true
@@ -1697,6 +1582,7 @@ var vm = new Vue({
       var selectCompObj = {
                          name: "selectComp",
                          title: "标题",
+                         inputname: "lang",
                          cells: [{tag: "语言", selected:"请选择...", options:""}],
                          isMerge: false,
                          isShow: true

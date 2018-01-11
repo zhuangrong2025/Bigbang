@@ -266,8 +266,8 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("listComp")'><i class="list"></i>List</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("checkboxComp")'><i class="checkbox"></i>Checkbox</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("radioComp")'><i class="radio"></i>Radio</li>
-          <li><i class="switch"></i>Switch</li>
-          <li><i class="textarea"></i>Textarea</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("switchComp")'><i class="switch"></i>Switch</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("textareaComp")'><i class="textarea"></i>Textarea</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("selectComp")'><i class="select"></i>Select</li>
           <!--基础组件-->
           <li class="divider"><span>Base</span></li>
@@ -490,7 +490,7 @@ function previewClose(){
       </div>
       <!--//**************button property**************-->
       <!--**************common property for merge,title,name**************-->
-      <div v-if=" panelProp == 'checkboxComp' || panelProp == 'radioComp' || panelProp == 'inputComp' || panelProp == 'listComp' || panelProp == 'selectComp'">
+      <div v-if=" panelProp == 'checkboxComp' || panelProp == 'radioComp' || panelProp == 'switchComp' || panelProp == 'textareaComp' || panelProp == 'inputComp' || panelProp == 'listComp' || panelProp == 'selectComp'">
         <!--merge cell-->
         <div class="pro-item">
           <div class="pro-box">
@@ -617,28 +617,10 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--cell content-->
-        <div class="pro-item">
-          <h3 @click="toggleCls">
-            Cells <span class="caret"></span>
-          </h3>
-          <div class="pro-box">
-            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].item">
-              </div>
-              <span class="icon-cell-del" @click="delCell(index)"></span>
-            </div>
-            <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({item: "选项名称"})'>add cell</button>
-              <div></div>
-            </div>
-          </div>
-        </div>
       </div>
       <!--//**************checkbox property**************-->
-      <!--**************radio property zz**************-->
-      <div v-if=" panelProp == 'radioComp'">
+      <!--**************Cells property**************-->
+      <div v-if=" panelProp == 'radioComp' || panelProp == 'switchComp' || panelProp == 'checkboxComp' ">
         <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
@@ -658,7 +640,24 @@ function previewClose(){
           </div>
         </div>
       </div>
-      <!--//**************radio property**************-->
+      <!--//**************Cells property**************-->
+      <!--**************textarea property zz**************-->
+      <div v-if=" panelProp == 'textareaComp'">
+        <!--cell content-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Content <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入文本内容">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************textarea property**************-->
       <!--**************select property **************-->
       <div v-if=" panelProp == 'selectComp'">
         <!--cell content -->
@@ -959,7 +958,7 @@ var CheckboxComp = {
       methods: compMethods
     }
 
-//radio zz
+//radio
 var RadioComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -967,6 +966,38 @@ var RadioComp = {
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <label class="sm-cell" v-for="(cell, index) in comp.cells" >
       <div>{{comp.cells[index].item}}</div><input type="radio" :name="comp.inputname" :value="comp.cells[index].item" class="sm-radio">
+    </label>
+  </div>
+</div>
+`,
+      methods: compMethods
+    }
+
+//textarea zz
+var TextareaComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-cells-wrap" :name="comp.inputname"  v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
+  <div class="sm-cells" :class="{ merge: comp.isMerge}">
+    <div class="sm-cell" v-for="(cell, index) in comp.cells" >
+      <div>
+        <textarea class="sm-textarea" rows="3" :value="comp.cells[index].control" placeholder="请输入文本内容"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+`,
+      methods: compMethods
+    }
+//switch
+var SwitchComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
+  <div class="sm-cells" :class="{ merge: comp.isMerge}">
+    <label class="sm-cell sm-cell-switch" v-for="(cell, index) in comp.cells" >
+      <div>{{comp.cells[index].item}}</div>
+      <span><input type="checkbox" :name="comp.inputname" class="sm-switch"></span>
     </label>
   </div>
 </div>
@@ -1119,7 +1150,9 @@ var vm = new Vue({
     inputComp: InputComp,
     listComp: ListComp,
     checkboxComp: CheckboxComp,
+    textareaComp: TextareaComp,
     radioComp: RadioComp,
+    switchComp: SwitchComp,
     selectComp: SelectComp,
     spaceComp: SpaceComp,
     htmlComp: HtmlComp,
@@ -1568,12 +1601,32 @@ var vm = new Vue({
                          isReverse: false
         
                        }
-      //checkbox组件 zz
+      //radio组件
       var radioCompObj = {
                          name: "radioComp",
                          title: "您的性别？",
                          inputname: "sex",
                          cells: [{item: "男"},{item: "女"}],
+                         isMerge: false,
+                         isShow: true,
+        
+                       }
+      //textarea组件 zz
+      var textareaCompObj = {
+                         name: "textareaComp",
+                         title: "标题",
+                         inputname: "",
+                         cells: [{control: ""}],
+                         isMerge: false,
+                         isShow: true,
+        
+                       }
+      //switch组件 
+      var switchCompObj = {
+                         name: "switchComp",
+                         title: "同步",
+                         inputname: "synch",
+                         cells: [{item: "开启自动同步"}],
                          isMerge: false,
                          isShow: true,
         
@@ -1629,6 +1682,12 @@ var vm = new Vue({
             break
           case "radioComp":
             compObj = radioCompObj
+            break
+          case "textareaComp":
+            compObj = textareaCompObj
+            break
+          case "switchComp":
+            compObj = switchCompObj
             break
           case "selectComp":
             compObj = selectCompObj

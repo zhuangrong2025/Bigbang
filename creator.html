@@ -641,7 +641,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************Cells property**************-->
-      <!--**************textarea property zz**************-->
+      <!--**************textarea property**************-->
       <div v-if=" panelProp == 'textareaComp'">
         <!--cell content-->
         <div class="pro-item">
@@ -658,7 +658,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************textarea property**************-->
-      <!--**************select property **************-->
+      <!--**************select property zz **************-->
       <div v-if=" panelProp == 'selectComp'">
         <!--cell content -->
         <div class="pro-item">
@@ -670,12 +670,12 @@ function previewClose(){
               <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
               <span>&nbsp;</span>
               <div>
-                <input type="text" class="c-ipt" v-on:change="comps[compIdx].cells[index].options = $event.target.value.split(',') " :value="comps[compIdx].cells[index].options" placeholder="例:'中文,英语'" title="option of select" >
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].options">
               </div>
               <span class="icon-cell-del" @click="delCell(index)"></span>
             </div>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "语言", options: ""})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "语言", selected:"请选择...", options: ""})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -973,7 +973,7 @@ var RadioComp = {
       methods: compMethods
     }
 
-//textarea zz
+//textarea 
 var TextareaComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname"  v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1003,27 +1003,52 @@ var SwitchComp = {
 </div>
 `,
       methods: compMethods
-    }
+}
 
-//select
+//select zz
 var SelectComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
-  <div class="sm-cells" :class="{ merge: comp.isMerge}">
+  <div class="sm-cells" :class="{ merge: comp.isMerge}" >
     <div class="sm-cell" v-for="(cell, index) in comp.cells">
       <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
       <div class="sm-select">
-          <select class="select"  v-model="comp.cells[index].selected">
+          <select class="select"  v-model="comp.cells[index].selected" >
             <option selected>请选择...</option>
-            <option :value="option" v-for="option in comp.cells[index].options">{{option}}</option>
+            <option :value="option" v-for="option in filterCells[index].options">{{option}}</option>
           </select>
       </div>
     </div>
   </div>
 </div>
 `,
-      methods: compMethods
+      computed:{
+        filterCells:function(){
+          //v-for不能用过滤，通过计算属性实现过滤
+          var cells = this.comp.cells
+          var newCelss = []
+          $.each(cells, function(i,cell){
+            newCelss.push({"options": cell.options.split("-")})
+          })
+          return newCelss
+          
+        }
+      },
+      methods: {
+        increment: function(event){
+          this.$emit('increment', event)   //触发v-on:increment，并传回当前对象event
+        },
+        drag: function(event){
+          this.$emit('drag', event) 
+        },
+        dragover: function(event){
+          this.$emit('dragover', event) 
+        },
+        dragend: function(event){
+          this.$emit('dragend', event) 
+        }
+      }
     }
 /*
  * 基础组件 
@@ -1611,7 +1636,7 @@ var vm = new Vue({
                          isShow: true,
         
                        }
-      //textarea组件 zz
+      //textarea组件 
       var textareaCompObj = {
                          name: "textareaComp",
                          title: "标题",
@@ -1631,12 +1656,12 @@ var vm = new Vue({
                          isShow: true,
         
                        }
-      //input组件 
+      //select组件 zz
       var selectCompObj = {
                          name: "selectComp",
                          title: "标题",
                          inputname: "lang",
-                         cells: [{tag: "语言", selected:"请选择...", options:""}],
+                         cells: [{tag: "语言", selected:"请选择...", options:"中文-英文"}],
                          isMerge: false,
                          isShow: true
                        }

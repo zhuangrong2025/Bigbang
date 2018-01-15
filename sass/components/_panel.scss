@@ -37,7 +37,7 @@
         }
     }
     &:active{
-      background-color: #fff;
+      background-color: #eee;
     }
     > figure{
       width: 60px;
@@ -58,15 +58,10 @@
       color: #999;
       line-height: 1.4;
     }
-  }
-  a.sm-panel{
-    &:active{
-      background-color: #eee;
-    }
-  }
-  div.sm-panel{
-    > article h4{
-      line-height: 2.2;
+    &:not([href]){
+      &:active{
+        background-color: #fff;
+      }
     }
   }
 }

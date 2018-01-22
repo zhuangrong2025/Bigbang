@@ -273,7 +273,7 @@ function previewClose(){
           <li class="divider"><span>Base</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("spaceComp")'><i class="space"></i>White space</li>
-          <li><i class="panel"></i>Panel</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
           <li><i class="article"></i>Article</li>
           <li><i class="flex"></i>Flex</li>
           <li><i class="grid"></i>Grid</li>
@@ -658,7 +658,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************textarea property**************-->
-      <!--**************select property zz **************-->
+      <!--**************select property**************-->
       <div v-if=" panelProp == 'selectComp'">
         <!--cell content -->
         <div class="pro-item">
@@ -751,6 +751,50 @@ function previewClose(){
        
       </div>
       <!--//**************space property**************-->
+      <!--**************panel property zz**************-->
+      <div v-if=" panelProp == 'panelComp'">
+        <!--cell content-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Image <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Show</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isFigure"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Panel <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group" v-for="(panel, index) in comps[compIdx].cells">
+              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].title"></label>
+              <span>&nbsp;</span>
+              <div>
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].content">
+              </div>
+              <span>&nbsp;</span>
+              <span>
+                <select class="select md"  v-model="comps[compIdx].cells[index].linkto" title="link">
+                  <option value="#" selected>#</option>
+                  <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                </select>
+              </span>
+              <span class="icon-cell-del" @click="delCell(index)"></span>
+            </div>
+            <div class="form-group">
+              <button  class="icon-cell-add" @click='addCell({title:"标题", content:"内容内容内容", linkto: "#"})'>add panel</button>
+              <div></div>
+            </div>
+          </div>
+        </div> 
+      </div>
+      <!--//**************panel property**************-->
       <!--**************page property**************-->
       <div v-if=" panelProp == 'pageComp'">
         <!--page name-->
@@ -1005,7 +1049,7 @@ var SwitchComp = {
       methods: compMethods
 }
 
-//select zz
+//select
 var SelectComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1035,20 +1079,7 @@ var SelectComp = {
           
         }
       },
-      methods: {
-        increment: function(event){
-          this.$emit('increment', event)   //触发v-on:increment，并传回当前对象event
-        },
-        drag: function(event){
-          this.$emit('drag', event) 
-        },
-        dragover: function(event){
-          this.$emit('dragover', event) 
-        },
-        dragend: function(event){
-          this.$emit('dragend', event) 
-        }
-      }
+      methods: compMethods
     }
 /*
  * 基础组件 
@@ -1072,6 +1103,23 @@ var SpaceComp = {
       methods: compMethods
     }
 
+//panel zz
+var PanelComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-panels" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <a :href="comp.cells[index].linkto | isLink" class="sm-panel" v-for="(cell, index) in comp.cells">
+    <figure v-if="comp.isFigure">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAIAAAC1nk4lAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MTY2OTI5ZC02YTZlLTU1NDEtYjVkNS0yOGFhNzI4OGUyM2EiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6M0IzNzUwODJGRjREMTFFN0I0QTJFREM1NDlGRTBDMTciIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6M0IzNzUwODFGRjREMTFFN0I0QTJFREM1NDlGRTBDMTciIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NTE3NWJmYTctODJlZi04MTQ4LWFlODktMThiYjMwZTI1YTA3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjkxNjY5MjlkLTZhNmUtNTU0MS1iNWQ1LTI4YWE3Mjg4ZTIzYSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Puux5EEAAAL7SURBVHja7JpdSJNRGMf/bkvdcs20NKxF5lduc1pmUEEXfdxGl12GRR9YqaVGkba0L4qKiigTBLsI6rKboI+rigip+dFGmFo2ChermK0pbrqexwSZzG3K9H2F8zBeOGfP3vf3nvM/z/m/2+ICjzDvQgEIaAEtoAW0gBbQAhqqcG8WN0qJ9u7AjKDDfnJ2I+x4CU0LaAEtoGehTscw0rdj9X6o9Rh0oLcJzmeyh07bhpwK2Bvg7oSuAIZaIADnc3nLg8bYXo9fbzHi5aPtDPfIXdOalXB/mGi6O1gncocmHetME02dmXvkDt3TCEMdUjZAqeaj0cJrUe4L8ccLxCmRVw2NHl4HPt2SrnqkboR+NzqqMOqLnOx8yi+JN5ekbBjreboLLkKxYD7siAlpKLqBrmuwlnHTdJ5nX9bQqiSsvYm+++h/wsLoPAlF/Bi3Qq7QykQmdr2C4+F4D3F3VEOlgencnHFP5zLEZLqAwW/ovh3UT9ztVVBpYbDMDfd0rpFXwyuPNmRyDpNidJjHOyEV+bVzwB31BVbtwSIDk01V4EaG0H4c6gzkn6ZJifa0maXIq5od6OW7kLETbeXwe8KlETflqFcg/1RkbpqQNSeQvgOpm/nkMYZeugVZh5hm+HfkZOauwMJMBgrDTTIzX2Ej1bqX87OPILkwdtBkdMg20Lx7o7Y45D/pDrW5Y/Meijs+BcV34RuAtZyTvX2w1cF8GYnLYgSduQ+2s0HGMprw/4X1KN9wbmUIm1rSDNdrXtAB/3jnzzf40oKi61xSYwDdVgnXy5mscFL/+zIkFwVxkyld34TPzei9N7kEfX2AATuMDdEs4oiaDsy8MhG39TAWF7Nk+aFrKwqvwmbB98eh8z9eQnwysg5KbU1JuDTe6+5Am8Mei7zKn64pk3lzrUFJCzw9Uj8E+NzMSipvLQ1H/D+oQLUfw5JNMnhyIRTyVUP9USV7ullC4hsmAS2g5R6R6rS0vxVNZRDFn1QEtIAW0AJaQAvo+Qr9T4ABAP7A3kLL9O0CAAAAAElFTkSuQmCC">
+    </figure>
+    <article>
+      <h4>{{comp.cells[index].title}}</h4>
+      <p>{{comp.cells[index].content}}</p>
+    </article>
+  </a>
+</div>
+`,
+      methods: compMethods
+}
 /*
  * 事件组件 
  */
@@ -1179,8 +1227,9 @@ var vm = new Vue({
     radioComp: RadioComp,
     switchComp: SwitchComp,
     selectComp: SelectComp,
-    spaceComp: SpaceComp,
     htmlComp: HtmlComp,
+    spaceComp: SpaceComp,
+    panelComp: PanelComp,
     actionsheetComp: ActionsheetComp,
     toastComp: ToastComp
   },
@@ -1656,7 +1705,7 @@ var vm = new Vue({
                          isShow: true,
         
                        }
-      //select组件 zz
+      //select组件 
       var selectCompObj = {
                          name: "selectComp",
                          title: "标题",
@@ -1690,6 +1739,12 @@ var vm = new Vue({
                          sizes: ["default","sm","md","lg"],
                          size: "default"
                        }
+      //panel组件 zz
+      var panelCompObj = {
+                         name: "panelComp",
+                         isFigure: true,
+                         cells: [{title: "标题", content: "内容内容内容", linkto: "#"}],
+                       }
       
       //组件类型判断
       switch(compType) {
@@ -1722,6 +1777,9 @@ var vm = new Vue({
             break
           case "spaceComp":
             compObj = spaceCompObj
+            break
+          case "panelComp":
+            compObj = panelCompObj
             break
       }
       

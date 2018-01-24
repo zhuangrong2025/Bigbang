@@ -274,8 +274,8 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("spaceComp")'><i class="space"></i>White space</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
-          <li><i class="article"></i>Article</li>
-          <li><i class="flex"></i>Flex</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("flexComp")'><i class="flex"></i>Flex</li>
           <li><i class="grid"></i>Grid</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
@@ -751,7 +751,7 @@ function previewClose(){
        
       </div>
       <!--//**************space property**************-->
-      <!--**************panel property zz**************-->
+      <!--**************panel property**************-->
       <div v-if=" panelProp == 'panelComp'">
         <!--cell content-->
         <div class="pro-item">
@@ -795,6 +795,60 @@ function previewClose(){
         </div> 
       </div>
       <!--//**************panel property**************-->
+      <!--**************article property**************-->
+      <div v-if=" panelProp == 'articleComp'">
+        <!--cell content-->
+        <div class="pro-item">
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Title</label>
+              <div>
+                 <input type="text" class="c-ipt" v-model="comps[compIdx].title">
+              </div>
+            </div>
+            <div class="form-group h-auto">
+              <label>Content</label>
+              <div>
+                 <textarea class="c-texta"  rows="3"  v-model="comps[compIdx].content"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Background</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isBg"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************article property**************-->
+      <!--**************flex property zz**************-->
+      <div v-if=" panelProp == 'flexComp'">
+        <!--cell content-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            flex <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <transition-group name="list-complete" tag="div">
+              <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
+                <label>Text</label>
+                <div>
+                   <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].text">
+                </div>
+                <span class="icon-cell-del" @click="delCell(index)"></span>
+                <span @click="sortBtn('up',index)">上</span>
+                <span @click="sortBtn('down',index)">下</span>
+              </div>
+            </transition-group>
+            <div class="form-group">
+              <button  class="icon-cell-add" @click='addCell({ text: "按钮", cls: "primary", id: "bid" + Math.round(Math.random() * 100)})'>add button</button>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************flex property**************-->
       <!--**************page property**************-->
       <div v-if=" panelProp == 'pageComp'">
         <!--page name-->
@@ -1103,7 +1157,7 @@ var SpaceComp = {
       methods: compMethods
     }
 
-//panel zz
+//panel
 var PanelComp = {
       props: ["comp", "id"],
       template: `<div class="sm-panels" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1116,6 +1170,30 @@ var PanelComp = {
       <p>{{comp.cells[index].content}}</p>
     </article>
   </a>
+</div>
+`,
+      methods: compMethods
+}
+
+//article
+var ArticleComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-article" :class="{bgc: comp.isBg}" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <h3>{{comp.title}}</h3>
+  <p>{{comp.content}}</p>
+</div>
+`,
+      methods: compMethods
+}
+//flex zz
+var FlexComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-flex child" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <transition-group name="list-complete" tag="div">
+    <div class="sm-flex-item list-complete-item" :key="cell.id"  v-for="(cell, index) in comp.cells">
+      <a href="#" class="sm-btn primary">{{cell.text}}</a>
+    </div>
+  </transition-group>
 </div>
 `,
       methods: compMethods
@@ -1230,6 +1308,7 @@ var vm = new Vue({
     htmlComp: HtmlComp,
     spaceComp: SpaceComp,
     panelComp: PanelComp,
+    flexComp: FlexComp,
     actionsheetComp: ActionsheetComp,
     toastComp: ToastComp
   },
@@ -1739,11 +1818,24 @@ var vm = new Vue({
                          sizes: ["default","sm","md","lg"],
                          size: "default"
                        }
-      //panel组件 zz
+      //panel组件
       var panelCompObj = {
                          name: "panelComp",
                          isFigure: true,
                          cells: [{title: "标题", content: "内容内容内容", linkto: "#"}],
+                       }
+      //article 组件
+      var articleCompObj = {
+                         name: "articleComp",
+                         title: "文章的标题",
+                         content: "这里显示多行内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
+                         isBg: true,
+                       }
+      
+      //flex 组件 zz
+      var flexCompObj = {
+                         name: "flexComp",
+                         cells: [{text: "确定", cls: "primary", id: "bid" + Math.round(Math.random() * 10)},{text: "取消", cls: "warning", id: "bid" + Math.round(Math.random() * 10)}]
                        }
       
       //组件类型判断
@@ -1780,6 +1872,12 @@ var vm = new Vue({
             break
           case "panelComp":
             compObj = panelCompObj
+            break
+          case "articleComp":
+            compObj = articleCompObj
+            break
+          case "flexComp":
+            compObj = flexCompObj
             break
       }
       
@@ -1950,21 +2048,41 @@ $(":not(div)[data-case=${currCaseid}]").on("click",function(){
           url: _this.jsonUrl,
           dataType: 'json',
           success: function(data){
-            _this.comps[_this.compIdx].cells = []
+            //_this.comps[_this.compIdx].cells = []
             //变量json返回的cell数组,要写JSON Schema
             /*to do: 
              * 1、获取json的属性都不相同，可能是字符串，或对象，或数组；所以不能用变量，
              * 2、要更新的data中的值也不一样不一定是cells，getJson()方法需要用参数传值
              * 3、json中的字段和组件中的字段不一样，比如tag表示名称，json文件对应的不一定是tag标签
              */
-            $.each(data.cells, function(i, cell){
-              _this.comps[_this.compIdx].cells.push(cell)
-            })
+//            $.each(data.cells, function(i, cell){
+//              _this.comps[_this.compIdx].cells.push(cell)
+//            })
           }
        })
-      
-    }
+    },
     
+    /*===========================
+      按钮组button bar排序 
+    =============================*/
+    sortBtn:function(direction,index){
+      let _this = this
+      var cells = _this.comps[_this.compIdx].cells
+      var inputLength = _this.comps[_this.compIdx].cells.length
+      if(direction == "up"){
+        if(index == 0){
+          return
+        }
+        cells[index] = cells.splice((index - 1), 1, cells[index])[0];
+        $(".form-group[data-btn=" + (index + 1) +"]").css("border","1px solid #000")
+       
+      }else{
+        if(index == inputLength - 1){
+          return
+        }
+        cells[index] = cells.splice((index + 1), 1, cells[index])[0];
+      }
+    }
   },
   updated:function() {
     /*

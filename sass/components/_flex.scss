@@ -1,8 +1,15 @@
 //flex
-.sm-flex{
+.sm-flex:not(.child){
   display: -webkit-box; 
-	display: -webkit-flex;
-	display: flex;
+  display: -webkit-flex;
+  display: flex;
+}
+.sm-flex.child{
+   > div{
+    display: -webkit-box; 
+    display: -webkit-flex;
+    display: flex;
+   }
 }
 .sm-flex-item{
   -webkit-box-flex:1;

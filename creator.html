@@ -275,7 +275,7 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("spaceComp")'><i class="space"></i>White space</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
-          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("flexComp")'><i class="flex"></i>Flex</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("buttonbarComp")'><i class="flex"></i>Flex</li>
           <li><i class="grid"></i>Grid</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
@@ -380,7 +380,7 @@ function previewClose(){
               <label>Class</label>
               <div>
                 <select class="select" v-model="comps[compIdx].class" >
-                  <option :value="cls" v-for="cls in comps[compIdx].classes">{{cls}}</option>
+                  <option :value="cls" v-for="cls in classes">{{cls}}</option>
                 </select>
               </div>
             </div>
@@ -823,26 +823,36 @@ function previewClose(){
       </div>
       <!--//**************article property**************-->
       <!--**************flex property zz**************-->
-      <div v-if=" panelProp == 'flexComp'">
+      <div v-if=" panelProp == 'buttonbarComp'">
         <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            flex <span class="caret"></span>
+            Button Bar<span class="caret"></span>
           </h3>
           <div class="pro-box">
             <transition-group name="list-complete" tag="div">
               <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
-                <label>Text</label>
+                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "></span>
+                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "></span>
                 <div>
-                   <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].text">
+                   <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].text" title="text">
                 </div>
+                <div>
+                  <select class="select" v-model="comps[compIdx].cells[index].class" title="class">
+                    <option :value="cls" v-for="cls in classes">{{cls}}</option>
+                  </select>
+                </div>
+                <span>
+                  <select class="select md"  v-model="comps[compIdx].cells[index].linkto" title="link">
+                    <option value="#" selected>#</option>
+                    <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                  </select>
+                </span>
                 <span class="icon-cell-del" @click="delCell(index)"></span>
-                <span @click="sortBtn('up',index)">上</span>
-                <span @click="sortBtn('down',index)">下</span>
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({ text: "按钮", cls: "primary", id: "bid" + Math.round(Math.random() * 100)})'>add button</button>
+              <button  class="icon-cell-add" @click='addCell({ text: "按钮", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 100)})'>add button</button>
               <div></div>
             </div>
           </div>
@@ -1186,12 +1196,12 @@ var ArticleComp = {
       methods: compMethods
 }
 //flex zz
-var FlexComp = {
+var ButtonbarComp = {
       props: ["comp", "id"],
       template: `<div class="sm-flex child" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <transition-group name="list-complete" tag="div">
     <div class="sm-flex-item list-complete-item" :key="cell.id"  v-for="(cell, index) in comp.cells">
-      <a href="#" class="sm-btn primary">{{cell.text}}</a>
+      <a :href="comp.cells[index].linkto | isLink" class="sm-btn" :class="comp.cells[index].class">{{cell.text}}</a>
     </div>
   </transition-group>
 </div>
@@ -1308,7 +1318,8 @@ var vm = new Vue({
     htmlComp: HtmlComp,
     spaceComp: SpaceComp,
     panelComp: PanelComp,
-    flexComp: FlexComp,
+    articleComp: ArticleComp,
+    buttonbarComp: ButtonbarComp,
     actionsheetComp: ActionsheetComp,
     toastComp: ToastComp
   },
@@ -1316,6 +1327,7 @@ var vm = new Vue({
     compIdx: 0,
     comps: [{}],
     panelProp: "pageComp",
+    classes:["primary", "warning"],
     themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340"}'),
     pages: Store.fetch('pages-list', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),
@@ -1716,7 +1728,6 @@ var vm = new Vue({
       //button组件
       var btnCompObj = {
                          name: "btnComp",
-                         classes:["primary", "warning"],
                          class: "primary",
                          linkto: "#",
                          text: "按钮" + this.comps.length,
@@ -1833,9 +1844,9 @@ var vm = new Vue({
                        }
       
       //flex 组件 zz
-      var flexCompObj = {
-                         name: "flexComp",
-                         cells: [{text: "确定", cls: "primary", id: "bid" + Math.round(Math.random() * 10)},{text: "取消", cls: "warning", id: "bid" + Math.round(Math.random() * 10)}]
+      var buttonbarCompObj = {
+                         name: "buttonbarComp",
+                         cells: [{text: "确定", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 10)},{text: "取消", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 10)}]
                        }
       
       //组件类型判断
@@ -1876,8 +1887,8 @@ var vm = new Vue({
           case "articleComp":
             compObj = articleCompObj
             break
-          case "flexComp":
-            compObj = flexCompObj
+          case "buttonbarComp":
+            compObj = buttonbarCompObj
             break
       }
       

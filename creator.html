@@ -263,19 +263,20 @@ function previewClose(){
           <li class="divider"><span>Form</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("btnComp")'><i class="button"></i>Button</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("inputComp")'><i class="input"></i>Input</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("buttonbarComp")'><i class="buttonbar"></i>Button Bar</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("listComp")'><i class="list"></i>List</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("checkboxComp")'><i class="checkbox"></i>Checkbox</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("radioComp")'><i class="radio"></i>Radio</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("switchComp")'><i class="switch"></i>Switch</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("textareaComp")'><i class="textarea"></i>Textarea</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("selectComp")'><i class="select"></i>Select</li>
+          <li class="empty"></li>
           <!--基础组件-->
           <li class="divider"><span>Base</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("spaceComp")'><i class="space"></i>White space</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
-          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("buttonbarComp")'><i class="flex"></i>Flex</li>
           <li><i class="grid"></i>Grid</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
@@ -566,33 +567,37 @@ function previewClose(){
         </div>
       </div>
       <!--//**************input property**************-->
-      <!--**************list property**************-->
-      <div v-if=" panelProp == 'listComp'">
+      <!--**************list property zz**************-->
+      <div v-if=" panelProp == 'listComp'"  >
         <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
             Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
-              <div><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></div>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="请输入">
+            <transition-group name="list-complete" tag="div" :key="comps[compIdx].tgId">
+              <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
+                <div><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></div>
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="请输入">
+                </div>
+                <div>
+                  <select class="select"  v-model="comps[compIdx].cells[index].linkto" title="link">
+                    <option value="#">#</option>
+                    <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                  </select>
+                </div>
+                <div class="choose-icon sm">
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].icon" v-on:click=" comps[compIdx].cells[index].icon = $event.target.value" :title="comps[compIdx].cells[index].icon" placeholder="图标名">
+                  <button @click="chooseIcon($event)" title="choose icon"></button>
+                </div>
+                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
+                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
+                <span class="icon-cell-del" @click="delCell(index)"></span>
               </div>
-              <div>
-                <select class="select"  v-model="comps[compIdx].cells[index].linkto" title="link">
-                  <option value="#">#</option>
-                  <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
-                </select>
-              </div>
-              <div class="choose-icon sm">
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].icon" v-on:click=" comps[compIdx].cells[index].icon = $event.target.value" :title="comps[compIdx].cells[index].icon" placeholder="图标名">
-                <button @click="chooseIcon($event)"></button>
-              </div>
-              <span class="icon-cell-del" @click="delCell(index)"></span>
-            </div>
+            </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", tip: "说明", linkto: "#", icon: ""})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", tip: "说明", linkto: "#", icon: "", id: "listid" + Math.round(Math.random() * 100)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -822,18 +827,16 @@ function previewClose(){
         </div>
       </div>
       <!--//**************article property**************-->
-      <!--**************flex property zz**************-->
-      <div v-if=" panelProp == 'buttonbarComp'">
+      <!--**************buttonbar property zz**************-->
+      <div v-if=" panelProp == 'buttonbarComp'" >
         <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
             Button Bar<span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <transition-group name="list-complete" tag="div">
-              <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
-                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "></span>
-                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "></span>
+            <transition-group name="list-complete" tag="div" :key="comps[compIdx].tgId">
+              <div class="form-group list-complete-item"  :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
                 <div>
                    <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].text" title="text">
                 </div>
@@ -848,7 +851,9 @@ function previewClose(){
                     <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
                   </select>
                 </span>
-                <span class="icon-cell-del" @click="delCell(index)"></span>
+                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
+                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
+                <span class="icon-cell-del" @click="delCell(index)" title="delete"></span>
               </div>
             </transition-group>
             <div class="form-group">
@@ -858,7 +863,7 @@ function previewClose(){
           </div>
         </div>
       </div>
-      <!--//**************flex property**************-->
+      <!--//**************buttonbar property**************-->
       <!--**************page property**************-->
       <div v-if=" panelProp == 'pageComp'">
         <!--page name-->
@@ -1034,17 +1039,19 @@ var InputComp = {
       methods: compMethods
     }
 
-//list
+//list zz
 var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
-    <a :href="comp.cells[index].linkto | isLink" class="sm-cell" v-for="(cell, index) in comp.cells" >
-      <i :class="comp.cells[index].icon"></i>
-      <div>{{comp.cells[index].tag}}</div>
-      <span>{{comp.cells[index].tip}}</span>
-    </a>
+    <transition-group name="list-complete" tag="div"  :key="comp.tgId">
+      <a :href="comp.cells[index].linkto | isLink" class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
+        <i :class="comp.cells[index].icon"></i>
+        <div>{{comp.cells[index].tag}}</div>
+        <span>{{comp.cells[index].tip}}</span>
+      </a>
+    </transition-group>
   </div>
 </div>
 `,
@@ -1195,11 +1202,11 @@ var ArticleComp = {
 `,
       methods: compMethods
 }
-//flex zz
+//buttonbar zz
 var ButtonbarComp = {
       props: ["comp", "id"],
       template: `<div class="sm-flex child" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
-  <transition-group name="list-complete" tag="div">
+  <transition-group name="list-complete" tag="div" :key="comp.tgId">
     <div class="sm-flex-item list-complete-item" :key="cell.id"  v-for="(cell, index) in comp.cells">
       <a :href="comp.cells[index].linkto | isLink" class="sm-btn" :class="comp.cells[index].class">{{cell.text}}</a>
     </div>
@@ -1339,6 +1346,7 @@ var vm = new Vue({
     caseTypes:["none", "actionsheet", "toast"],
     caseIdx: null,
     jsonUrl: "http://10.168.1.91:3000/cell.json",
+    numb: 9,
   },
   /*监听data*/
   watch: {
@@ -1744,12 +1752,13 @@ var vm = new Vue({
                          isMerge: false,
                          isShow: true
                        }
-      //list组件 
+      //list组件  zz
       var listCompObj = {
                          name: "listComp",
                          title: "标题",
                          inputname: "",
-                         cells: [{tag: "名称", tip: "说明", icon: "", linkto: "#"}],
+                         tgId: "tg" + Math.round(Math.random() * 1000),
+                         cells: [{tag: "名称", tip: "说明", icon: "", linkto: "#", id: "listid" + Math.round(Math.random() * 100)}],
                          isMerge: false,
                          isShow: true
                        }
@@ -1843,10 +1852,11 @@ var vm = new Vue({
                          isBg: true,
                        }
       
-      //flex 组件 zz
+      //buttonbar组件 zz
       var buttonbarCompObj = {
                          name: "buttonbarComp",
-                         cells: [{text: "确定", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 10)},{text: "取消", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 10)}]
+                         tgId: "tg" + Math.round(Math.random() * 1000),
+                         cells: [{text: "确定", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 100)},{text: "取消", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 100)}]
                        }
       
       //组件类型判断
@@ -2085,7 +2095,6 @@ $(":not(div)[data-case=${currCaseid}]").on("click",function(){
           return
         }
         cells[index] = cells.splice((index - 1), 1, cells[index])[0];
-        $(".form-group[data-btn=" + (index + 1) +"]").css("border","1px solid #000")
        
       }else{
         if(index == inputLength - 1){

@@ -242,7 +242,7 @@ function previewClose(){
 <!--container-->
 <section class="container" style="opacity: 1.7">
   <aside class="aside-bar" style="opacity: 0.5; display:">
-    <!--pages-->
+    <!--pages zz-->
     <div class="pages">
       <h3 class="title"><span>Pages</span> <button id="addpages" @click="addPage"><i class="new-page"></i>Add Page</button></h3>
       <div class="page-list">
@@ -567,7 +567,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************input property**************-->
-      <!--**************list property zz**************-->
+      <!--**************list property **************-->
       <div v-if=" panelProp == 'listComp'"  >
         <!--cell content-->
         <div class="pro-item">
@@ -827,7 +827,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************article property**************-->
-      <!--**************buttonbar property zz**************-->
+      <!--**************buttonbar property**************-->
       <div v-if=" panelProp == 'buttonbarComp'" >
         <!--cell content-->
         <div class="pro-item">
@@ -1039,7 +1039,7 @@ var InputComp = {
       methods: compMethods
     }
 
-//list zz
+//list
 var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1202,7 +1202,7 @@ var ArticleComp = {
 `,
       methods: compMethods
 }
-//buttonbar zz
+//buttonbar
 var ButtonbarComp = {
       props: ["comp", "id"],
       template: `<div class="sm-flex child" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1336,7 +1336,7 @@ var vm = new Vue({
     panelProp: "pageComp",
     classes:["primary", "warning"],
     themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340"}'),
-    pages: Store.fetch('pages-list', '[{}]'),
+    pages: Store.fetch('pages', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),
     generateHtml: Store.fetch('html-list', '[{}]'),
     tabbar: Store.fetch('tabbar', '{"number": 4,"items": [{"icon": "icon-homepage", "title": "Home", "linkto": "#", "active": ""},{"icon": "icon-label", "title": "Category", "linkto": "#", "active": ""},{"icon": "icon-service", "title": "Service", "linkto": "#", "active": ""},{"icon": "icon-people", "title": "User", "linkto": "#", "active": ""}]}'),
@@ -1345,10 +1345,9 @@ var vm = new Vue({
     isPreview: false,
     caseTypes:["none", "actionsheet", "toast"],
     caseIdx: null,
-    jsonUrl: "http://10.168.1.91:3000/cell.json",
-    numb: 9,
+    jsonUrl: "http://10.168.1.91:3000/cell.json"
   },
-  /*监听data*/
+  /*监听data zz*/
   watch: {
     comps: {
        handler: function(newVal){
@@ -1366,7 +1365,7 @@ var vm = new Vue({
     },
     pages: {
        handler: function(newVal){
-          Store.save('pages-list', newVal)
+          Store.save('pages', newVal)
        },
        deep: true
     },
@@ -1396,8 +1395,27 @@ var vm = new Vue({
     }
   },
   mounted:function() {
+    var _this = this
     this.$nextTick(function () {
-      //初始化comps从localstorage中获取
+      
+      //初始化
+      if(this.pages.length < 3){
+        //初始化pages
+        this.pages = [{"name":"欢迎页","id":"page1001","title":"欢迎页","isHeader":true,"isTabbar":false},{"name":"示例","id":"page1002","title":"示例","isHeader":true,"isTabbar":false},{}]
+        
+        //初始化"欢迎页"的comps数据, 延迟100ms后向comps添加数据
+        setTimeout(function(){ 
+           _this.comps = [{"name":"htmlComp","vhtml":"<div class='welcome'>\n  <h3>\n<p>欢迎使用</p></h3>\n\n</div>","vcss":"<style>\n.welcome h3{\n  text-align:center;\n  font-size:20px;\n}\n.welcome{\n  padding:80px 0 100px;\n  background-color:#fff\n}\n</style>"},{"name":"btnComp","class":"primary","linkto":"示例","text":"查看示例","inputname":"","caseid":"caseid87","type":"none"},{}]
+        },100)
+        
+        //初始化"示例"的localstorage的数据
+        window.localStorage.setItem("page1002", JSON.stringify([{"name":"inputComp","title":"个人信息","inputname":"","cells":[{"tag":"姓名","control":"","button":""},{"tag":"手机号","control":"","button":"验证码"}],"isMerge":false,"isShow":true},{}]))
+       
+        //初始化generateHtml； to fixed:在page1002的html内容要再update钩子函数中生成，在切换page时自动update，首次加载时如果没有切换page，直接点击preview或download，不会生成“示例”页的html
+        this.generateHtml = [{"getHtml":"","getCss":""},{"getHtml":"","getCss":""},{}]
+        
+      }
+      //初始化comps: 从localstorage的key = page****中获取数据
       if(this.pages[this.pageIdx].id){
         this.comps  = Store.fetch(this.pages[this.pageIdx].id, '[{}]')
       }
@@ -1474,7 +1492,7 @@ var vm = new Vue({
     },
     
     /*===========================
-      page列表操作
+      page列表操作 zz
     =============================*/
     addPage(){
       this.pages.splice((this.pages.length - 1), 0, {
@@ -1752,7 +1770,7 @@ var vm = new Vue({
                          isMerge: false,
                          isShow: true
                        }
-      //list组件  zz
+      //list组件
       var listCompObj = {
                          name: "listComp",
                          title: "标题",
@@ -1852,7 +1870,7 @@ var vm = new Vue({
                          isBg: true,
                        }
       
-      //buttonbar组件 zz
+      //buttonbar组件
       var buttonbarCompObj = {
                          name: "buttonbarComp",
                          tgId: "tg" + Math.round(Math.random() * 1000),

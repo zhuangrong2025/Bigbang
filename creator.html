@@ -242,7 +242,7 @@ function previewClose(){
 <!--container-->
 <section class="container" style="opacity: 1.7">
   <aside class="aside-bar" style="opacity: 0.5; display:">
-    <!--pages zz-->
+    <!--pages-->
     <div class="pages">
       <h3 class="title"><span>Pages</span> <button id="addpages" @click="addPage"><i class="new-page"></i>Add Page</button></h3>
       <div class="page-list">
@@ -278,6 +278,7 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
           <li><i class="grid"></i>Grid</li>
+          <li><i class="grid"></i>swiper</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
           <li><i class="navbar"></i>Navbar</li>
@@ -539,7 +540,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************common property**************-->
-      <!--**************input property **************-->
+      <!--**************input property zz**************-->
       <div v-if=" panelProp == 'inputComp'">
         <!--cell content -->
         <div class="pro-item">
@@ -547,20 +548,24 @@ function previewClose(){
             Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
-              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
-              <span>&nbsp;</span>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入">
+            <transition-group name="list-complete" tag="div" :key="comps[compIdx].tgId">
+              <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
+                <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
+                <span>&nbsp;</span>
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入">
+                </div>
+                <span>&nbsp;</span>
+                <label>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].button" placeholder="例: '获取验证码'">
+                </label>
+                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
+                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
+                <span class="icon-cell-del" @click="delCell(index)"></span>
               </div>
-              <span>&nbsp;</span>
-              <label>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].button" placeholder="例: '获取验证码'">
-              </label>
-              <span class="icon-cell-del" @click="delCell(index)"></span>
-            </div>
+            </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", control: "", button: ""})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", control: "", button: "", id: "listid" + Math.round(Math.random() * 100)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -654,9 +659,9 @@ function previewClose(){
             Content <span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
+            <div class="form-group h-auto" v-for="(cell, index) in comps[compIdx].cells">
               <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入文本内容">
+                <textarea rows="3" class="c-texta" v-model="comps[compIdx].cells[index].control" placeholder="请输入文本内容"></textarea>
               </div>
             </div>
           </div>
@@ -675,7 +680,7 @@ function previewClose(){
               <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
               <span>&nbsp;</span>
               <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].options">
+                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].options" title="Split options with '-'">
               </div>
               <span class="icon-cell-del" @click="delCell(index)"></span>
             </div>
@@ -1020,26 +1025,28 @@ var ButtonComp = {
       methods: compMethods
     }
 
-//input
+//input zz
 var InputComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
-    <div class="sm-cell" v-for="(cell, index) in comp.cells" >
-      <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
-      <div>
-        <input type="text" :value="comp.cells[index].control" placeholder="请输入">
+    <transition-group name="list-complete" tag="div"  :key="comp.tgId">
+      <div class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
+        <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
+        <div>
+          <input type="text" :value="comp.cells[index].control" placeholder="请输入">
+        </div>
+        <a href="#" class="cell-btn" v-if="comp.cells[index].button != ''">{{comp.cells[index].button}}</a>
       </div>
-      <a href="#" class="cell-btn" v-if="comp.cells[index].button != ''">{{comp.cells[index].button}}</a>
-    </div>
+    </transition-group>
   </div>
 </div>
 `,
       methods: compMethods
     }
 
-//list
+//list 
 var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1347,7 +1354,7 @@ var vm = new Vue({
     caseIdx: null,
     jsonUrl: "http://10.168.1.91:3000/cell.json"
   },
-  /*监听data zz*/
+  /*监听data*/
   watch: {
     comps: {
        handler: function(newVal){
@@ -1497,7 +1504,7 @@ var vm = new Vue({
     },
     
     /*===========================
-      * page列表操作 zz
+      * page列表操作 
       * 1、addPage： 新增page时comps和localstorage转换过程： 
       *** a：先在localstorage上新增一个page****的key，赋值[{}]
       *** b：延迟100ms后trigger  li，赋值this.comps即空的[{}], 触发了watch
@@ -1594,7 +1601,7 @@ var vm = new Vue({
       
       $("#modal-page").removeClass("in")
       $(".modal-mask").removeClass("in")
-      console.log(this.pageIdx)
+      
     },   
     delectPage(){
       $("#modal-page").addClass("in")
@@ -1786,22 +1793,23 @@ var vm = new Vue({
                          caseid: "caseid" + Math.round(Math.random() * 100),
                          type: "none"
                        }
-      //input组件  
+      //input组件  zz 
       var inputCompObj = {
                          name: "inputComp",
                          title: "个人信息",
                          inputname: "",
-                         cells: [{tag: "姓名", control: "", button: ""}, {tag: "手机号", control: "", button: ""}],
+                         tgId: "tg" + Math.round(Math.random() * 1000),
+                         cells: [{tag: "姓名", control: "", button: "", id: "iptid" + Math.round(Math.random() * 100)}, {tag: "手机号", control: "", button: "", id: "iptid" + Math.round(Math.random() * 100)}],
                          isMerge: false,
                          isShow: true
                        }
       //list组件
       var listCompObj = {
                          name: "listComp",
-                         title: "标题",
+                         title: "会员信息",
                          inputname: "",
                          tgId: "tg" + Math.round(Math.random() * 1000),
-                         cells: [{tag: "名称", tip: "说明", icon: "", linkto: "#", id: "listid" + Math.round(Math.random() * 100)}],
+                         cells: [{tag: "会员特权", tip: "", icon: "icon-select", linkto: "#", id: "listid" + Math.round(Math.random() * 100)},{tag: "会员认证", tip: "已认证", icon: "icon-integral", linkto: "#", id: "listid" + Math.round(Math.random() * 100)}],
                          isMerge: false,
                          isShow: true
                        }

@@ -1351,8 +1351,9 @@ var vm = new Vue({
   watch: {
     comps: {
        handler: function(newVal){
+         //每次添加组件元素或改变属性时，把comps数据存到localstorage，key为page****
          if(this.pages.length > 1){
-            window.localStorage.setItem(this.pages[this.pageIdx].id , JSON.stringify(newVal))
+           window.localStorage.setItem(this.pages[this.pageIdx].id, JSON.stringify(newVal))
          }
        },
        deep: true
@@ -1398,24 +1399,28 @@ var vm = new Vue({
     var _this = this
     this.$nextTick(function () {
       
-      //初始化
-      if(this.pages.length < 3){
-        //初始化pages
-        this.pages = [{"name":"欢迎页","id":"page1001","title":"欢迎页","isHeader":true,"isTabbar":false},{"name":"示例","id":"page1002","title":"示例","isHeader":true,"isTabbar":false},{}]
-        
-        //初始化"欢迎页"的comps数据, 延迟100ms后向comps添加数据
-        setTimeout(function(){ 
-           _this.comps = [{"name":"htmlComp","vhtml":"<div class='welcome'>\n  <h3>\n<p>欢迎使用</p></h3>\n\n</div>","vcss":"<style>\n.welcome h3{\n  text-align:center;\n  font-size:20px;\n}\n.welcome{\n  padding:80px 0 100px;\n  background-color:#fff\n}\n</style>"},{"name":"btnComp","class":"primary","linkto":"示例","text":"查看示例","inputname":"","caseid":"caseid87","type":"none"},{}]
-        },100)
-        
-        //初始化"示例"的localstorage的数据
-        window.localStorage.setItem("page1002", JSON.stringify([{"name":"inputComp","title":"个人信息","inputname":"","cells":[{"tag":"姓名","control":"","button":""},{"tag":"手机号","control":"","button":"验证码"}],"isMerge":false,"isShow":true},{}]))
-       
-        //初始化generateHtml； to fixed:在page1002的html内容要再update钩子函数中生成，在切换page时自动update，首次加载时如果没有切换page，直接点击preview或download，不会生成“示例”页的html
-        this.generateHtml = [{"getHtml":"","getCss":""},{"getHtml":"","getCss":""},{}]
-        
+      // 初始化：判断localstorage上有没有key，如果没有对应的key就加载初始页，如果有key，就不加加载默认页，防止page都被删除后，又加载了默认页面
+      var lsPageIdx = Store.fetch("pageIdx", null)
+      if( lsPageIdx == null){
+        if(this.pages.length < 3){
+          //初始化pages
+          this.pages = [{"name":"欢迎页","id":"page1001","title":"欢迎页","isHeader":true,"isTabbar":false},{"name":"示例","id":"page1002","title":"示例","isHeader":true,"isTabbar":false},{}]
+
+          //初始化"欢迎页"的comps数据, 延迟100ms后向comps添加数据
+          setTimeout(function(){ 
+             _this.comps = [{"name":"htmlComp","vhtml":"<div class='welcome'>\n  <h3>\n<p>欢迎使用</p></h3>\n\n</div>","vcss":"<style>\n.welcome h3{\n  text-align:center;\n  font-size:20px;\n}\n.welcome{\n  padding:80px 0 100px;\n  margin-bottom:15px;\n  background-color:#fff\n}\n</style>"},{"name":"btnComp","class":"primary","linkto":"示例","text":"查看示例","inputname":"","caseid":"caseid100","type":"none"},{}]
+          },100)
+
+          //初始化"示例"的localstorage的数据，在切换到此page时替换comps中的数据
+          window.localStorage.setItem("page1002", JSON.stringify([{"name":"inputComp","title":"个人信息","inputname":"","cells":[{"tag":"姓名","control":"","button":""},{"tag":"手机号","control":"","button":"验证码"}],"isMerge":false,"isShow":true},{}]))
+
+          //初始化generateHtml； to fixed:在page1002的html内容要再update钩子函数中生成，在切换page时自动update，首次加载时如果没有切换page，直接点击preview或download，不会生成“示例”页的html
+          this.generateHtml = [{"getHtml":"","getCss":""},{"getHtml":"","getCss":""},{}]
+
+        }
       }
-      //初始化comps: 从localstorage的key = page****中获取数据
+      
+      //根据pageIdx初始化comps: 从localstorage的key = page****中获取数据,
       if(this.pages[this.pageIdx].id){
         this.comps  = Store.fetch(this.pages[this.pageIdx].id, '[{}]')
       }
@@ -1448,7 +1453,7 @@ var vm = new Vue({
     //选择组件
     selectComp(event, obj){
       var ele = $(event.target)
-       
+        
       if(ele.parents("[data-comp=drag-div]")[0]){ //捕获html片段的父元素,data-comp="drag-div"可以选中这个组件所有
         ele = ele.parents("[data-comp=drag-div]")
       } 
@@ -1492,22 +1497,41 @@ var vm = new Vue({
     },
     
     /*===========================
-      page列表操作 zz
+      * page列表操作 zz
+      * 1、addPage： 新增page时comps和localstorage转换过程： 
+      *** a：先在localstorage上新增一个page****的key，赋值[{}]
+      *** b：延迟100ms后trigger  li，赋值this.comps即空的[{}], 触发了watch
+      *** c：this.generateHtml增加一个对应的空元素
+      *
     =============================*/
     addPage(){
-      this.pages.splice((this.pages.length - 1), 0, {
+      //通过pages的length来判断
+      var currentPage 
+      if(this.pages.length > 1){
+        currentPage = this.pageIdx + 1
+        var ele = $(".page-list li").eq(this.pageIdx)
+        setTimeout(function(){ 
+          ele.next().trigger("click") 
+        },100)
+      }else{
+        currentPage = 0
+      }
+      //新增一个page
+      this.pages.splice(currentPage, 0, {
            name: "page" + this.pages.length,
            id: "page" + Math.round(Math.random() * 10000),
            title: "导航栏",
            isHeader: true,
            isTabbar: false
          })
-      window.localStorage.setItem(this.pages[this.pages.length - 2 ].id, JSON.stringify([{}]))
+      //新增localStorage上page****的空值，上面ele的trigger的时候需要到
+      window.localStorage.setItem(this.pages[currentPage].id, JSON.stringify([{}]))  
       
-      this.generateHtml.splice((this.generateHtml.length - 1), 0, {
-           getHtml: "",
-           getCss: ""
-         })
+      //新增generateHtml，需有pages对应个数
+      this.generateHtml.splice(currentPage, 0, {
+         getHtml: "",
+         getCss: ""
+       })
     },    
     selectPage(event, pageIdx){
       var ele
@@ -1521,7 +1545,7 @@ var vm = new Vue({
       var liId = ele.attr("id")
       
       this.compIdx = 0 //在切换page的时候compIdx要重置0，不然会找不到对应的组件属性，如.text .class .vhtml等
-      this.comps = JSON.parse(window.localStorage.getItem(liId))
+      this.comps = JSON.parse(window.localStorage.getItem(liId))  //注意：这里会触发comps的watch
       
       this.panelProp = "pageComp"
       $(".select-box").hide()
@@ -1570,6 +1594,7 @@ var vm = new Vue({
       
       $("#modal-page").removeClass("in")
       $(".modal-mask").removeClass("in")
+      console.log(this.pageIdx)
     },   
     delectPage(){
       $("#modal-page").addClass("in")

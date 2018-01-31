@@ -1,19 +1,13 @@
 //flex
-.sm-flex:not(.child){
+.sm-flex{
   display: -webkit-box; 
   display: -webkit-flex;
   display: flex;
-}
-.sm-flex.child{
-   > div{
-    display: -webkit-box; 
-    display: -webkit-flex;
-    display: flex;
-   }
-}
-.sm-flex-item{
-  -webkit-box-flex:1;
-	-webkit-flex:1;
-  flex:1;
+  
+  > .sm-flex-item{
+    -webkit-box-flex:1;
+    -webkit-flex:1;
+    flex:1;
+  }
 }
 

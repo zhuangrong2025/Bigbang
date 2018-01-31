@@ -277,7 +277,7 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("spaceComp")'><i class="space"></i>White space</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
-          <li><i class="grid"></i>Grid</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("gridComp")'><i class="grid"></i>Grid</li>
           <li><i class="grid"></i>swiper</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
@@ -295,7 +295,7 @@ function previewClose(){
       <div class="choose-device">
         Device
         <div class="dropdown device-dropdown" id="device">
-          <a href="javascript:void(0)">iPhone5</a>
+          <a href="javascript:void(0)">iPhone6</a>
           <ul class="dropdown-menu">
             <li data-width="320" data-height="568">iPhone5</li>
             <li data-width="375" data-height="667">iPhone6</li>
@@ -320,7 +320,7 @@ function previewClose(){
     <!--//device bar-->
     <!--simulator-->
     <div class="simulator-wrap">
-      <div class="simulator" style="width: 320px; height: 568px" id="simulator" >
+      <div class="simulator" style="width: 375px; height: 667px" id="simulator" >
         <div class="app-status"></div>
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
@@ -672,7 +672,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************textarea property**************-->
-      <!--**************select property zz**************-->
+      <!--**************select property**************-->
       <div v-if=" panelProp == 'selectComp'">
         <!--cell content -->
         <div class="pro-item">
@@ -844,6 +844,60 @@ function previewClose(){
         </div>
       </div>
       <!--//**************article property**************-->
+      <!--**************grid property zz**************-->
+      <div v-if=" panelProp == 'gridComp'">
+        <!--columns-->
+        <div class="pro-item">
+          <h3>
+            Columns <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Columns</label>
+              <div>
+                <select class="select" v-model="comps[compIdx].columns" >
+                  <option value="third">3</option>
+                  <option value="four" selected>4</option>
+                  <option value="five">5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell content-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Cells<span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <transition-group name="list-complete" tag="div" :key="comps[compIdx].tgId">
+              <div class="form-group list-complete-item"  :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
+                <div>
+                   <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].text" title="text">
+                </div>
+                <div class="choose-icon sm">
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].icon" v-on:click=" comps[compIdx].cells[index].icon = $event.target.value" :title="comps[compIdx].cells[index].icon" placeholder="图标名">
+                  <button @click="chooseIcon($event)" title="choose icon"></button>
+                </div>
+                <span>
+                  <select class="select md"  v-model="comps[compIdx].cells[index].linkto" title="link">
+                    <option value="#" selected>#</option>
+                    <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                  </select>
+                </span>
+                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
+                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
+                <span class="icon-cell-del" @click="delCell(index)" title="delete"></span>
+              </div>
+            </transition-group>
+            <div class="form-group">
+              <button  class="icon-cell-add" @click='addCell({ text: "模块名称", icon:"icon-createtask", linkto:"#", id: "gid" + Math.round(Math.random() * 100)})'>add cell</button>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************grid property**************-->
       <!--**************buttonbar property**************-->
       <div v-if=" panelProp == 'buttonbarComp'" >
         <!--cell content-->
@@ -1058,6 +1112,19 @@ var InputComp = {
       methods: compMethods
     }
 
+//buttonbar
+var ButtonbarComp = {
+      props: ["comp", "id"],
+      template: `<div v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <transition-group name="list-complete" tag="div" class="sm-flex" :key="comp.tgId">
+    <div class="sm-flex-item list-complete-item" :key="cell.id"  v-for="(cell, index) in comp.cells">
+      <a :href="comp.cells[index].linkto | isLink" class="sm-btn" :class="comp.cells[index].class">{{cell.text}}</a>
+    </div>
+  </transition-group>
+</div>
+`,
+      methods: compMethods
+}
 //list 
 var ListComp = {
       props: ["comp", "id"],
@@ -1145,7 +1212,7 @@ var SwitchComp = {
       methods: compMethods
 }
 
-//select zz
+//select 
 var SelectComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1231,14 +1298,16 @@ var ArticleComp = {
 `,
       methods: compMethods
 }
-//buttonbar
-var ButtonbarComp = {
+
+//grid zz
+var GridComp = {
       props: ["comp", "id"],
-      template: `<div class="sm-flex child" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
-  <transition-group name="list-complete" tag="div" :key="comp.tgId">
-    <div class="sm-flex-item list-complete-item" :key="cell.id"  v-for="(cell, index) in comp.cells">
-      <a :href="comp.cells[index].linkto | isLink" class="sm-btn" :class="comp.cells[index].class">{{cell.text}}</a>
-    </div>
+      template: `<div v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <transition-group name="list-complete" class="sm-grids" tag="div" :key="comp.tgId">  
+    <a :href="comp.cells[index].linkto | isLink" class="sm-grid list-complete-item" :class="comp.columns" :key="cell.id" v-for="(cell, index) in comp.cells">
+      <i :class="comp.cells[index].icon"></i>
+      <span>{{comp.cells[index].text}}</span>
+    </a>
   </transition-group>
 </div>
 `,
@@ -1355,6 +1424,7 @@ var vm = new Vue({
     spaceComp: SpaceComp,
     panelComp: PanelComp,
     articleComp: ArticleComp,
+    gridComp: GridComp,
     buttonbarComp: ButtonbarComp,
     actionsheetComp: ActionsheetComp,
     toastComp: ToastComp
@@ -1916,7 +1986,7 @@ var vm = new Vue({
                          sizes: ["default","sm","md","lg"],
                          size: "default"
                        }
-      //panel组件 zz
+      //panel组件 
       var panelCompObj = {
                          name: "panelComp",
                          isFigure: true,
@@ -1929,6 +1999,13 @@ var vm = new Vue({
                          title: "文章的标题",
                          content: "这里显示多行内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
                          isBg: true,
+                       }
+      //grid 组件 zz
+      var gridCompObj = {
+                         name: "gridComp",
+                         columns: "four",
+                         tgId: tgid,
+                         cells: [{text: "账户", icon: "icon-addressbook", linkto: "#", id: tgid + "-1"},{text: "转账", icon: "icon-coupons", linkto: "#", id: tgid + "-2"},{text: "信用卡", icon: "icon-coupons", linkto: "#", id: tgid + "-3"},{text: "缴费", icon: "icon-createtask", linkto: "#", id: tgid + "-4"}]
                        }
       
       //buttonbar组件
@@ -1975,6 +2052,9 @@ var vm = new Vue({
             break
           case "articleComp":
             compObj = articleCompObj
+            break
+          case "gridComp":
+            compObj = gridCompObj
             break
           case "buttonbarComp":
             compObj = buttonbarCompObj

@@ -540,7 +540,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************common property**************-->
-      <!--**************input property zz**************-->
+      <!--**************input property **************-->
       <div v-if=" panelProp == 'inputComp'">
         <!--cell content -->
         <div class="pro-item">
@@ -565,7 +565,7 @@ function previewClose(){
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", control: "", button: "", id: "listid" + Math.round(Math.random() * 100)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", control: "", button: "", id: "iid" + Math.round(Math.random() * 1000)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -602,14 +602,14 @@ function previewClose(){
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", tip: "说明", linkto: "#", icon: "", id: "listid" + Math.round(Math.random() * 100)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", tip: "说明", linkto: "#", icon: "", id: "lid" + Math.round(Math.random() * 1000)})'>add cell</button>
               <div></div>
             </div>
           </div>
         </div>
       </div>
       <!--//**************list property**************-->
-      <!--**************checkbox property**************-->
+      <!--**************checkbox property **************-->
       <div v-if=" panelProp == 'checkboxComp'">  
         <!--reverse-->
         <div class="pro-item">
@@ -629,7 +629,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************checkbox property**************-->
-      <!--**************Cells property**************-->
+      <!--**************common Cells property **************-->
       <div v-if=" panelProp == 'radioComp' || panelProp == 'switchComp' || panelProp == 'checkboxComp' ">
         <!--cell content-->
         <div class="pro-item">
@@ -637,14 +637,18 @@ function previewClose(){
             Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].item">
+            <transition-group name="list-complete" tag="div" :key="comps[compIdx].tgId">
+              <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].item">
+                </div>
+                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
+                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
+                <span class="icon-cell-del" @click="delCell(index)"></span>
               </div>
-              <span class="icon-cell-del" @click="delCell(index)"></span>
-            </div>
+            </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({item: "选项名称"})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({item: "选项名称", id: "rscid" + Math.round(Math.random() * 10000)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -668,7 +672,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************textarea property**************-->
-      <!--**************select property**************-->
+      <!--**************select property zz**************-->
       <div v-if=" panelProp == 'selectComp'">
         <!--cell content -->
         <div class="pro-item">
@@ -676,16 +680,20 @@ function previewClose(){
             Cells <span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <div class="form-group" v-for="(cell, index) in comps[compIdx].cells">
-              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
-              <span>&nbsp;</span>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].options" title="Split options with '-'">
+            <transition-group name="list-complete" tag="div" :key="comps[compIdx].tgId">
+              <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
+                <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
+                <span>&nbsp;</span>
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].options" title="Split options with '-'">
+                </div>
+                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
+                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
+                <span class="icon-cell-del" @click="delCell(index)"></span>
               </div>
-              <span class="icon-cell-del" @click="delCell(index)"></span>
-            </div>
+            </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "语言", selected:"请选择...", options: ""})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "语言", selected:"请选择...", options: "", id: "sid" + Math.round(Math.random() * 1000)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -782,23 +790,27 @@ function previewClose(){
             Panel <span class="caret"></span>
           </h3>
           <div class="pro-box">
-            <div class="form-group" v-for="(panel, index) in comps[compIdx].cells">
-              <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].title"></label>
-              <span>&nbsp;</span>
-              <div>
-                <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].content">
+            <transition-group name="list-complete" tag="div" :key="comps[compIdx].tgId">
+              <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
+                <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].title"></label>
+                <span>&nbsp;</span>
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].content">
+                </div>
+                <span>&nbsp;</span>
+                <span>
+                  <select class="select"  v-model="comps[compIdx].cells[index].linkto" title="link">
+                    <option value="#" selected>#</option>
+                    <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                  </select>
+                </span>
+                <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
+                <span class="icon-cell-down" @click="sortBtn('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
+                <span class="icon-cell-del" @click="delCell(index)"></span>
               </div>
-              <span>&nbsp;</span>
-              <span>
-                <select class="select md"  v-model="comps[compIdx].cells[index].linkto" title="link">
-                  <option value="#" selected>#</option>
-                  <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
-                </select>
-              </span>
-              <span class="icon-cell-del" @click="delCell(index)"></span>
-            </div>
+            </transition-group>  
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({title:"标题", content:"内容内容内容", linkto: "#"})'>add panel</button>
+              <button  class="icon-cell-add" @click='addCell({title:"标题", content:"内容内容内容", linkto: "#", id: "pid" + Math.round(Math.random() * 1000)})'>add panel</button>
               <div></div>
             </div>
           </div>
@@ -1025,7 +1037,7 @@ var ButtonComp = {
       methods: compMethods
     }
 
-//input zz
+//input
 var InputComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1071,9 +1083,11 @@ var CheckboxComp = {
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
-    <label class="sm-cell" :class="{reverse: comp.isReverse}" v-for="(cell, index) in comp.cells" >
-      <div>{{comp.cells[index].item}}</div><input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox">
-    </label>
+    <transition-group name="list-complete" tag="div" :key="comp.tgId">
+      <label class="sm-cell list-complete-item" :class="{reverse: comp.isReverse}" :key="cell.id" v-for="(cell, index) in comp.cells" >
+        <div>{{comp.cells[index].item}}</div><input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox">
+      </label>
+    </transition-group>
   </div>
 </div>
 `,
@@ -1086,9 +1100,11 @@ var RadioComp = {
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
-    <label class="sm-cell" v-for="(cell, index) in comp.cells" >
-      <div>{{comp.cells[index].item}}</div><input type="radio" :name="comp.inputname" :value="comp.cells[index].item" class="sm-radio">
-    </label>
+    <transition-group name="list-complete" tag="div" :key="comp.tgId">
+      <label class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
+        <div>{{comp.cells[index].item}}</div><input type="radio" :name="comp.inputname" :value="comp.cells[index].item" class="sm-radio">
+      </label>
+    </transition-group>
   </div>
 </div>
 `,
@@ -1117,31 +1133,35 @@ var SwitchComp = {
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
-    <label class="sm-cell sm-cell-switch" v-for="(cell, index) in comp.cells" >
-      <div>{{comp.cells[index].item}}</div>
-      <span><input type="checkbox" :name="comp.inputname" class="sm-switch"></span>
-    </label>
+    <transition-group name="list-complete" tag="div" :key="comp.tgId">
+      <label class="sm-cell sm-cell-switch list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
+        <div>{{comp.cells[index].item}}</div>
+        <span><input type="checkbox" :name="comp.inputname" class="sm-switch"></span>
+      </label>
+    </transition-group>
   </div>
 </div>
 `,
       methods: compMethods
 }
 
-//select
+//select zz
 var SelectComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
   <div class="sm-cells" :class="{ merge: comp.isMerge}" >
-    <div class="sm-cell" v-for="(cell, index) in comp.cells">
-      <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
-      <div class="sm-select">
-          <select class="select"  v-model="comp.cells[index].selected" >
-            <option selected>请选择...</option>
-            <option :value="option" v-for="option in filterCells[index].options">{{option}}</option>
-          </select>
+    <transition-group name="list-complete" tag="div" :key="comp.tgId">
+      <div class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells">
+        <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
+        <div class="sm-select">
+            <select class="select"  v-model="comp.cells[index].selected" >
+              <option selected>请选择...</option>
+              <option :value="option" v-for="option in filterCells[index].options">{{option}}</option>
+            </select>
+        </div>
       </div>
-    </div>
+    </transition-group>
   </div>
 </div>
 `,
@@ -1185,15 +1205,17 @@ var SpaceComp = {
 var PanelComp = {
       props: ["comp", "id"],
       template: `<div class="sm-panels" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
-  <a :href="comp.cells[index].linkto | isLink" class="sm-panel" v-for="(cell, index) in comp.cells">
-    <figure v-if="comp.isFigure">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAIAAAC1nk4lAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MTY2OTI5ZC02YTZlLTU1NDEtYjVkNS0yOGFhNzI4OGUyM2EiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6M0IzNzUwODJGRjREMTFFN0I0QTJFREM1NDlGRTBDMTciIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6M0IzNzUwODFGRjREMTFFN0I0QTJFREM1NDlGRTBDMTciIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NTE3NWJmYTctODJlZi04MTQ4LWFlODktMThiYjMwZTI1YTA3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjkxNjY5MjlkLTZhNmUtNTU0MS1iNWQ1LTI4YWE3Mjg4ZTIzYSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Puux5EEAAAL7SURBVHja7JpdSJNRGMf/bkvdcs20NKxF5lduc1pmUEEXfdxGl12GRR9YqaVGkba0L4qKiigTBLsI6rKboI+rigip+dFGmFo2ChermK0pbrqexwSZzG3K9H2F8zBeOGfP3vf3nvM/z/m/2+ICjzDvQgEIaAEtoAW0gBbQAhqqcG8WN0qJ9u7AjKDDfnJ2I+x4CU0LaAEtoGehTscw0rdj9X6o9Rh0oLcJzmeyh07bhpwK2Bvg7oSuAIZaIADnc3nLg8bYXo9fbzHi5aPtDPfIXdOalXB/mGi6O1gncocmHetME02dmXvkDt3TCEMdUjZAqeaj0cJrUe4L8ccLxCmRVw2NHl4HPt2SrnqkboR+NzqqMOqLnOx8yi+JN5ekbBjreboLLkKxYD7siAlpKLqBrmuwlnHTdJ5nX9bQqiSsvYm+++h/wsLoPAlF/Bi3Qq7QykQmdr2C4+F4D3F3VEOlgencnHFP5zLEZLqAwW/ovh3UT9ztVVBpYbDMDfd0rpFXwyuPNmRyDpNidJjHOyEV+bVzwB31BVbtwSIDk01V4EaG0H4c6gzkn6ZJifa0maXIq5od6OW7kLETbeXwe8KlETflqFcg/1RkbpqQNSeQvgOpm/nkMYZeugVZh5hm+HfkZOauwMJMBgrDTTIzX2Ej1bqX87OPILkwdtBkdMg20Lx7o7Y45D/pDrW5Y/Meijs+BcV34RuAtZyTvX2w1cF8GYnLYgSduQ+2s0HGMprw/4X1KN9wbmUIm1rSDNdrXtAB/3jnzzf40oKi61xSYwDdVgnXy5mscFL/+zIkFwVxkyld34TPzei9N7kEfX2AATuMDdEs4oiaDsy8MhG39TAWF7Nk+aFrKwqvwmbB98eh8z9eQnwysg5KbU1JuDTe6+5Am8Mei7zKn64pk3lzrUFJCzw9Uj8E+NzMSipvLQ1H/D+oQLUfw5JNMnhyIRTyVUP9USV7ullC4hsmAS2g5R6R6rS0vxVNZRDFn1QEtIAW0AJaQAvo+Qr9T4ABAP7A3kLL9O0CAAAAAElFTkSuQmCC">
-    </figure>
-    <article>
-      <h4>{{comp.cells[index].title}}</h4>
-      <p>{{comp.cells[index].content}}</p>
-    </article>
-  </a>
+  <transition-group name="list-complete" tag="div" :key="comp.tgId">  
+    <a :href="comp.cells[index].linkto | isLink" class="sm-panel list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells">
+      <figure v-if="comp.isFigure">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAIAAAC1nk4lAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MTY2OTI5ZC02YTZlLTU1NDEtYjVkNS0yOGFhNzI4OGUyM2EiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6M0IzNzUwODJGRjREMTFFN0I0QTJFREM1NDlGRTBDMTciIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6M0IzNzUwODFGRjREMTFFN0I0QTJFREM1NDlGRTBDMTciIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NTE3NWJmYTctODJlZi04MTQ4LWFlODktMThiYjMwZTI1YTA3IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjkxNjY5MjlkLTZhNmUtNTU0MS1iNWQ1LTI4YWE3Mjg4ZTIzYSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Puux5EEAAAL7SURBVHja7JpdSJNRGMf/bkvdcs20NKxF5lduc1pmUEEXfdxGl12GRR9YqaVGkba0L4qKiigTBLsI6rKboI+rigip+dFGmFo2ChermK0pbrqexwSZzG3K9H2F8zBeOGfP3vf3nvM/z/m/2+ICjzDvQgEIaAEtoAW0gBbQAhqqcG8WN0qJ9u7AjKDDfnJ2I+x4CU0LaAEtoGehTscw0rdj9X6o9Rh0oLcJzmeyh07bhpwK2Bvg7oSuAIZaIADnc3nLg8bYXo9fbzHi5aPtDPfIXdOalXB/mGi6O1gncocmHetME02dmXvkDt3TCEMdUjZAqeaj0cJrUe4L8ccLxCmRVw2NHl4HPt2SrnqkboR+NzqqMOqLnOx8yi+JN5ekbBjreboLLkKxYD7siAlpKLqBrmuwlnHTdJ5nX9bQqiSsvYm+++h/wsLoPAlF/Bi3Qq7QykQmdr2C4+F4D3F3VEOlgencnHFP5zLEZLqAwW/ovh3UT9ztVVBpYbDMDfd0rpFXwyuPNmRyDpNidJjHOyEV+bVzwB31BVbtwSIDk01V4EaG0H4c6gzkn6ZJifa0maXIq5od6OW7kLETbeXwe8KlETflqFcg/1RkbpqQNSeQvgOpm/nkMYZeugVZh5hm+HfkZOauwMJMBgrDTTIzX2Ej1bqX87OPILkwdtBkdMg20Lx7o7Y45D/pDrW5Y/Meijs+BcV34RuAtZyTvX2w1cF8GYnLYgSduQ+2s0HGMprw/4X1KN9wbmUIm1rSDNdrXtAB/3jnzzf40oKi61xSYwDdVgnXy5mscFL/+zIkFwVxkyld34TPzei9N7kEfX2AATuMDdEs4oiaDsy8MhG39TAWF7Nk+aFrKwqvwmbB98eh8z9eQnwysg5KbU1JuDTe6+5Am8Mei7zKn64pk3lzrUFJCzw9Uj8E+NzMSipvLQ1H/D+oQLUfw5JNMnhyIRTyVUP9USV7ullC4hsmAS2g5R6R6rS0vxVNZRDFn1QEtIAW0AJaQAvo+Qr9T4ABAP7A3kLL9O0CAAAAAElFTkSuQmCC">
+      </figure>
+      <article>
+        <h4>{{comp.cells[index].title}}</h4>
+        <p>{{comp.cells[index].content}}</p>
+      </article>
+    </a>
+  </transition-group>
 </div>
 `,
       methods: compMethods
@@ -1782,6 +1804,7 @@ var vm = new Vue({
     //拖动组件库-end
     dragendItem:function(compType){
       var compObj
+      var tgid = "tg" + Math.round(Math.random() * 10000)
       /*******表单组件*******/
       //button组件
       var btnCompObj = {
@@ -1793,13 +1816,13 @@ var vm = new Vue({
                          caseid: "caseid" + Math.round(Math.random() * 100),
                          type: "none"
                        }
-      //input组件  zz 
+      //input组件  
       var inputCompObj = {
                          name: "inputComp",
                          title: "个人信息",
                          inputname: "",
-                         tgId: "tg" + Math.round(Math.random() * 1000),
-                         cells: [{tag: "姓名", control: "", button: "", id: "iptid" + Math.round(Math.random() * 100)}, {tag: "手机号", control: "", button: "", id: "iptid" + Math.round(Math.random() * 100)}],
+                         tgId: tgid,
+                         cells: [{tag: "姓名", control: "", button: "", id: tgid + "-1" }, {tag: "手机号", control: "", button: "", id: tgid + "-2"}],
                          isMerge: false,
                          isShow: true
                        }
@@ -1808,17 +1831,18 @@ var vm = new Vue({
                          name: "listComp",
                          title: "会员信息",
                          inputname: "",
-                         tgId: "tg" + Math.round(Math.random() * 1000),
-                         cells: [{tag: "会员特权", tip: "", icon: "icon-select", linkto: "#", id: "listid" + Math.round(Math.random() * 100)},{tag: "会员认证", tip: "已认证", icon: "icon-integral", linkto: "#", id: "listid" + Math.round(Math.random() * 100)}],
+                         tgId: tgid,
+                         cells: [{tag: "会员特权", tip: "", icon: "icon-select", linkto: "#", id: tgid + "-1"},{tag: "会员认证", tip: "已认证", icon: "icon-integral", linkto: "#", id: tgid + "-2"}],
                          isMerge: false,
                          isShow: true
                        }
-      //checkbox组件 
+      //checkbox组件  
       var checkboxCompObj = {
                          name: "checkboxComp",
                          title: "您去过的城市？",
                          inputname: "city",
-                         cells: [{item: "福州"},{item: "厦门"},{item: "上海"}],
+                         tgId: tgid,
+                         cells: [{item: "福州", id: tgid + "-1"},{item: "厦门", id: tgid + "-2"},{item: "上海", id: tgid + "-3"}],
                          isMerge: false,
                          isShow: true,
                          rows: [{reverse: false, txt: "文字在左"}, {reverse: true, txt: "文字在右"}],
@@ -1830,7 +1854,8 @@ var vm = new Vue({
                          name: "radioComp",
                          title: "您的性别？",
                          inputname: "sex",
-                         cells: [{item: "男"},{item: "女"}],
+                         tgId: tgid,
+                         cells: [{item: "男", id: tgid + "-1"},{item: "女", id: tgid + "-2"}],
                          isMerge: false,
                          isShow: true,
         
@@ -1850,7 +1875,8 @@ var vm = new Vue({
                          name: "switchComp",
                          title: "同步",
                          inputname: "synch",
-                         cells: [{item: "开启自动同步"}],
+                         tgId: tgid,
+                         cells: [{item: "开启自动同步", id: tgid + "-1"}],
                          isMerge: false,
                          isShow: true,
         
@@ -1860,7 +1886,8 @@ var vm = new Vue({
                          name: "selectComp",
                          title: "标题",
                          inputname: "lang",
-                         cells: [{tag: "语言", selected:"请选择...", options:"中文-英文"}],
+                         tgId: tgid,
+                         cells: [{tag: "语言", selected:"请选择...", options:"中文-英文", id: tgid + "-1"}],
                          isMerge: false,
                          isShow: true
                        }
@@ -1889,11 +1916,12 @@ var vm = new Vue({
                          sizes: ["default","sm","md","lg"],
                          size: "default"
                        }
-      //panel组件
+      //panel组件 zz
       var panelCompObj = {
                          name: "panelComp",
                          isFigure: true,
-                         cells: [{title: "标题", content: "内容内容内容", linkto: "#"}],
+                         tgId: tgid,
+                         cells: [{title: "标题", content: "内容内容内容", linkto: "#", id: tgid + "-1"}],
                        }
       //article 组件
       var articleCompObj = {
@@ -1906,8 +1934,8 @@ var vm = new Vue({
       //buttonbar组件
       var buttonbarCompObj = {
                          name: "buttonbarComp",
-                         tgId: "tg" + Math.round(Math.random() * 1000),
-                         cells: [{text: "确定", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 100)},{text: "取消", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 100)}]
+                         tgId: tgid,
+                         cells: [{text: "确定", class: "primary", linkto:"#", id: tgid + "-1"},{text: "取消", class: "primary", linkto:"#", id: tgid + "-2"}]
                        }
       
       //组件类型判断

@@ -36,11 +36,14 @@
     > i{
         display: block;
         font-family:"iconfont" !important;
-        font-size:24px;
+        font-size:32px;
         font-style:normal;
         -webkit-font-smoothing: antialiased;
-        line-height: 25px;
+        line-height: 32px;
+        margin-bottom: -3px;
         color: $brand-primary;
+        -webkit-background-clip: text;/* 字体渐变 */
+        -webkit-text-fill-color: transparent;
     }
   }
 }

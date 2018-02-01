@@ -289,7 +289,7 @@ function previewClose(){
     <!--//component-->
   </aside>
   <!--content-->
-  <section class="content" style="opacity: 0.39">
+  <section class="content" style="opacity: 1.39">
     <!--device bar-->
     <h3 class="device-bar">
       <div class="choose-device">
@@ -880,9 +880,14 @@ function previewClose(){
                   <button @click="chooseIcon($event)" title="choose icon"></button>
                 </div>
                 <span>
-                  <select class="select md"  v-model="comps[compIdx].cells[index].linkto" title="link">
+                  <select class="select md" v-model="comps[compIdx].cells[index].linkto" title="link">
                     <option value="#" selected>#</option>
                     <option :value="page.name" v-for="page in pages.slice(0, pages.length-1)">{{page.name}}</option>
+                  </select>
+                </span>
+                <span>
+                  <select class="select color-choose" v-model="comps[compIdx].cells[index].colorSelected"  :style="{'color': comps[compIdx].cells[index].colorSelected}">
+                    <option :value="color" v-for="color in comps[compIdx].colors" :style="{'color': color}">▇</option>
                   </select>
                 </span>
                 <span class="icon-cell-up" @click="sortBtn('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
@@ -891,7 +896,7 @@ function previewClose(){
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({ text: "模块名称", icon:"icon-createtask", linkto:"#", id: "gid" + Math.round(Math.random() * 100)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({ text: "模块名称", icon:"icon-createtask", linkto:"#", colorSelected:"#1D71E5", id: "gid" + Math.round(Math.random() * 100)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -1305,7 +1310,7 @@ var GridComp = {
       template: `<div v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <transition-group name="list-complete" class="sm-grids" tag="div" :key="comp.tgId">  
     <a :href="comp.cells[index].linkto | isLink" class="sm-grid list-complete-item" :class="comp.columns" :key="cell.id" v-for="(cell, index) in comp.cells">
-      <i :class="comp.cells[index].icon"></i>
+      <i :class="comp.cells[index].icon" :style="{'background-image':'-webkit-linear-gradient(70deg,' + comp.cells[index].colorSelected + ' 35%,#fff)'}"></i>
       <span>{{comp.cells[index].text}}</span>
     </a>
   </transition-group>
@@ -2004,8 +2009,13 @@ var vm = new Vue({
       var gridCompObj = {
                          name: "gridComp",
                          columns: "four",
+                         colors: ["#1D71E5","#F29402","#FF7070","#5D52E8","#0EA39C","#EE7116","#65BB12"],
                          tgId: tgid,
-                         cells: [{text: "账户", icon: "icon-addressbook", linkto: "#", id: tgid + "-1"},{text: "转账", icon: "icon-coupons", linkto: "#", id: tgid + "-2"},{text: "信用卡", icon: "icon-coupons", linkto: "#", id: tgid + "-3"},{text: "缴费", icon: "icon-createtask", linkto: "#", id: tgid + "-4"}]
+                         cells: [
+                           {text: "账户", icon: "icon-addressbook", linkto: "#", colorSelected: "#1D71E5", id: tgid + "-1"},
+                           {text: "转账", icon: "icon-coupons", linkto: "#", colorSelected: "#F29402", id: tgid + "-2"},
+                           {text: "信用卡", icon: "icon-coupons", linkto: "#", colorSelected: "#FF7070", id: tgid + "-3"},
+                           {text: "缴费", icon: "icon-createtask", linkto: "#", colorSelected: "#5D52E8", id: tgid + "-4"}]
                        }
       
       //buttonbar组件

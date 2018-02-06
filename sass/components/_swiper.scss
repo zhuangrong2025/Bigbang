@@ -1,7 +1,6 @@
 //swiper
 .sm-swiper {
   background-color: #eee;
-  min-height: 158px;
   .swiper-pagination-bullet {
     background: #fff !important;
     opacity: .5;
@@ -10,7 +9,7 @@
     opacity: 1;
   }
   .swiper-pagination{
-    bottom: 5px !important;
+    bottom: 2px !important;
   }
   .swiper-slide{
     span{

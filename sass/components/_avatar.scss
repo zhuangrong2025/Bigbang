@@ -1,0 +1,68 @@
+//avatar
+.sm-avatar{
+	min-height: 100px;
+	color: #fff;
+  display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center;
+	-webkit-box-align: center;
+	justify-content: center;
+	flex-direction:column;
+  background-color: #fff;
+  background-size: cover;
+  background-position: center center;
+  padding: 15px 20px;
+  > i{
+    width: 90px;
+    height: 90px;
+    border: 1px solid  #fff;
+    background-color: #eee;
+    border-radius: 50%;
+  }
+  > span{
+    padding: 0 5px;
+    text-align: center;
+    em{
+      display: block;
+      font-size: 12px;
+      font-style: normal;
+    }
+  }
+  @at-root.avatar-left{
+    justify-content: flex-start;
+    flex-direction:row;
+    > span{
+      text-align: left;
+    }
+  }
+  @at-root.black{
+    > span{
+      color: #000;
+    }
+  }
+  @at-root.def{
+    > i{
+      width: 90px;
+      height: 90px;
+    }
+  }
+  @at-root.lg{
+    > i{
+      width: 105px;
+      height: 105px;
+    }
+  }
+  @at-root.md{
+    > i{
+      width: 70px;
+      height: 70px;
+    }
+  }
+  @at-root.sm{
+    > i{
+      width: 50px;
+      height: 50px;
+    }
+  }
+}

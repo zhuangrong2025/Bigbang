@@ -280,12 +280,12 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("gridComp")'><i class="grid"></i>Grid</li>
-          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("swiperComp")'><i class="grid"></i>swiper</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("swiperComp")'><i class="swiperx"></i>swiper</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("navbarComp")'><i class="navbar"></i>Navbar</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("searchbarComp")'><i class="searchbar"></i>Searchbar</li>
-          <li><i class="grid"></i>avatar</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("avatarComp")'><i class="grid"></i>avatar</li>
           <li class="empty"></li>
         </ul>
       </div>
@@ -1037,7 +1037,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************searchbar property**************-->
-      <!--**************swiper property zz**************-->
+      <!--**************swiper property**************-->
       <div v-if=" panelProp == 'swiperComp'">
         <!--Text-->
         <div class="pro-item">
@@ -1090,6 +1090,100 @@ function previewClose(){
         </div>
       </div>
       <!--//**************swiper property**************-->
+      <!--**************avatar property zz**************-->
+      <div v-if=" panelProp == 'avatarComp'">
+        <!--Align-->
+        <div class="pro-item">
+          <h3>
+            Align <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <div>
+                <select class="select" v-model="comps[compIdx].avatarAlign" >
+                  <option value="">center</option>
+                  <option value="avatar-left">left</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Size-->
+        <div class="pro-item">
+          <h3>
+            Size <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <div>
+                <select class="select" v-model="comps[compIdx].size" >
+                  <option value="lg">large</option>
+                  <option value="def">default</option>
+                  <option value="md">middel</option>
+                  <option value="sm">small</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--background-->
+        <div class="pro-item">
+          <h3>
+            Background <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Color</label>
+              <div>
+                <input class="c-ipt" v-model="comps[compIdx].bgColor"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Image url</label>
+              <div>
+                <input class="c-ipt" v-model="comps[compIdx].bgImage" placeholder="http://"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Font color-->
+        <div class="pro-item">
+          <h3>
+            Font color <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <div>
+                <select class="select" v-model="comps[compIdx].fontColor" >
+                  <option value="">white</option>
+                  <option value="black">black</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Text-->
+        <div class="pro-item">
+          <h3>
+            Text <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>name</label>
+              <div>
+                <input class="c-ipt" v-model="comps[compIdx].userName"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>information</label>
+              <div>
+                <input class="c-ipt" v-model="comps[compIdx].userInfo"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************avatar property**************-->
       <!--**************page searchbar**************-->
       <div v-if=" panelProp == 'pageComp'">
         <!--page name-->
@@ -1566,11 +1660,11 @@ var SearchbarComp = {
       methods: compMethods
 }
 
-//swiper zz
+//swiper
 var SwiperComp = {
       props: ["comp", "id"],
       template: `<div v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
-  <div class="swiper-container sm-swiper" :class="[comp.isText ? comp.textAlign:'b']" :data-case="comp.tgId">   
+  <div class="swiper-container sm-swiper" :class="[comp.isText ? comp.textAlign:'']" :data-case="comp.tgId">   
      <div class="swiper-wrapper">
         <div class="swiper-slide"  v-for="(cell, index) in comp.cells">
           <img :style="{'background-image':'url(' + cell.img + ')'}" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA1IAAAFeAQMAAAC1tbwWAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAADtJREFUeNrtwTEBAAAAwiD7p7bGDmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQcJOoAAGLrjCzAAAAAElFTkSuQmCC">
@@ -1580,6 +1674,17 @@ var SwiperComp = {
      <div class="swiper-pagination"></div>
   </div>
   <div v-html="comp.script"></div>
+</div>
+`,
+      methods: compMethods
+}
+
+//avatar zz
+var AvatarComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-avatar" :class="[comp.avatarAlign, comp.fontColor, comp.size]" :style="{'background-image':'url(' + comp.bgImage + ')', 'background-color': comp.bgColor}" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <i style="background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaBAMAAADKhlwxAAAAKlBMVEU4YaT///9AZ6i2xd7o7fXQ2ur3+fymuNZfgLaSqM15lMJMca3AzeLZ4e7wt24ZAAABj0lEQVRYw+3Vu0rDUBjA8Ritt7p8GmMDDQTUTaFRUHCLk3YyvoGDt61VUMQlXZwVRBxTcHCsb6A4ulhHn0a3NvluOZNS+p9/Q07O5bOGDbMsu27Ej1IT3fVMdAgfBvoO3Oviug3gbgVF9Qv85rxfnq9vXj2regT6OnxU9Dhk+g6UL8lWV/5JrjVJR3ntd3g8DagvXpewrvK6BbiU1U1CbwuLxHkcngQih9NTQJUweobUDUaPkfpTOCW4WeF34yo0tpukngtIvQx0+8yFp6tqe6P/8QlWN4TjitsbID3K6ppy4fWraUcMdsiDcsPoE/padknsJ/xThUtNXgjH6PVZMHrZKqwuKRupL1OYzjHC8xZfS9wa/bbdWkIxuu9Sq2jsSNlxdo3KzF/M6DNL6QmNYin7nsfi/az9kcaz6rWAXkJjWKj81tv2joovoNdxoOL+TgMNF+blDci3G+gYc4xDgOL8Aeh2KLyCmHQ3Q1Z7JqMB3IQ6HgZjqi3oivjZ+qscCdpH+kDQLtIg9Y91oVX+AC7VkmZIz3QGAAAAAElFTkSuQmCC);"></i>
+  <span>{{comp.userName}}<em>{{comp.userInfo}}</em></span>
 </div>
 `,
       methods: compMethods
@@ -1640,6 +1745,7 @@ var vm = new Vue({
     navbarComp: NavbarComp,
     searchbarComp: SearchbarComp,
     swiperComp: SwiperComp,
+    avatarComp: AvatarComp,
     actionsheetComp: ActionsheetComp,
     toastComp: ToastComp
   },
@@ -2284,7 +2390,7 @@ $(".sm-searchbar[data-case=${tgid}] input").blur(function(){
                          script: searchbarScript
                        }
       
-      //swiper 组件 zz
+      //swiper 组件
       //脚本
       var swiperScript = `
   <script src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.min.js"><\/script>
@@ -2295,7 +2401,6 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
 					paginationClickable: true,
           autoplay:2000
 			})
-console.log(swiper.width)
 <\/script>
 `
       
@@ -2310,6 +2415,17 @@ console.log(swiper.width)
                            {img:"https://images.uiiiuiii.com/wp-content/uploads/2018/02/uiii-bbaner-203.jpg",text: "幻灯片标题",id: tgid + "-2"},
                            {img:"https://images.uiiiuiii.com/wp-content/uploads/2018/01/uiii-bbanner-125.jpg",text: "幻灯片标题",id: tgid + "-3"}
                          ]
+                       }
+      //avatar 组件 zz
+      var avatarCompObj = {
+                         name: "avatarComp",
+                         avatarAlign: "", 
+                         fontColor: "", 
+                         size: "def", 
+                         bgColor: "#008AD5", 
+                         bgImage: "", 
+                         userName: "昵称", 
+                         userInfo: "NiChen", 
                        }
       
       //组件类型判断
@@ -2364,6 +2480,9 @@ console.log(swiper.width)
             break
           case "swiperComp":
             compObj = swiperCompObj
+            break
+          case "avatarComp":
+            compObj = avatarCompObj
             break
       }
       

@@ -801,7 +801,10 @@ function previewClose(){
               <label>Size</label>
               <div>
                 <select class="select" v-model="comps[compIdx].size">
-                  <option :value="size" v-for="(size, index) in comps[compIdx].sizes">{{size}}</option>
+                  <option value="lg">large</option>
+                  <option value="md">middle</option>
+                  <option value="">default</option>
+                  <option value="sm">small</option>
                 </select>
               </div>
             </div>
@@ -1118,7 +1121,7 @@ function previewClose(){
               <div>
                 <select class="select" v-model="comps[compIdx].size" >
                   <option value="lg">large</option>
-                  <option value="def">default</option>
+                  <option value="">default</option>
                   <option value="md">middel</option>
                   <option value="sm">small</option>
                 </select>
@@ -2311,8 +2314,7 @@ var vm = new Vue({
       //space组件
       var spaceCompObj = {
                          name: "spaceComp",
-                         sizes: ["default","sm","md","lg"],
-                         size: "default"
+                         size: ""
                        }
       //panel组件 
       var panelCompObj = {
@@ -2421,7 +2423,7 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
                          name: "avatarComp",
                          avatarAlign: "", 
                          fontColor: "", 
-                         size: "def", 
+                         size: "", 
                          bgColor: "#008AD5", 
                          bgImage: "", 
                          userName: "昵称", 

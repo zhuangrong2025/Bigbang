@@ -29,21 +29,21 @@
       background-position: center center;
     }
   }
-  @at-root.bullet-right .swiper-pagination{
+  &.bullet-right .swiper-pagination{
     right: 10px !important;
     width: auto !important;
     left: auto !important;
   }
-  @at-root.bullet-left .swiper-pagination{
+  &.bullet-left .swiper-pagination{
     left: 10px !important;
     width: auto !important;
   }
-  @at-root.bullet-right .swiper-slide{
+  &.bullet-right .swiper-slide{
     span{
       text-align: left;
     }
   }
-  @at-root.bullet-left .swiper-slide{
+  &.bullet-left .swiper-slide{
     span{
       text-align: right;
     }

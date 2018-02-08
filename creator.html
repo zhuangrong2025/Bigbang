@@ -280,13 +280,13 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("gridComp")'><i class="grid"></i>Grid</li>
-          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("swiperComp")'><i class="swiperx"></i>swiper</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("swiperComp")'><i class="swiperx"></i>Swiper</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("navbarComp")'><i class="navbar"></i>Navbar</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("searchbarComp")'><i class="searchbar"></i>Searchbar</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("avatarComp")'><i class="grid"></i>avatar</li>
-          <li class="empty"></li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("flextextComp")'><i class="grid"></i>Flex Text</li>
         </ul>
       </div>
     </div>
@@ -1093,7 +1093,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************swiper property**************-->
-      <!--**************avatar property zz**************-->
+      <!--**************avatar property **************-->
       <div v-if=" panelProp == 'avatarComp'">
         <!--Align-->
         <div class="pro-item">
@@ -1144,7 +1144,7 @@ function previewClose(){
             <div class="form-group">
               <label>Image url</label>
               <div>
-                <input class="c-ipt" v-model="comps[compIdx].bgImage" placeholder="http://"/>
+                <input class="c-ipt" v-model="comps[compIdx].bgImage" placeholder="http://" title="click the preview icon to view the effect."/>
               </div>
             </div>
           </div>
@@ -1187,6 +1187,71 @@ function previewClose(){
         </div>
       </div>
       <!--//**************avatar property**************-->
+      <!--**************flextext property zz**************-->
+      <div v-if=" panelProp == 'flextextComp'">
+        <!--background-->
+        <div class="pro-item">
+          <h3>
+            Background <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Show</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isBg"/>
+              </div>
+            </div>
+            <div class="form-group" v-if="comps[compIdx].isBg">
+              <label>Color</label>
+              <div>
+                <input class="c-ipt" v-model="comps[compIdx].bgColor"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Divider-->
+        <div class="pro-item">
+          <h3>
+            Divider <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Divider</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isDivider"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--cell content-->
+        <div class="pro-item">
+          <div class="pro-box">
+            <transition-group name="list-complete" tag="div" :key="comps[compIdx].tgId">
+              <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].one">
+                </div>
+                <span>&nbsp;</span>
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].two">
+                </div>
+                <span>&nbsp;</span>
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].three">
+                </div>
+                <span class="icon-cell-up" @click="sortCell('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
+                <span class="icon-cell-down" @click="sortCell('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
+                <span class="icon-cell-del" @click="delCell(index)"></span>
+              </div>
+            </transition-group> 
+            <div class="form-group">
+              <button class="icon-cell-add" @click='addCell({ one: "文本1", two: "文本2", three: "文本3", id: "fid" + Math.round(Math.random() * 100)})'>add cell</button>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************flextext property**************-->
       <!--**************page searchbar**************-->
       <div v-if=" panelProp == 'pageComp'">
         <!--page name-->
@@ -1682,12 +1747,27 @@ var SwiperComp = {
       methods: compMethods
 }
 
-//avatar zz
+//avatar
 var AvatarComp = {
       props: ["comp", "id"],
       template: `<div class="sm-avatar" :class="[comp.avatarAlign, comp.fontColor, comp.size]" :style="{'background-image':'url(' + comp.bgImage + ')', 'background-color': comp.bgColor}" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <i style="background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaBAMAAADKhlwxAAAAKlBMVEU4YaT///9AZ6i2xd7o7fXQ2ur3+fymuNZfgLaSqM15lMJMca3AzeLZ4e7wt24ZAAABj0lEQVRYw+3Vu0rDUBjA8Ritt7p8GmMDDQTUTaFRUHCLk3YyvoGDt61VUMQlXZwVRBxTcHCsb6A4ulhHn0a3NvluOZNS+p9/Q07O5bOGDbMsu27Ej1IT3fVMdAgfBvoO3Oviug3gbgVF9Qv85rxfnq9vXj2regT6OnxU9Dhk+g6UL8lWV/5JrjVJR3ntd3g8DagvXpewrvK6BbiU1U1CbwuLxHkcngQih9NTQJUweobUDUaPkfpTOCW4WeF34yo0tpukngtIvQx0+8yFp6tqe6P/8QlWN4TjitsbID3K6ppy4fWraUcMdsiDcsPoE/padknsJ/xThUtNXgjH6PVZMHrZKqwuKRupL1OYzjHC8xZfS9wa/bbdWkIxuu9Sq2jsSNlxdo3KzF/M6DNL6QmNYin7nsfi/az9kcaz6rWAXkJjWKj81tv2joovoNdxoOL+TgMNF+blDci3G+gYc4xDgOL8Aeh2KLyCmHQ3Q1Z7JqMB3IQ6HgZjqi3oivjZ+qscCdpH+kDQLtIg9Y91oVX+AC7VkmZIz3QGAAAAAElFTkSuQmCC);"></i>
   <span>{{comp.userName}}<em>{{comp.userInfo}}</em></span>
+</div>
+`,
+      methods: compMethods
+}
+//flextext zz
+var FlextextComp = {
+      props: ["comp", "id"],
+      template: `<div  v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+  <transition-group name="list-complete" tag="div"  class="sm-flex flex-text" :class="[comp.isBg ? 'bg' : '', comp.isDivider ? 'divider' : '']" :key="comp.tgId"> 
+    <div class="sm-flex-item list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" :style="{'background-color': comp.isBg ? comp.bgColor : ''}">
+      <span v-if="cell.one != ''">{{cell.one}}</span>
+      <em v-if="cell.two != ''">{{cell.two}}</em>
+      <label v-if="cell.three != ''">{{cell.three}}</label>
+    </div>
+  </transition-group>
 </div>
 `,
       methods: compMethods
@@ -1749,6 +1829,7 @@ var vm = new Vue({
     searchbarComp: SearchbarComp,
     swiperComp: SwiperComp,
     avatarComp: AvatarComp,
+    flextextComp: FlextextComp,
     actionsheetComp: ActionsheetComp,
     toastComp: ToastComp
   },
@@ -2418,7 +2499,7 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
                            {img:"https://images.uiiiuiii.com/wp-content/uploads/2018/01/uiii-bbanner-125.jpg",text: "幻灯片标题",id: tgid + "-3"}
                          ]
                        }
-      //avatar 组件 zz
+      //avatar 组件
       var avatarCompObj = {
                          name: "avatarComp",
                          avatarAlign: "", 
@@ -2428,6 +2509,19 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
                          bgImage: "", 
                          userName: "昵称", 
                          userInfo: "NiChen", 
+                       }
+      //flextext 组件 zz
+      var flextextCompObj = {
+                         name: "flextextComp",
+                         tgId: tgid,
+                         isBg: false,
+                         bgColor: "#008AD5",
+                         isDivider: false,
+                         cells: [
+                           {one: "货币基金", two: "5.53%", three: "7日年化", id: tgid + "-1"},
+                           {one: "月度理财", two: "4.72%", three: "上期年化", id: tgid + "-2"},
+                           {one: "五星基金", two: "52.8%", three: "近1年收益", id: tgid + "-3"}
+                         ]
                        }
       
       //组件类型判断
@@ -2485,6 +2579,9 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
             break
           case "avatarComp":
             compObj = avatarCompObj
+            break
+          case "flextextComp":
+            compObj = flextextCompObj
             break
       }
       

@@ -1,0 +1,48 @@
+//flex-text
+.sm-flex.flex-text{
+  font-size: 12px;
+  > .sm-flex-item{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    justify-content: center;
+    flex-direction:column;
+    min-height: 60px;
+    position: relative;
+    padding: 15px 0;
+    color: #333;
+    background-color: #fff;
+    > em{
+      font-size: 18px;
+      padding: 3px 0;
+    }
+    &:not(:last-child):after{
+      content: '';
+      display: block;
+      position: absolute;
+      top: 15px;
+      right: 0;
+      bottom: 15px;
+      width: 1px;
+      background-color: $gray-lighter;
+    }
+  }
+  &.bg > .sm-flex-item{
+    color: #fff;
+    background-color: $brand-primary;
+    &:not(:last-child):after{
+        background-color: rgba(255,255,255,0.58);
+    }
+  }
+  &.divider > .sm-flex-item{
+    &:not(:last-child):after{
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: rgba(255,255,255,1);
+    }
+  }
+}
+

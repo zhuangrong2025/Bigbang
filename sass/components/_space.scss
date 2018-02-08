@@ -4,16 +4,13 @@
   height: 15px;
   clear: both;
   overflow: hidden;
-  @at-root &.default{
-    height: 15px;
-  }
-  @at-root &.sm{
+  &.sm{
     height: 10px;
   }
-  @at-root &.md{
+  &.md{
     height: 20px;
   }
-  @at-root &.lg{
+  &.lg{
     height: 30px;
   }
 }

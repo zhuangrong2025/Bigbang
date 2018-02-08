@@ -52,7 +52,7 @@
   li:active{
     background-color: #eee;
   }
-  @at-root &.toggle{
+  &.toggle{
     -webkit-transform: translate(0, 0);
   }
 }

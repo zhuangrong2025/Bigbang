@@ -11,7 +11,7 @@
     font-size: 14px;
     color: #333;
   }
-  @at-root.bgc{
+  &.bgc{
     background-color: $white;
   }
 }

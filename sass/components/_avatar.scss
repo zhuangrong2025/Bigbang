@@ -29,31 +29,31 @@
       font-style: normal;
     }
   }
-  @at-root.avatar-left{
+  &.avatar-left{
     justify-content: flex-start;
     flex-direction:row;
     > span{
       text-align: left;
     }
   }
-  @at-root.black{
+  &.black{
     > span{
       color: #000;
     }
   }
-  @at-root.lg{
+  &.lg{
     > i{
       width: 105px;
       height: 105px;
     }
   }
-  @at-root.md{
+  &.md{
     > i{
       width: 70px;
       height: 70px;
     }
   }
-  @at-root.sm{
+  &.sm{
     > i{
       width: 50px;
       height: 50px;

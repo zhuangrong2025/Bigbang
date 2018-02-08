@@ -109,7 +109,7 @@
       width: 105px;
       @include textwrap()
   }
-  @at-root &.sm-cell-switch{
+  &.sm-cell-switch{
      padding-top: 6.5px;
      padding-bottom: 6.5px;
      > span{

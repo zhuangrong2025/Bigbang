@@ -53,13 +53,22 @@ app.get('/', function(req, res){
 /*custom theme color*/
 app.post('/', function(req, res, next) {
   //获取表单请求，修改颜色变量
+  //Theme Color
   var primaryNew = req.body.primary || '#008AD5'
   var warningNew = req.body.warning || '#E64340'
+  //Page and Header
+  var headerBgNew = req.body.headerBg || '#fff'
+  var bodyBgNew = req.body.bodyBg || '#f7f7f9'
+  var tabbarBgNew = req.body.tabbarBg || '#dedede'
+  //Typography
   
   //生成scss变量
   var newPrimary = sassVariable('brand-primary', primaryNew)
   var newWarning = sassVariable('brand-warning', warningNew)  
-  var newScss = newPrimary + newWarning
+  var newHeaderBg = sassVariable('header-bg', headerBgNew)  
+  var newBodyBg = sassVariable('body-bg', bodyBgNew)  
+  var newTabbarBg = sassVariable('tabbar-bg', tabbarBgNew)  
+  var newScss = newPrimary + newWarning + newHeaderBg + newBodyBg + newTabbarBg
   
   //写入_custom.scss
   fs.writeFile('sass/_custom.scss', newScss) 

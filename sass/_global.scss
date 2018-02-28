@@ -21,10 +21,10 @@ li{
 }
 body{
   color: $body-color;
-  background-color: $gray-lightest;
+  background-color: $body-bg;
   font-size: 16px;
   line-height: 1.6;
-  font-family: "Microsoft yahei", -apple-system-font, "Helvetica Neue", sans-serif ;
+  font-family: "Microsoft yahei", "-apple-system", "Helvetica Neue", sans-serif ;
 }
 body, span, label, p, a, div, li, dt, dd, i, em, section, article, :after, :before, button, input {
 	background-repeat: no-repeat;
@@ -60,4 +60,9 @@ em,h3{
 }
 i{
   font-style: normal;
+}
+//滚动条
+::-webkit-scrollbar {
+	width: 0;
+	height: 0;
 }

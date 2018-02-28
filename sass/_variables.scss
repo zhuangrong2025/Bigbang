@@ -3,15 +3,12 @@
 // 基础颜色
 //
 //---------------------------------------------
-$white:           #fff !default;
-$black:           #000 !default;
-$blue:            #008AD5 !default;
-$red:             #E64340 !default;
-$orange:          #f80 !default;
-$green:           #09BB07 !default;
-$blue-lighter:    #D9EDF7 !default;
-
-
+$white:               #fff !default;
+$black:               #000 !default;
+$blue:                #008AD5 !default;
+$red:                 #E64340 !default;
+$orange:              #f80 !default;
+$green:               #09BB07 !default;
 
 // 灰色色阶
 $gray-dark:           #363636 !default;
@@ -22,18 +19,27 @@ $gray-lightest:       #f7f7f9 !default;
 
 // 主色调
 $brand-primary:       $blue !default;
-$brand-success:       $green !default;
 $brand-warning:       $red !default;
-$brand-info:          $blue-lighter !default;
+$brand-success:       $green !default;
+$brand-secondary:     $orange !default;
+
 
 // Body
 $body-bg:             $gray-lightest !default;
 $body-color:          $black !default;
 
+// Header
+$header-bg:           $white !default;
+
+// tabbar background
+$tabbar-bg:           $gray-lighter !default;
+
+
 // 链接
 $link-color:          $brand-primary !default;
+$link-hover-color:    darken($link-color, 15%) !default;
 
-// components
+// 圆角
 $border-radius:       5px !default;
 
 

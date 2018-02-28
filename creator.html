@@ -62,7 +62,13 @@ $(function(){
 		 $(this).parents('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
 	})
-  
+  //theme color tabs
+	$("#theme-list li").each(function(index){
+     $(this).on("click",function(){
+       $(this).addClass("active").siblings().removeClass("active");
+       $("div.theme-detail-wrap > div").eq(index).show().siblings().hide();
+     })
+	})
   //modal close
 	$(".icon-modal-close").on("click",function(){
 		 $(this).parents('.modal').removeClass("in")
@@ -72,7 +78,7 @@ $(function(){
   
   //tinycolorPicker
   getColor()
-  $("#theme-color dl").each(function(){
+  $(".theme-detail-wrap dl").each(function(){
     $(this).find('input').eq(0).keyup(function(){
       getColor()
     })
@@ -116,7 +122,7 @@ function previewClose(){
 <!--modal theme-->
 <div class="modal" id="modal-theme">
   <div class="modal-header">
-    <h3>teminging</h3>
+    <h3>Theming</h3>
     <i class="icon-modal-close"></i>
   </div>
   <div class="modal-body">
@@ -127,33 +133,105 @@ function previewClose(){
       </ul>
     </div>
     <div class="modal-content">
-      <!--custom theme-->
+      <!--custom theme zz-->
       <form action="http://10.168.1.91:3000/" method="post">
       <div class="theme-box">
-        <div class="theme-list">
+        <div class="theme-list" id="theme-list">
           <ul>
             <li class="active" title="">Theme Color</li>
             <li>Page and Header</li>
             <li>Typography</li>
           </ul>
         </div>
-        <div class="theme-detail" id="theme-color">
-          <div>
-            <dl>
-              <dt>Primary</dt>
-              <dd>
-                <input type="text" v-model="themes.primary">
-                <input type="text" name="primary" class="color" v-model="themes.primary">
-              </dd>
-            </dl>
-            <dl>
-              <dt>Warning</dt>
-              <dd>
-                <input type="text" v-model="themes.warning">
-                <input type="text" name="warning" class="color" v-model="themes.warning">
-              </dd>
-            </dl>
+        <div class="theme-detail-wrap">
+          <div class="theme-detail" id="theme-color">
+            <div>
+              <dl>
+                <dt>Primary <em>color for button, icon, link, text</em></dt>
+                <dd>
+                  <input type="text" v-model="themes.primary">
+                  <input type="text" name="primary" class="color" v-model="themes.primary">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Warning <em>color for button, icon, text of error, background of danger</em></dt>
+                <dd>
+                  <input type="text" v-model="themes.warning">
+                  <input type="text" name="warning" class="color" v-model="themes.warning">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Success <em>color for icon, text of success</em></dt>
+                <dd>
+                  <input type="text" v-model="themes.success">
+                  <input type="text" name="success" class="color" v-model="themes.success">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Secondary <em>color for icon, text of warning, navbar line</em></dt>
+                <dd>
+                  <input type="text" v-model="themes.secondary">
+                  <input type="text" name="secondary" class="color" v-model="themes.secondary">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Line <em>color for border line, divider line, arrow</em></dt>
+                <dd>
+                  <input type="text" v-model="themes.line">
+                  <input type="text" name="line" class="color" v-model="themes.line">
+                </dd>
+              </dl>
+            </div>
           </div>
+          <div class="theme-detail" style="display: none">
+            <div>
+              <dl>
+                <dt>Header Background</dt>
+                <dd>
+                  <input type="text" v-model="themes.headerBg">
+                  <input type="text" name="headerBg" class="color" v-model="themes.headerBg">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Body Background</dt>
+                <dd>
+                  <input type="text" v-model="themes.bodyBg">
+                  <input type="text" name="bodyBg" class="color" v-model="themes.bodyBg">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Tabbar Background</dt>
+                <dd>
+                  <input type="text" v-model="themes.tabbarBg">
+                  <input type="text" name="tabbarBg" class="color" v-model="themes.tabbarBg">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Text Color</dt>
+                <dd>
+                  <input type="text" v-model="themes.textColor">
+                  <input type="text" name="textColor" class="color" v-model="themes.textColor">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Link Color</dt>
+                <dd>
+                  <input type="text" v-model="themes.linkColor">
+                  <input type="text" name="linkColor" class="color" v-model="themes.linkColor">
+                </dd>
+              </dl>
+            </div>
+          </div>
+          <div class="theme-detail" style="display: none">
+            <div>
+              <dl>
+                <dt>Border Radius</dt>
+                <dd>
+                  <input type="text" v-model="themes.borderRadius">
+                </dd>
+              </dl>
+             </div>
+           </div>
         </div>
         <!--modal-footer-->
         <div class="modal-footer">
@@ -277,16 +355,16 @@ function previewClose(){
           <li class="divider"><span>Base</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("spaceComp")'><i class="space"></i>White space</li>
-          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
-          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("gridComp")'><i class="grid"></i>Grid</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("panelComp")'><i class="panel"></i>Panel</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("swiperComp")'><i class="swiperx"></i>Swiper</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("avatarComp")'><i class="avatar"></i>avatar</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("articleComp")'><i class="article"></i>Article</li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("flextextComp")'><i class="flextext"></i>Flex Text</li>
           <!--导航和搜索-->
           <li class="divider"><span>navigation | search</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("navbarComp")'><i class="navbar"></i>Navbar</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("searchbarComp")'><i class="searchbar"></i>Searchbar</li>
-          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("avatarComp")'><i class="grid"></i>avatar</li>
-          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("flextextComp")'><i class="grid"></i>Flex Text</li>
         </ul>
       </div>
     </div>
@@ -1187,7 +1265,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************avatar property**************-->
-      <!--**************flextext property zz**************-->
+      <!--**************flextext property**************-->
       <div v-if=" panelProp == 'flextextComp'">
         <!--background-->
         <div class="pro-item">
@@ -1274,9 +1352,15 @@ function previewClose(){
           </h3>
           <div class="pro-box">
             <div class="form-group" v-if="pages[pageIdx].isHeader">
-              <label>header</label>
+              <label>Text</label>
               <div>
                 <input type="text" class="c-ipt" v-model="pages[pageIdx].title">
+              </div>
+            </div>
+            <div class="form-group" v-if="pages[pageIdx].isHeader">
+              <label>Disable Back Button</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" />
               </div>
             </div>
             <div class="form-group">
@@ -1757,7 +1841,7 @@ var AvatarComp = {
 `,
       methods: compMethods
 }
-//flextext zz
+//flextext 
 var FlextextComp = {
       props: ["comp", "id"],
       template: `<div  v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1838,7 +1922,7 @@ var vm = new Vue({
     comps: [{}],
     panelProp: "pageComp",
     classes:["primary", "warning"],
-    themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340"}'),
+    themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340", "success": "#09BB07", "secondary": "#f80", "line": "#dedede", "bodyBg": "#f7f7f9", "headerBg": "#fff", "tabbarBg": "#f7f7f9", "textColor": "#000", "linkColor": "#008AD5", "borderRadius": "5px"}'),
     pages: Store.fetch('pages', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),
     generateHtml: Store.fetch('html-list', '[{}]'),
@@ -1850,7 +1934,7 @@ var vm = new Vue({
     caseIdx: null,
     jsonUrl: "http://10.168.1.91:3000/cell.json"
   },
-  /*监听data*/
+  /*监听data  zz*/
   watch: {
     comps: {
        handler: function(newVal){
@@ -1901,6 +1985,7 @@ var vm = new Vue({
   mounted:function() {
     var _this = this
     this.$nextTick(function () {
+      
       
       // 初始化：判断localstorage上有没有key，如果没有对应的key就加载初始页，如果有key，就不加加载默认页，防止page都被删除后，又加载了默认页面
       var lsPageIdx = Store.fetch("pageIdx", null)
@@ -2469,7 +2554,7 @@ $(".sm-searchbar[data-case=${tgid}] input").blur(function(){
                          name: "searchbarComp",
                          tgId: tgid,
                          isBg: false,
-                         bgColor: "#00f",
+                         bgColor: "#008AD5",
                          script: searchbarScript
                        }
       
@@ -2510,7 +2595,7 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
                          userName: "昵称", 
                          userInfo: "NiChen", 
                        }
-      //flextext 组件 zz
+      //flextext 组件
       var flextextCompObj = {
                          name: "flextextComp",
                          tgId: tgid,
@@ -2732,23 +2817,20 @@ $(":not(div)[data-case=${currCaseid}]").on("click",function(){
       cells 新增删除
     =============================*/
     //cell新增
-    addCell:function(cell){
-      let _this = this
-      var inputLength = _this.comps[_this.compIdx].cells.length
-      _this.comps[_this.compIdx].cells.splice(inputLength, 0, cell)
+    addCell(cell) {
+      var inputLength = this.comps[this.compIdx].cells.length
+      this.comps[this.compIdx].cells.splice(inputLength, 0, cell)
     },
     //cell删除
-    delCell:function(idx){
-      let _this = this
-      _this.comps[_this.compIdx].cells.splice(idx, 1)
+    delCell(idx){
+      this.comps[this.compIdx].cells.splice(idx, 1)
     },
     /*===========================
       cells排序 上下移动
     =============================*/
-    sortCell:function(direction,index){
-      let _this = this
-      var cells = _this.comps[_this.compIdx].cells
-      var inputLength = _this.comps[_this.compIdx].cells.length
+    sortCell(direction,index){
+      var cells = this.comps[this.compIdx].cells
+      var inputLength = this.comps[this.compIdx].cells.length
       if(direction == "up"){
         if(index == 0){
           return

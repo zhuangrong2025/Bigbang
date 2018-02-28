@@ -17,8 +17,8 @@
     background-color: #FAFAFA;
     border-bottom: 1px solid  $gray-lighter;
     &.active{
-      color: #f60;	
-      border-bottom: 2px solid  #f60;
+      color: $brand-secondary;	
+      border-bottom: 2px solid  $brand-secondary;
     }
   }
 }

@@ -130,6 +130,7 @@ function previewClose(){
       <ul>
         <li class="active" title="自定义风格"><i class="icon-theme"></i>Custom</li>
         <li>WeChat</li>
+        <li>ios</li>
       </ul>
     </div>
     <div class="modal-content">
@@ -161,14 +162,14 @@ function previewClose(){
                 </dd>
               </dl>
               <dl>
-                <dt>Success <em>color for icon, text of success</em></dt>
+                <dt>Success <em>color for checkbox, radio, switch, icon</em></dt>
                 <dd>
                   <input type="text" v-model="themes.success">
                   <input type="text" name="success" class="color" v-model="themes.success">
                 </dd>
               </dl>
               <dl>
-                <dt>Secondary <em>color for icon, text of warning, navbar line</em></dt>
+                <dt>Secondary <em>color for icon, alert, text of secondary or warning</em></dt>
                 <dd>
                   <input type="text" v-model="themes.secondary">
                   <input type="text" name="secondary" class="color" v-model="themes.secondary">
@@ -179,6 +180,13 @@ function previewClose(){
                 <dd>
                   <input type="text" v-model="themes.line">
                   <input type="text" name="line" class="color" v-model="themes.line">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Gray Light <em>color for cell title, tip, alert</em></dt>
+                <dd>
+                  <input type="text" v-model="themes.grayLight">
+                  <input type="text" name="grayLight" class="color" v-model="themes.grayLight">
                 </dd>
               </dl>
             </div>
@@ -350,7 +358,8 @@ function previewClose(){
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("switchComp")'><i class="switch"></i>Switch</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("textareaComp")'><i class="textarea"></i>Textarea</li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("selectComp")'><i class="select"></i>Select</li>
-          <li class="empty"></li>
+          <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("alertComp")'><i class="alert"></i>Alert</li>
+<!--          <li class="empty"></li>-->
           <!--基础组件-->
           <li class="divider"><span>Base</span></li>
           <li draggable='true' @dragstart.stop='dragItem("anyComp")' @dragend.prevent='dragendItem("htmlComp")'><i class="htmlcode"></i>Html</li>
@@ -966,6 +975,48 @@ function previewClose(){
         </div>
       </div>
       <!--//**************article property**************-->
+      <!--**************alert property jj**************-->
+      <div v-if=" panelProp == 'alertComp'">
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Alert <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Type</label>
+              <div>
+                <select class="select"  v-model="comps[compIdx].type">
+                  <option value="info">info</option>
+                  <option value="info-circle">info-circle</option>
+                  <option value="success">success</option>
+                  <option value="success-circle">success-circle</option>
+                  <option value="warn">warning</option>
+                  <option value="clear">error</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <div>
+                 <input type="text" class="c-ipt" v-model="comps[compIdx].message">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Icon</label>
+              <div class="tr">
+                 <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isIcon"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Background</label>
+              <div class="tr">
+                 <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isBg"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--//**************alert property**************-->
       <!--**************grid property**************-->
       <div v-if=" panelProp == 'gridComp'">
         <!--columns-->
@@ -1718,6 +1769,18 @@ var GridComp = {
       methods: compMethods
 }
 
+//alert jj
+var AlertComp = {
+      props: ["comp", "id"],
+      template: `<div class="sm-alert" :class="[comp.type, comp.isBg ? 'bg' : '']" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
+    <em v-if="comp.isPadding"></em>
+    <i  v-if="comp.isIcon" :class="'sm-icon-' + comp.type"></i>
+    <span>{{comp.message}}</span>
+</div>
+`,
+      methods: compMethods
+}
+
 /*
  * 事件组件 
  */
@@ -1915,6 +1978,7 @@ var vm = new Vue({
     avatarComp: AvatarComp,
     flextextComp: FlextextComp,
     actionsheetComp: ActionsheetComp,
+    alertComp: AlertComp,
     toastComp: ToastComp
   },
   data:{
@@ -1922,7 +1986,7 @@ var vm = new Vue({
     comps: [{}],
     panelProp: "pageComp",
     classes:["primary", "warning"],
-    themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340", "success": "#09BB07", "secondary": "#f80", "line": "#dedede", "bodyBg": "#f7f7f9", "headerBg": "#fff", "tabbarBg": "#f7f7f9", "textColor": "#000", "linkColor": "#008AD5", "borderRadius": "5px"}'),
+    themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340", "success": "#09BB07", "secondary": "#f80", "line": "#dedede", "grayLight": "#999", "bodyBg": "#f7f7f9", "headerBg": "#fff", "tabbarBg": "#f7f7f9", "textColor": "#000", "linkColor": "#008AD5", "borderRadius": "5px"}'),
     pages: Store.fetch('pages', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),
     generateHtml: Store.fetch('html-list', '[{}]'),
@@ -2512,6 +2576,14 @@ var vm = new Vue({
                            {text: "信用卡", icon: "icon-headlines", linkto: "#", colorSelected: "#FF7070", id: tgid + "-3"},
                            {text: "缴费", icon: "icon-createtask", linkto: "#", colorSelected: "#5D52E8", id: tgid + "-4"}]
                        }
+      //alert 组件 jj
+      var alertCompObj = {
+                         name: "alertComp",
+                         type: "info-circle",
+                         message: "业务说明信息，提示信息",
+                         isIcon: true,
+                         isBg: false,
+                       }
       //navbar 组件
       //脚本
       var navbarScript = `
@@ -2667,6 +2739,9 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
             break
           case "flextextComp":
             compObj = flextextCompObj
+            break
+          case "alertComp":
+            compObj = alertCompObj
             break
       }
       

@@ -4,7 +4,7 @@
   margin-bottom: .3em; 
   padding-left: 15px;
   padding-right: 15px;
-  color: #999;
+  color: $gray-light;
   font-size: 14px;
   & + .sm-cells {
     margin-top: 0;
@@ -69,7 +69,7 @@
   > span{
       display: block;
       text-align: right;
-      color: #999
+      color: $gray-light
   }
   > span:after{
       content: " ";

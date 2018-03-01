@@ -221,13 +221,6 @@ function previewClose(){
                   <input type="text" name="textColor" class="color" v-model="themes.textColor">
                 </dd>
               </dl>
-              <dl>
-                <dt>Link Color</dt>
-                <dd>
-                  <input type="text" v-model="themes.linkColor">
-                  <input type="text" name="linkColor" class="color" v-model="themes.linkColor">
-                </dd>
-              </dl>
             </div>
           </div>
           <div class="theme-detail" style="display: none">
@@ -1986,7 +1979,7 @@ var vm = new Vue({
     comps: [{}],
     panelProp: "pageComp",
     classes:["primary", "warning"],
-    themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340", "success": "#09BB07", "secondary": "#f80", "line": "#dedede", "grayLight": "#999", "bodyBg": "#f7f7f9", "headerBg": "#fff", "tabbarBg": "#f7f7f9", "textColor": "#000", "linkColor": "#008AD5", "borderRadius": "5px"}'),
+    themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340", "success": "#09BB07", "secondary": "#f80", "line": "#dedede", "grayLight": "#999", "bodyBg": "#f7f7f9", "headerBg": "#fff", "tabbarBg": "#f7f7f9", "textColor": "#000", "borderRadius": "5px"}'),
     pages: Store.fetch('pages', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),
     generateHtml: Store.fetch('html-list', '[{}]'),

@@ -13,8 +13,8 @@
 .sm-cells{
   margin-top: 20px;
   background-color: #fff;
-  border-top: 1px solid  #ececec;
-  border-bottom: 1px solid  #ececec;
+  border-top: 1px solid  $gray-lighter;
+  border-bottom: 1px solid  $gray-lighter;
   &.merge{
     margin-top: -1px;
     position: relative;
@@ -48,7 +48,7 @@
     left: 15px;
     right: 0;
     height: 1px;
-    border-top: 1px solid #ececec;
+    border-top: 1px solid $gray-lighter;
   }
   &:first-child{
       &:before{

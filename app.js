@@ -56,19 +56,31 @@ app.post('/', function(req, res, next) {
   //Theme Color
   var primaryNew = req.body.primary || '#008AD5'
   var warningNew = req.body.warning || '#E64340'
+  var successNew = req.body.success || '#09BB07'
+  var secondaryNew = req.body.secondary || '#FFBE00'
+  var lineNew = req.body.line || '#dedede'
+  var grayLightNew = req.body.grayLight || '#999'
   //Page and Header
   var headerBgNew = req.body.headerBg || '#fff'
   var bodyBgNew = req.body.bodyBg || '#f7f7f9'
+  var textColorNew = req.body.textColor || '#000'
   var tabbarBgNew = req.body.tabbarBg || '#dedede'
   //Typography
   
   //生成scss变量
   var newPrimary = sassVariable('brand-primary', primaryNew)
   var newWarning = sassVariable('brand-warning', warningNew)  
+  var newSuccess = sassVariable('brand-success', successNew)
+  var newSecondary = sassVariable('brand-secondary', secondaryNew)
+  var newLine = sassVariable('gray-lighter', lineNew)
+  var newGrayLight = sassVariable('gray-light', grayLightNew)
+  
   var newHeaderBg = sassVariable('header-bg', headerBgNew)  
   var newBodyBg = sassVariable('body-bg', bodyBgNew)  
-  var newTabbarBg = sassVariable('tabbar-bg', tabbarBgNew)  
-  var newScss = newPrimary + newWarning + newHeaderBg + newBodyBg + newTabbarBg
+  var newTextColor = sassVariable('body-color', textColorNew)  
+  var newTabbarBg = sassVariable('tabbar-bg', tabbarBgNew) 
+  
+  var newScss = newPrimary + newWarning + newSuccess + newSecondary + newLine + newGrayLight + newHeaderBg + newBodyBg + newTextColor + newTabbarBg
   
   //写入_custom.scss
   fs.writeFile('sass/_custom.scss', newScss) 

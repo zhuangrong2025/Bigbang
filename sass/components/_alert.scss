@@ -26,6 +26,9 @@
   &.success-circle,
   &.success{
     color: darken($gray-light, 20%);
+    i:before{
+      color: $brand-success;
+    }
   }
   &.warn{
     color: $brand-secondary;

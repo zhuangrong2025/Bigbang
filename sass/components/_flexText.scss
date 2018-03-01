@@ -12,11 +12,13 @@
     min-height: 60px;
     position: relative;
     padding: 15px 0;
-    color: #333;
     background-color: #fff;
     > em{
       font-size: 18px;
       padding: 3px 0;
+    }
+    > label{
+      color: lighten($body-color, 20%);
     }
     &:not(:last-child):after{
       content: '';
@@ -34,6 +36,9 @@
     background-color: $brand-primary;
     &:not(:last-child):after{
         background-color: rgba(255,255,255,0.58);
+    }
+    > label{
+      color: rgba(255,255,255,0.75);
     }
   }
   &.divider > .sm-flex-item{

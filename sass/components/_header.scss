@@ -15,7 +15,7 @@
 // funciton 根据背景颜色的亮度来设置边框的颜色
 @function set-border($color) {
   @if (lightness($color) > 88) { 
-    @return $gray-lighter; 
+    @return darken($gray-lighter, 3%); 
   } @else { 
     @return transparent;
   } 

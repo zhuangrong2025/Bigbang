@@ -12,45 +12,46 @@
   line-height: $btn-height/$btn-font-size;
   border: 1px solid transparent;
   border-radius: $btn-border-radius;
-  
+  clear: both;
   &.disabled,
   &:disabled {
+    cursor: not-allowed;
     background-color: $btn-disabled-bg !important;
     color: rgba($black, .3) !important;
     border:1px solid rgba($black, .1) !important;
   }
+  //主要
+  &.primary {
+    @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  }
+  //警告
+  &.warning {
+    @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
+  }
+  //有边框
+  &.outline-primary {
+    @include button-outline-variant($btn-primary-bg);
+  }
+  &.outline-warning {
+    @include button-outline-variant($btn-warning-bg);
+  }
+  //小按钮
+  &.mini{
+    display: inline-block;
+    clear: none;
+    padding: 0 1.32em;
+    line-height: $btn-height-mini;
+    font-size: $btn-font-size-mini;
+  }
+  //链接按钮
+  &.link-text{
+    color: $brand-primary;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
 }
 
-//主要
-.sm-btn.primary {
-  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
-}
-//警告
-.sm-btn.warning {
-  @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
-}
-//有边框
-.sm-btn.outline-primary {
-  @include button-outline-variant($btn-primary-bg);
-}
-.sm-btn.outline-secondary {
-  @include button-outline-variant($btn-secondary-color);
-}
-
-//小按钮
-.sm-btn.mini{
-  display: inline-block;
-  padding: 0 1.32em;
-  line-height: $btn-height-mini;
-  font-size: $btn-font-size-mini;
-}
-//链接按钮
-.sm-btn.link{
-  display: inline-block;
-  padding: 0;
-  line-height: auto;
-  color: $brand-primary;
-}
 
 //兼容button标签
 button, input{
@@ -62,10 +63,6 @@ button, input{
         outline: 0;
     }
   }
-}
-//两个按钮垂直排列时间距
-.sm-btn + .sm-btn{
-  margin-top: 15px;
 }
 
 

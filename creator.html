@@ -148,42 +148,42 @@ function previewClose(){
           <div class="theme-detail" id="theme-color">
             <div>
               <dl>
-                <dt>Primary <em>color for button, icon, link, text</em></dt>
+                <dt>Primary <em>color for button, link</em></dt>
                 <dd>
                   <input type="text" v-model="themes.primary">
                   <input type="text" name="primary" class="color" v-model="themes.primary">
                 </dd>
               </dl>
               <dl>
-                <dt>Warning <em>color for button, icon, text of error, background of danger</em></dt>
+                <dt>Warning <em>color for button, icon, alert</em></dt>
                 <dd>
                   <input type="text" v-model="themes.warning">
                   <input type="text" name="warning" class="color" v-model="themes.warning">
                 </dd>
               </dl>
               <dl>
-                <dt>Success <em>color for checkbox, radio, switch, icon</em></dt>
+                <dt>Success <em>color for checkbox, radio, switch, icon, alert</em></dt>
                 <dd>
                   <input type="text" v-model="themes.success">
                   <input type="text" name="success" class="color" v-model="themes.success">
                 </dd>
               </dl>
               <dl>
-                <dt>Secondary <em>color for icon, alert, text of secondary or warning</em></dt>
+                <dt>Secondary <em>color for icon, alert</em></dt>
                 <dd>
                   <input type="text" v-model="themes.secondary">
                   <input type="text" name="secondary" class="color" v-model="themes.secondary">
                 </dd>
               </dl>
               <dl>
-                <dt>Line <em>color for border line, divider line, arrow</em></dt>
+                <dt>Line <em>color for cell line, panel line, border, divider line, arrow</em></dt>
                 <dd>
                   <input type="text" v-model="themes.line">
                   <input type="text" name="line" class="color" v-model="themes.line">
                 </dd>
               </dl>
               <dl>
-                <dt>Gray Light <em>color for cell title, tip, alert</em></dt>
+                <dt>Gray Light <em>color for cell title, panel, alert</em></dt>
                 <dd>
                   <input type="text" v-model="themes.grayLight">
                   <input type="text" name="grayLight" class="color" v-model="themes.grayLight">
@@ -201,17 +201,17 @@ function previewClose(){
                 </dd>
               </dl>
               <dl>
-                <dt>Body Background</dt>
-                <dd>
-                  <input type="text" v-model="themes.bodyBg">
-                  <input type="text" name="bodyBg" class="color" v-model="themes.bodyBg">
-                </dd>
-              </dl>
-              <dl>
                 <dt>Tabbar Background</dt>
                 <dd>
                   <input type="text" v-model="themes.tabbarBg">
                   <input type="text" name="tabbarBg" class="color" v-model="themes.tabbarBg">
+                </dd>
+              </dl>
+              <dl>
+                <dt>Body Background</dt>
+                <dd>
+                  <input type="text" v-model="themes.bodyBg">
+                  <input type="text" name="bodyBg" class="color" v-model="themes.bodyBg">
                 </dd>
               </dl>
               <dl>
@@ -228,7 +228,7 @@ function previewClose(){
               <dl>
                 <dt>Border Radius</dt>
                 <dd>
-                  <input type="text" v-model="themes.borderRadius">
+                  <input type="text" name="borderRadius" v-model="themes.borderRadius">
                 </dd>
               </dl>
              </div>
@@ -456,7 +456,7 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--Style-->
+        <!--Style jj-->
         <div class="pro-item">
           <h3>
             Style <span class="caret"></span>
@@ -473,10 +473,18 @@ function previewClose(){
             <div class="form-group">
               <label>Size</label>
               <div>
-                <select class="select">
-                  <option value="">default</option>
-                  <option value="">large</option>
-                  <option value="">small</option>
+                <select class="select" v-model="comps[compIdx].size">
+                  <option value="">normal (block)</option>
+                  <option value="mini">mini (inline-block)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" v-if=" comps[compIdx].size == 'mini'">
+              <label>Text align</label>
+              <div>
+                <select class="select" v-model="comps[compIdx].align">
+                  <option value="">左边</option>
+                  <option value="pull-right">右边</option>
                 </select>
               </div>
             </div>
@@ -688,6 +696,23 @@ function previewClose(){
             <div class="form-group">
               <button  class="icon-cell-add" @click='addCell({ text: "按钮", class: "primary", linkto:"#", id: "bid" + Math.round(Math.random() * 100)})'>add button</button>
               <div></div>
+            </div>
+          </div>
+        </div>
+        <!--Style jj-->
+        <div class="pro-item">
+          <h3>
+            Style <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Size</label>
+              <div>
+                <select class="select" v-model="comps[compIdx].barSize" key="barsize">
+                  <option value="">normal</option>
+                  <option value="mini">mini</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -968,7 +993,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************article property**************-->
-      <!--**************alert property jj**************-->
+      <!--**************alert property**************-->
       <div v-if=" panelProp == 'alertComp'">
         <div class="pro-item">
           <h3 @click="toggleCls">
@@ -983,8 +1008,8 @@ function previewClose(){
                   <option value="info-circle">info-circle</option>
                   <option value="success">success</option>
                   <option value="success-circle">success-circle</option>
-                  <option value="warn">warning</option>
-                  <option value="clear">error</option>
+                  <option value="warn">secondary</option>
+                  <option value="clear">warning</option>
                 </select>
               </div>
             </div>
@@ -1523,19 +1548,13 @@ var compMethods = {
 /*
  * 表单组件 
  */
-//button
+//button jj
 var ButtonComp = {
       props: ["comp", "id"],
-      template: `<a :href="comp.linkto + '.html'" 
-                     class="sm-btn"
-                     data-comp="drag-div"
-                     v-bind:data-case="comp.caseid"
-                     v-bind:id="id"
-                     v-bind:name="comp.inputname"
-                     v-bind:class="comp.class"
-                     draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"
-                     v-on:click.prevent = "increment" >{{ comp.text }}</a>
-                `,
+      template: `<a :href="comp.linkto + '.html'" class="sm-btn" :class="[comp.class, comp.size, comp.size == '' ? '' : comp.align ]" data-comp="drag-div" :data-case="comp.caseid" :id="id" :name="comp.inputname" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend" v-on:click.prevent = "increment" >
+{{ comp.text }}
+</a>
+`,
       methods: compMethods
     }
 
@@ -1560,13 +1579,13 @@ var InputComp = {
       methods: compMethods
     }
 
-//buttonbar
+//buttonbar jj
 var ButtonbarComp = {
       props: ["comp", "id"],
       template: `<div v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
-  <transition-group name="list-complete" tag="div" class="sm-flex" :key="comp.tgId">
+<transition-group name="list-complete" tag="div" class="sm-flex" :key="comp.tgId">
     <div class="sm-flex-item list-complete-item" :key="cell.id"  v-for="(cell, index) in comp.cells">
-      <a :href="comp.cells[index].linkto | isLink" class="sm-btn" :class="comp.cells[index].class">{{cell.text}}</a>
+      <a :href="comp.cells[index].linkto | isLink" class="sm-btn" :class="[comp.cells[index].class, comp.barSize]">{{cell.text}}</a>
     </div>
   </transition-group>
 </div>
@@ -1762,7 +1781,7 @@ var GridComp = {
       methods: compMethods
 }
 
-//alert jj
+//alert
 var AlertComp = {
       props: ["comp", "id"],
       template: `<div class="sm-alert" :class="[comp.type, comp.isBg ? 'bg' : '']" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1978,7 +1997,7 @@ var vm = new Vue({
     compIdx: 0,
     comps: [{}],
     panelProp: "pageComp",
-    classes:["primary", "warning"],
+    classes:["primary", "warning", "outline-primary", "outline-warning", "disabled", "link-text"],
     themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340", "success": "#09BB07", "secondary": "#f80", "line": "#dedede", "grayLight": "#999", "bodyBg": "#f7f7f9", "headerBg": "#fff", "tabbarBg": "#f7f7f9", "textColor": "#000", "borderRadius": "5px"}'),
     pages: Store.fetch('pages', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),
@@ -2422,7 +2441,7 @@ var vm = new Vue({
       var compObj
       var tgid = "tg" + Math.round(Math.random() * 10000)
       /*******表单组件*******/
-      //button组件
+      //button组件 jj
       var btnCompObj = {
                          name: "btnComp",
                          class: "primary",
@@ -2430,7 +2449,9 @@ var vm = new Vue({
                          text: "按钮" + this.comps.length,
                          inputname: "",
                          caseid: "caseid" + Math.round(Math.random() * 100),
-                         type: "none"
+                         type: "none",
+                         align: "",
+                         size: ""
                        }
       //input组件  
       var inputCompObj = {
@@ -2446,8 +2467,10 @@ var vm = new Vue({
       //buttonbar组件
       var buttonbarCompObj = {
                          name: "buttonbarComp",
+                         barSize: "",
                          tgId: tgid,
                          cells: [{text: "确定", class: "primary", linkto:"#", id: tgid + "-1"},{text: "取消", class: "primary", linkto:"#", id: tgid + "-2"}]
+                         
                        }
       
       //list组件
@@ -2569,7 +2592,7 @@ var vm = new Vue({
                            {text: "信用卡", icon: "icon-headlines", linkto: "#", colorSelected: "#FF7070", id: tgid + "-3"},
                            {text: "缴费", icon: "icon-createtask", linkto: "#", colorSelected: "#5D52E8", id: tgid + "-4"}]
                        }
-      //alert 组件 jj
+      //alert 组件
       var alertCompObj = {
                          name: "alertComp",
                          type: "info-circle",

@@ -66,6 +66,7 @@ app.post('/', function(req, res, next) {
   var textColorNew = req.body.textColor || '#000'
   var tabbarBgNew = req.body.tabbarBg || '#dedede'
   //Typography
+  var borderRadiusNew = req.body.borderRadius || '5px'
   
   //生成scss变量
   var newPrimary = sassVariable('brand-primary', primaryNew)
@@ -80,7 +81,9 @@ app.post('/', function(req, res, next) {
   var newTextColor = sassVariable('body-color', textColorNew)  
   var newTabbarBg = sassVariable('tabbar-bg', tabbarBgNew) 
   
-  var newScss = newPrimary + newWarning + newSuccess + newSecondary + newLine + newGrayLight + newHeaderBg + newBodyBg + newTextColor + newTabbarBg
+  var newBorderRadius = sassVariable('border-radius', borderRadiusNew) 
+  
+  var newScss = newPrimary + newWarning + newSuccess + newSecondary + newLine + newGrayLight + newHeaderBg + newBodyBg + newTextColor + newTabbarBg + newBorderRadius
   
   //写入_custom.scss
   fs.writeFile('sass/_custom.scss', newScss) 

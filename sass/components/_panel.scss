@@ -4,7 +4,7 @@
   margin-bottom: .3em; 
   padding-left: 15px;
   padding-right: 15px;
-  color: #999;
+  color: $gray-light;
   font-size: 14px;
   & + .sm-panels {
     margin-top: 0;
@@ -60,7 +60,7 @@
       }
       > p{
         font-size: 14px;
-        color: #999;
+        color: $gray-light;
         overflow : hidden;
         text-overflow: ellipsis;
         display: -webkit-box;

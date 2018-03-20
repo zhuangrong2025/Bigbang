@@ -42,12 +42,15 @@
     padding: 0 1.32em;
     line-height: $btn-height-mini;
     font-size: $btn-font-size-mini;
+    z-index: 99
   }
   //链接按钮
   &.link-text{
     color: $brand-primary;
     padding-left: 0;
     padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
   }
   
 }

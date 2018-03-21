@@ -21,6 +21,7 @@ body {
   color: #333;
   line-height: 1.6;
   font-size: 13px !important;
+  background-color: #fff !important;
 }
 body, span, label, p, a, div, li, dt, dd, i, em, section, article, :after, :before, button, input {
   background-repeat: no-repeat;
@@ -73,8 +74,9 @@ textarea {
   overflow: auto;
   resize: vertical;
 }
- [type="number"]::-webkit-inner-spin-button, [type="number"]::-webkit-outer-spin-button {
- height: auto;
+[type="number"]::-webkit-inner-spin-button, [type="number"]::-webkit-outer-spin-button {
+  height: auto;
+  -webkit-appearance: none;
 }
 ::-webkit-scrollbar {
 	width: 8px;
@@ -464,6 +466,9 @@ h3.title button i{
   flex-direction: column;
   cursor: pointer;
 }
+.component li.empty{
+  cursor: default;
+}
 .component li.divider{
   flex:0 0 -webkit-calc(100%);
   height: 20px;
@@ -533,6 +538,12 @@ h3.title button i{
 }
 .button:after {
   background-position: center -50px;
+}
+.buttonbar:before {
+  background-position: center -2800px;
+}
+.buttonbar:after {
+  background-position: center -2850px;
 }
 .checkbox:before {
   background-position: center -100px;
@@ -706,6 +717,34 @@ h3.title button i{
 .searchbar:after {
   background-position: center -2750px;
 }
+/*swiper*/
+.swiperx:before {
+  background-position: center -2900px;
+}
+.swiperx:after {
+  background-position: center -2950px;
+}
+/*avatar*/
+.avatar:before {
+  background-position: center -3000px;
+}
+.avatar:after {
+  background-position: center -3050px;
+}
+/*flextext*/
+.flextext:before {
+  background-position: center -3100px;
+}
+.flextext:after {
+  background-position: center -3150px;
+}
+/*alert*/
+.alert:before {
+  background-position: center -3100px;
+}
+.alert:after {
+  background-position: center -3150px;
+}
 
 
 /*---------------------proerty/panel----------------------*/
@@ -785,6 +824,7 @@ h3.title button i{
 	flex: 1;
   position: relative;
 }
+.form-group .c-texta,
 .form-group .c-ipt{
   font-size: 12px;
   width: 100%;
@@ -798,6 +838,14 @@ h3.title button i{
 .form-group .c-ipt:disabled{
   background-color: #f6f6f6;
   color: #aaa;
+}
+.form-group .c-texta{
+  height: auto;
+  min-height: 80px;
+  padding-top: 6px;
+}
+.form-group.h-auto{
+  height: auto;
 }
 .form-group .select{
   width: 100%;
@@ -813,6 +861,14 @@ h3.title button i{
   background-position: right center;
   color: #555;
   z-index: 0
+}
+.form-group .select.md{
+  width: 80px;
+}
+.form-group .select.color-choose{
+  padding:0 3px 7px 3px;
+  font-size: 16px;
+  background-image: none;
 }
 .form-group .group-collapse{
   display: -webkit-box;
@@ -1080,6 +1136,7 @@ h3.title button i{
   background-image: url(../images/ios-statusbar-center.png);
   background-size: auto 10px;
   background-position: center center;
+  background-color: #fff;
 }
 .app-status:after,
 .app-status:before{
@@ -1441,6 +1498,7 @@ h3.title button i{
   float: left;
   width: 208px;
   padding-right: 10px;
+  font-size: 13px;
 }
 .theme-box .theme-list li{
   padding: 5px 0;
@@ -1451,11 +1509,13 @@ h3.title button i{
 .theme-box .theme-list li:hover{
   color: #3a7ef5;
 }
+.theme-box .theme-detail-wrap{
+  float: right;
+  width: 711px;
+}
 .theme-box .theme-detail{
   position: relative;
-  float: right;
-  width: 700px;
-  padding: 30px;
+  padding: 12px 30px 30px;
   height: 370px;
   background-color: #fff;
   overflow: auto;
@@ -1463,14 +1523,20 @@ h3.title button i{
   border-radius: 5px;
 }
 .theme-box .theme-detail dl{
-  padding: 10px 0;
+  padding: 10px 0 3px;
   border-bottom: 1px solid  #f0f0f0;
   overflow: hidden;
 }
 .theme-box .theme-detail dt{
   float: left;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 32px;
+}
+.theme-box .theme-detail dt em{
+  display: block;
+  color:#ADADAD;
+  font-size: 12px;
+  margin-top: -15px;
 }
 .theme-box .theme-detail dd{
   position: relative;
@@ -1579,6 +1645,12 @@ h3.title button i{
   background-size: 16px;
   cursor: pointer;
 }
+.choose-icon.sm input[type="text"]{
+  padding: 0 5px;
+}
+.choose-icon.sm button{
+  right: 1px;
+}
 
 .remark a,
 .remark{
@@ -1610,10 +1682,10 @@ h3.title button i{
   top:10%;
   left: 50%;
 	-webkit-transform: translate(-50%, 0);
-  width: 320px;
-  height: 568px;
+  width: 375px;
+  height: 667px;
   padding-top: 20px;
-  background-color: #fff;
+  background-color: #F7F7F9;
   z-index: 999
 }
 .preview-pop .pv-frame .app-status{
@@ -1677,15 +1749,33 @@ h3.title button i{
   background-position: 0 0;
   z-index: 999999;
 }
+.icon-cell-up,
+.icon-cell-down,
+.icon-cell-up.moveDis,
+.icon-cell-down.moveDis,
 .icon-cell-del{
   display: block;
-  margin-left: 3px;
+  margin-left: 2px;
   background-image: url(../images/small-icons-sprite.png);
   background-position: 0 -736px;
   background-size: 16px;
   height: 16px;
   width: 16px;
   cursor: pointer;
+}
+.icon-cell-up{
+  background-position: 0 -768px;
+}
+.icon-cell-up.moveDis{
+  cursor: not-allowed;
+  background-position: 0 -800px;
+}
+.icon-cell-down{
+  background-position: 0 -784px;
+}
+.icon-cell-down.moveDis{
+  cursor: not-allowed;
+  background-position: 0 -816px;
 }
 .icon-cell-add{
   color: #3a7ef5;
@@ -1703,6 +1793,51 @@ h3.title button i{
   width: 16px;
   cursor: pointer;
 }
+
+/*按钮组组件--按钮位置移动动画*/
+.list-complete-item {
+  transition: all .5s;
+}
+/*添加删除动画*/
+.list-complete-enter, .list-complete-leave-to{
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/*输入框数值加减*/
+.spinner{
+  position: relative;
+  z-index: 999;
+}
+.spinner em{
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  display: block;
+  border-right: 4px solid rgba(0, 0, 0, 0);
+  border-left: 4px solid rgba(0, 0, 0, 0);
+  border-top: 4px solid rgba(0, 0, 0, 0);
+  height: 0;
+  width: 0;
+  cursor: pointer
+}
+.spinner em.increment{
+  border-bottom: 4px solid rgb(179, 179, 179);
+}
+.spinner em.decrement{
+  top: 18px;
+  border-bottom: 4px solid rgba(0, 0, 0, 0);
+  border-top: 4px solid rgb(179, 179, 179);
+}
+.spinner em.increment:hover{
+  border-bottom: 4px solid rgb(102, 102, 102);
+}
+.spinner em.decrement:hover{
+  border-top: 4px solid rgb(102, 102, 102);
+}
+
+
+
 
 
 

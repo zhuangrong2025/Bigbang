@@ -134,7 +134,7 @@ function previewClose(){
       </ul>
     </div>
     <div class="modal-content">
-      <!--custom theme zz-->
+      <!--custom theme -->
       <form action="http://10.168.1.91:3000/" method="post">
       <div class="theme-box">
         <div class="theme-list" id="theme-list">
@@ -443,7 +443,7 @@ function previewClose(){
       <a href="#">index</a> <label>/</label> {{panelProp | propname}}
     </h3>
     <div class="property-list">
-      <!--**************button property**************-->
+      <!--**************button property zz**************-->
       <!--Text-->
       <div v-if=" panelProp == 'btnComp'">
         <div class="pro-item">
@@ -456,7 +456,7 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--Style jj-->
+        <!--Style-->
         <div class="pro-item">
           <h3>
             Style <span class="caret"></span>
@@ -491,8 +491,16 @@ function previewClose(){
             <div class="form-group" v-if=" comps[compIdx].size == 'mini'">
               <label>Translate(px)</label>
               <span>&nbsp;</span>
-              <div><input type="text" placeholder="x" v-model="comps[compIdx].x" title="x" class="c-ipt"></div>
-              <div><input type="text" placeholder="y" v-model="comps[compIdx].y" title="y"  class="c-ipt"></div>
+              <div class="spinner">
+                <input type="number" placeholder="x" v-model.number="comps[compIdx].x" v-on:click=" comps[compIdx].x = Number($event.target.value) " title="x" class="c-ipt">
+                <em class="increment" v-spinner:inc="comps[compIdx].x"></em>
+                <em class="decrement" v-spinner:dec="comps[compIdx].x"></em>
+              </div>
+              <div class="spinner">
+                <input type="number" placeholder="y" v-model.number="comps[compIdx].y" v-on:click=" comps[compIdx].y = Number($event.target.value) " title="y"  class="c-ipt">
+                <em class="increment" v-spinner:inc="comps[compIdx].y"></em>
+                <em class="decrement" v-spinner:dec="comps[compIdx].y"></em>
+              </div>
               <span>&nbsp;</span>
             </div>
           </div>
@@ -706,7 +714,7 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--Style jj-->
+        <!--Style-->
         <div class="pro-item">
           <h3>
             Style <span class="caret"></span>
@@ -1549,7 +1557,7 @@ var compMethods = {
 /*
  * 表单组件 
  */
-//button jj
+//button
 var ButtonComp = {
       props: ["comp", "id"],
       template: `<a :href="comp.linkto + '.html'" class="sm-btn" :style="{'transform': 'translate(' + comp.x + 'px,' + comp.y + 'px)'}" :class="[comp.class, comp.size, comp.size == '' ? '' : comp.align ]"  data-comp="drag-div" :data-case="comp.caseid" :id="id" :name="comp.inputname" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend" v-on:click.prevent = "increment" >
@@ -1580,7 +1588,7 @@ var InputComp = {
       methods: compMethods
     }
 
-//buttonbar jj
+//buttonbar
 var ButtonbarComp = {
       props: ["comp", "id"],
       template: `<div v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1887,7 +1895,7 @@ var SearchbarComp = {
       methods: compMethods
 }
 
-//swiper
+//swiper 
 var SwiperComp = {
       props: ["comp", "id"],
       template: `<div v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1906,7 +1914,7 @@ var SwiperComp = {
       methods: compMethods
 }
 
-//avatar
+//avatar 
 var AvatarComp = {
       props: ["comp", "id"],
       template: `<div class="sm-avatar" :class="[comp.avatarAlign, comp.fontColor, comp.size]" :style="{'background-image':'url(' + comp.bgImage + ')', 'background-color': comp.bgColor}" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1933,19 +1941,12 @@ var FlextextComp = {
 }
 
 /**
- *****************利用自定义指令处理高亮css代码*****************
+ *****************利用自定义指令处理高亮css代码 *****************
  */
-Vue.directive('codeHighlight', {
-  bind(el, binding) {
-    var code = binding.value
+Vue.directive('codeHighlight', function (el, binding) {
+  var code = binding.value
     el.innerHTML = codeHightLight(code)
-  },
-  update(el, binding){
-    var code = binding.value
-    el.innerHTML = codeHightLight(code)
-  }
 })
-
 /**
  *****************自定义字符处理过滤器--属性面板字符串过滤*****************
  */
@@ -1963,6 +1964,23 @@ Vue.directive('codeHighlight', {
     }
   });
 
+/**
+ *****************自定义指令--输入框数值加减 zz*****************
+ */
+Vue.directive('spinner', function(el, binding){
+    el.onclick = function(){
+      if( binding.arg == "inc" ){
+        binding.value = binding.value + 1
+        $(el).prev().val(binding.value)
+        $(el).prev().trigger("click")
+      }else{
+        binding.value = binding.value - 1
+        $(el).prev().prev().val(binding.value)
+        $(el).prev().prev().trigger("click")
+      }
+      
+    }
+})
 /**
  *****************创建vue实例 *****************
  */
@@ -2010,7 +2028,7 @@ var vm = new Vue({
     caseIdx: null,
     jsonUrl: "http://10.168.1.91:3000/cell.json"
   },
-  /*监听data  zz*/
+  /*监听data */
   watch: {
     comps: {
        handler: function(newVal){
@@ -2144,7 +2162,7 @@ var vm = new Vue({
       ele.parents(".pro-item").toggleClass("category-toggle")
     },
     
-    //监听html编辑器文本框滚动
+    //监听html编辑器文本框滚动 
     codeScroll(event){
       var ele = $(event.target)
       var domsctop = ele.scrollTop()
@@ -2441,7 +2459,7 @@ var vm = new Vue({
       var compObj
       var tgid = "tg" + Math.round(Math.random() * 10000)
       /*******表单组件*******/
-      //button组件 jj
+      //button组件 
       var btnCompObj = {
                          name: "btnComp",
                          class: "primary",
@@ -2451,8 +2469,8 @@ var vm = new Vue({
                          caseid: "caseid" + Math.round(Math.random() * 100),
                          type: "none",
                          align: "",
-                         x: "0",
-                         y: "0",
+                         x: 0,
+                         y: 0,
                          size: ""
                        }
       //input组件  

@@ -37,10 +37,6 @@
 .sm-btn{
   font-size: 14px;
 }
-.sm-btn + .sm-btn{
-  margin-top: 8px;
-}
-
 /*定位 覆盖fixed*/
 .sm-toast:after,
 .sm-toast,
@@ -56,6 +52,4 @@
 }
 
 /*Tabbar*/
-.sm-tabbar a.active i:nth-child(1){
-  display: none;
-}
+

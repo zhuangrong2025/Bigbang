@@ -412,7 +412,7 @@ function previewClose(){
           <!--iconfont-->
           <link rel="stylesheet" :href=" 'https:' + iconfont ">
           <!--//iconfont-->          
-          <!--sm-header zz-->
+          <!--sm-header-->
           <sm-header :title="pages[pageIdx].title" :isback="pages[pageIdx].isBack" v-if="pages[pageIdx].isHeader" ></sm-header>
           <!--sm-header-->
           <!--vue comp-->
@@ -733,7 +733,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************buttonbar property**************-->
-      <!--**************list property **************-->
+      <!--**************list property  zz**************-->
       <div v-if=" panelProp == 'listComp'"  >
         <!--cell content-->
         <div class="pro-item">
@@ -745,7 +745,10 @@ function previewClose(){
               <div class="form-group list-complete-item" :key="cell.id" v-for="(cell, index) in comps[compIdx].cells">
                 <div><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></div>
                 <div>
-                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="请输入">
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].description" placeholder="描述">
+                </div>
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tip" placeholder="提示">
                 </div>
                 <div>
                   <select class="select"  v-model="comps[compIdx].cells[index].linkto" title="link">
@@ -763,7 +766,7 @@ function previewClose(){
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", tip: "说明", linkto: "#", icon: "", id: "lid" + Math.round(Math.random() * 1000)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", description: "描述说明文字", tip: "提示", linkto: "#", icon: "icon-collection", id: "lid" + Math.round(Math.random() * 1000)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -1408,7 +1411,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************flextext property**************-->
-      <!--**************page searchbar zz**************-->
+      <!--**************page searchbar**************-->
       <div v-if=" panelProp == 'pageComp'">
         <!--page name-->
         <div class="pro-item">
@@ -1601,7 +1604,7 @@ var ButtonbarComp = {
 `,
       methods: compMethods
 }
-//list 
+//list  zz
 var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1610,7 +1613,7 @@ var ListComp = {
     <transition-group name="list-complete" tag="div"  :key="comp.tgId">
       <a :href="comp.cells[index].linkto | isLink" class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
         <i :class="comp.cells[index].icon"></i>
-        <div>{{comp.cells[index].tag}}</div>
+        <div>{{comp.cells[index].tag}}<em class="description">{{comp.cells[index].description}}</em></div>
         <span>{{comp.cells[index].tip}}</span>
       </a>
     </transition-group>
@@ -1840,7 +1843,7 @@ var ToastComp = {
 /*
  * 导航栏、标签栏、搜索组件
  */
-//header zz
+//header
 Vue.component('sm-header', {
   props: ["title","isback"],
   template: `
@@ -2088,7 +2091,7 @@ var vm = new Vue({
       var lsPageIdx = Store.fetch("pageIdx", null)
       if( lsPageIdx == null){
         if(this.pages.length < 3){
-          //初始化pages zz
+          //初始化pages
           this.pages = [{"name":"欢迎页","id":"page1001","title":"欢迎页","isHeader":true,"isBack":false,"isTabbar":false},{"name":"示例","id":"page1002","title":"示例","isHeader":true,"isBack":true,"isTabbar":false},{}]
 
           //初始化"欢迎页"的comps数据, 延迟100ms后向comps添加数据
@@ -2497,13 +2500,13 @@ var vm = new Vue({
                          
                        }
       
-      //list组件
+      //list组件 zz
       var listCompObj = {
                          name: "listComp",
                          title: "会员信息",
                          inputname: "",
                          tgId: tgid,
-                         cells: [{tag: "会员特权", tip: "", icon: "icon-select", linkto: "#", id: tgid + "-1"},{tag: "会员认证", tip: "已认证", icon: "icon-integral", linkto: "#", id: tgid + "-2"}],
+                         cells: [{tag: "会员特权", description: "", tip: "", icon: "icon-select", linkto: "#", id: tgid + "-1"},{tag: "会员认证", description: "消费获积分累加权限", tip: "已认证", icon: "icon-integral", linkto: "#", id: tgid + "-2"}],
                          isMerge: false,
                          isShow: true
                        }

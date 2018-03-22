@@ -412,8 +412,8 @@ function previewClose(){
           <!--iconfont-->
           <link rel="stylesheet" :href=" 'https:' + iconfont ">
           <!--//iconfont-->          
-          <!--sm-header-->
-          <sm-header :title="pages[pageIdx].title" v-if="pages[pageIdx].isHeader" ></sm-header>
+          <!--sm-header zz-->
+          <sm-header :title="pages[pageIdx].title" :isback="pages[pageIdx].isBack" v-if="pages[pageIdx].isHeader" ></sm-header>
           <!--sm-header-->
           <!--vue comp-->
           <div class="sm-container" :class="{isHd: pages[pageIdx].isHeader, isTb: pages[pageIdx].isTabbar, isHdTb: (pages[pageIdx].isHeader == true && pages[pageIdx].isTabbar == true)}">
@@ -443,7 +443,7 @@ function previewClose(){
       <a href="#">index</a> <label>/</label> {{panelProp | propname}}
     </h3>
     <div class="property-list">
-      <!--**************button property zz**************-->
+      <!--**************button property**************-->
       <!--Text-->
       <div v-if=" panelProp == 'btnComp'">
         <div class="pro-item">
@@ -1408,7 +1408,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************flextext property**************-->
-      <!--**************page searchbar**************-->
+      <!--**************page searchbar zz**************-->
       <div v-if=" panelProp == 'pageComp'">
         <!--page name-->
         <div class="pro-item">
@@ -1438,7 +1438,7 @@ function previewClose(){
             <div class="form-group" v-if="pages[pageIdx].isHeader">
               <label>Disable Back Button</label>
               <div class="tr">
-                <input class="ct-switch" type="checkbox" />
+                <input class="ct-switch" type="checkbox"  v-model="pages[pageIdx].isBack" />
               </div>
             </div>
             <div class="form-group">
@@ -1840,11 +1840,14 @@ var ToastComp = {
 /*
  * 导航栏、标签栏、搜索组件
  */
-//header
+//header zz
 Vue.component('sm-header', {
-  props: ["title"],
+  props: ["title","isback"],
   template: `
-            <div class="sm-header">{{title}}</div>
+            <div class="sm-header">
+              <a class="icon-back" href="javascript:history.go(-1)" v-if="isback" ></a>
+              {{title}}
+</div>
             `
   })
 
@@ -1965,7 +1968,7 @@ Vue.directive('codeHighlight', function (el, binding) {
   });
 
 /**
- *****************自定义指令--输入框数值加减 zz*****************
+ *****************自定义指令--输入框数值加减 *****************
  */
 Vue.directive('spinner', function(el, binding){
     el.onclick = function(){
@@ -2085,8 +2088,8 @@ var vm = new Vue({
       var lsPageIdx = Store.fetch("pageIdx", null)
       if( lsPageIdx == null){
         if(this.pages.length < 3){
-          //初始化pages
-          this.pages = [{"name":"欢迎页","id":"page1001","title":"欢迎页","isHeader":true,"isTabbar":false},{"name":"示例","id":"page1002","title":"示例","isHeader":true,"isTabbar":false},{}]
+          //初始化pages zz
+          this.pages = [{"name":"欢迎页","id":"page1001","title":"欢迎页","isHeader":true,"isBack":false,"isTabbar":false},{"name":"示例","id":"page1002","title":"示例","isHeader":true,"isBack":true,"isTabbar":false},{}]
 
           //初始化"欢迎页"的comps数据, 延迟100ms后向comps添加数据
           setTimeout(function(){ 
@@ -2204,6 +2207,7 @@ var vm = new Vue({
            id: "page" + Math.round(Math.random() * 10000),
            title: "导航栏",
            isHeader: true,
+           isBack: true,
            isTabbar: false
          })
       //新增localStorage上page****的空值，上面ele的trigger的时候需要到

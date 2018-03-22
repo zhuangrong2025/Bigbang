@@ -22,6 +22,7 @@
 }
 
 .sm-header{
+  position: relative;
   height: 44px;
   line-height: 44px;
   text-align: center;
@@ -29,4 +30,31 @@
   color: set-text-color($header-bg);
   border-bottom: 1px solid set-border($header-bg);
   background-color: $header-bg;
+}
+.sm-header a.icon-back{
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 44px;
+}
+.sm-header a.icon-back:before,
+.sm-header a.icon-back:after{
+  position: absolute;
+  left: 13px;
+  content: '';
+  display: block;
+  width: 13px;
+  height: 2px;
+  background-color: set-text-color($header-bg);
+  opacity: .8;
+}
+.sm-header a.icon-back:before{
+  top: 18px;
+  transform:rotate(-45deg)
+}
+.sm-header a.icon-back:after{
+  top: 26px;
+  transform:rotate(45deg)
 }

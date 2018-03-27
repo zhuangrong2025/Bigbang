@@ -14,6 +14,7 @@ var index = require('./routes/index')
 var users = require('./routes/users')
 var login = require('./routes/login')
 var preview = require('./routes/preview')
+var theme = require('./routes/theme')
 
 var app = express()
 
@@ -214,6 +215,7 @@ app.get('/', function(req, res){
 })
 
 app.use('/preview', preview)
+app.use('/theme', theme)
 app.use('/login', login)
 app.use('/users', users)
 

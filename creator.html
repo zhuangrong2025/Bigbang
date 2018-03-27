@@ -69,13 +69,21 @@ $(function(){
        $("div.theme-detail-wrap > div").eq(index).show().siblings().hide();
      })
 	})
+  
+  //theme tabs zz
+	$("#theme-tabs li").each(function(index){
+     $(this).on("click",function(){
+       $(this).addClass("active").siblings().removeClass("active");
+       $("div.modal-content > .theme-box").eq(index).show().siblings().hide();
+     })
+	})
+    
   //modal close
 	$(".icon-modal-close").on("click",function(){
 		 $(this).parents('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
 	})
-  
-  
+    
   //tinycolorPicker
   getColor()
   $(".theme-detail-wrap dl").each(function(){
@@ -126,17 +134,17 @@ function previewClose(){
     <i class="icon-modal-close"></i>
   </div>
   <div class="modal-body">
-    <div class="modal-tabs">
+    <div class="modal-tabs" id="theme-tabs">
       <ul>
         <li class="active" title="自定义风格"><i class="icon-theme"></i>Custom</li>
-        <li>WeChat</li>
+        <li>Dark Blue</li>
         <li>ios</li>
       </ul>
     </div>
     <div class="modal-content">
       <!--custom theme -->
-      <form action="http://10.168.1.91:3000/" method="post">
       <div class="theme-box">
+        <form action="http://10.168.1.91:3000/" method="post">
         <div class="theme-list" id="theme-list">
           <ul>
             <li class="active" title="">Theme Color</li>
@@ -245,9 +253,56 @@ function previewClose(){
           </div>
         </div>
         <!--//modal-footer-->
+        </form>
       </div>
-      </form>
       <!--//custom theme-->
+      <!--darkblue theme zz-->
+      <div class="theme-box" style="display: none">
+        <form action="http://10.168.1.91:3000/theme?name=darkblue" method="post">
+        <div class="theme-detail pb0">
+          <div class="theme-thumbnail">
+            <img src="images/theme/DarkBlue/01.png" alt="">
+            <img src="images/theme/DarkBlue/02.png" alt="">
+            <img src="images/theme/DarkBlue/03.png" alt="">
+            <img src="images/theme/DarkBlue/04.png" alt="">
+            <img src="images/theme/DarkBlue/05.png" alt="">
+          </div>
+        </div>
+        <!--modal-footer-->
+        <div class="modal-footer pl0">
+          <div class="pull-left">
+            <button class="btn-restore">Restore defaults</button>
+          </div>
+          <div class="pull-right">
+            <input type="submit" class="btn-ok" value="Choose">
+          </div>
+        </div>
+        <!--//modal-footer-->
+        </form>
+      </div>
+      <!--//darkblue theme-->
+      <!--red theme-->
+      <div class="theme-box" style="display: none">
+        <form action="http://10.168.1.91:3000/theme?name=red" method="post">
+        <div class="theme-detail pb0">
+          <div class="theme-thumbnail">
+           red
+          </div>
+        </div>
+        <!--modal-footer-->
+        <div class="modal-footer pl0">
+          <div class="pull-left">
+            <button class="btn-restore">Restore defaults</button>
+          </div>
+          <div class="pull-right">
+            <input type="submit" class="btn-ok" value="Choose">
+          </div>
+        </div>
+        <!--//modal-footer-->
+        </form>
+      </div>
+      <!--//red theme-->
+      
     </div>
   </div>
 </div>
@@ -733,7 +788,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************buttonbar property**************-->
-      <!--**************list property  zz**************-->
+      <!--**************list property**************-->
       <div v-if=" panelProp == 'listComp'"  >
         <!--cell content-->
         <div class="pro-item">
@@ -1604,7 +1659,7 @@ var ButtonbarComp = {
 `,
       methods: compMethods
 }
-//list  zz
+//list 
 var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -2500,7 +2555,7 @@ var vm = new Vue({
                          
                        }
       
-      //list组件 zz
+      //list组件
       var listCompObj = {
                          name: "listComp",
                          title: "会员信息",

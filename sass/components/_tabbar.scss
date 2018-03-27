@@ -30,7 +30,7 @@
 	display: -webkit-box; 
 	display: -webkit-flex;
 	display: flex;
-	height: 44px;
+	height: 51px;
 	background-color: $tabbar-bg;
 	border-top: 1px solid set-border($tabbar-bg);
 }
@@ -55,7 +55,7 @@
 }
 .sm-tabbar a i{
   font-family:"iconfont" !important;
-  font-size:22px;
+  font-size:26px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   margin-bottom: -12px;

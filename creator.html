@@ -766,7 +766,7 @@ function previewClose(){
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", description: "描述说明文字", tip: "提示", linkto: "#", icon: "icon-collection", id: "lid" + Math.round(Math.random() * 1000)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", description: "", tip: "", linkto: "#", icon: "icon-collection", id: "lid" + Math.round(Math.random() * 1000)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -1613,7 +1613,7 @@ var ListComp = {
     <transition-group name="list-complete" tag="div"  :key="comp.tgId">
       <a :href="comp.cells[index].linkto | isLink" class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
         <i :class="comp.cells[index].icon"></i>
-        <div>{{comp.cells[index].tag}}<em class="description">{{comp.cells[index].description}}</em></div>
+        <div>{{comp.cells[index].tag}}<em class="description" v-if=" comp.cells[index].description != ''">{{comp.cells[index].description}}</em></div>
         <span>{{comp.cells[index].tip}}</span>
       </a>
     </transition-group>

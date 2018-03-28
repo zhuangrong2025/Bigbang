@@ -53,3 +53,29 @@
   padding-bottom: 50px;
 }
 
+/* for creator app status background color border*/
+@function set-text-color($color) {
+  @if (lightness($color) > 88) { 
+    @return #000; 
+  } @else { 
+    @return #fff;
+  } 
+}
+.app-status {
+  fill: set-text-color($header-bg) !important;
+  color: set-text-color($header-bg);
+  background-color: $header-bg !important;
+}
+.app-status span:before,
+.app-status span i:nth-child(1):before,
+.app-status span i:nth-child(1):after,
+.app-status em i:after,
+.app-status em:after{
+  background-color: set-text-color($header-bg) !important;
+}
+.app-status span i:nth-child(2):before,
+.app-status span i:nth-child(2):after,
+.app-status em i:before{
+  border: 1px solid set-text-color($header-bg) !important;
+}
+

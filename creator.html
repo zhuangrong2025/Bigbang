@@ -336,10 +336,19 @@ function previewClose(){
 </div>
 <!--//modal iconfont show-->
 <div class="modal-mask"></div>
-<!--preview-->
+<!--preview zz-->
 <div class="preview-pop" v-if="isPreview" v-cloak>
   <div class="pv-frame">
-    <div class="app-status"></div>
+    <div class="app-status">
+      <span>
+        <i></i><i></i> 中国电信
+        <svg width="13px" height="10px" >
+          <path d="M2.4,5.5c1.1-1.2,2.5-1.8,4.1-1.8s3,0.6,4.1,1.8L9.5,6.8c-0.8-0.9-1.8-1.3-3-1.3s-2.1,0.4-3,1.3L2.4,5.5zM4.7,8.1c0.5-0.5,1.1-0.8,1.8-0.8s1.3,0.3,1.8,0.8L6.5,10L4.7,8.1z M0,2.9C1.8,1,4,0,6.5,0C9,0,11.2,1,13,2.9l-1.2,1.3c-1.5-1.6-3.2-2.4-5.3-2.4S2.7,2.6,1.2,4.2L0,2.9z"/>
+        </svg>
+      </span>
+      10:09
+      <em>88% <i></i></em>
+    </div>
     <div class="preview-loading">加载中...</div>
     <iframe id="preview-frame" src="" frameborder="0" width="100%" height="100%" marginheight="0" marginwidth="0" scrolling="auto" allowtransparency="true" ></iframe>
     <div class="paging-wrap">
@@ -460,7 +469,16 @@ function previewClose(){
     <!--simulator-->
     <div class="simulator-wrap">
       <div class="simulator" style="width: 375px; height: 667px" id="simulator" >
-        <div class="app-status"></div>
+        <div class="app-status">
+          <span>
+            <i></i><i></i> 中国电信
+            <svg width="13px" height="10px" >
+              <path d="M2.4,5.5c1.1-1.2,2.5-1.8,4.1-1.8s3,0.6,4.1,1.8L9.5,6.8c-0.8-0.9-1.8-1.3-3-1.3s-2.1,0.4-3,1.3L2.4,5.5zM4.7,8.1c0.5-0.5,1.1-0.8,1.8-0.8s1.3,0.3,1.8,0.8L6.5,10L4.7,8.1z M0,2.9C1.8,1,4,0,6.5,0C9,0,11.2,1,13,2.9l-1.2,1.3c-1.5-1.6-3.2-2.4-5.3-2.4S2.7,2.6,1.2,4.2L0,2.9z"/>
+            </svg>
+          </span>
+          10:09
+          <em>88% <i></i></em>
+         </div>
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
         <div class="canvas" id="canvas" @dragover.prevent="dragoverItem" @dragleave.prevent="dragleaveItem">

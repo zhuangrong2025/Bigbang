@@ -121,6 +121,12 @@ i{
 .pull-right{
   float: right;
 }
+.pl0{
+  padding-left: 0 !important;
+}
+.pb0{
+  padding-bottom: 0 !important;
+}
 /*--------------------header--------------------*/
 header{
   height: 48px;
@@ -1132,29 +1138,84 @@ h3.title button i{
 }
 .app-status{
   height: 20px;
-  width: 98.6%;
-  background-image: url(../images/ios-statusbar-center.png);
-  background-size: auto 10px;
-  background-position: center center;
-  background-color: #fff;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1px;
+  position: relative;
+  overflow: hidden;
+  fill:#fff;
 }
-.app-status:after,
-.app-status:before{
+.app-status span{
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 6px;
+}
+
+.app-status span:before,
+.app-status span i:nth-child(1):before,
+.app-status span i:nth-child(1):after{
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background-color: #fff;
+  margin: 0 1px;
+  border-radius: 50%;
+}
+.app-status span i:nth-child(2):before,
+.app-status span i:nth-child(2):after{
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border: 1px solid #fff;
+  margin: 0 1px;
+  border-radius: 50%;
+}
+.app-status em{
+  position: absolute;
+  top: 0;
+  right: 6px;
+}
+.app-status em i{
+  position: relative;  
+}
+.app-status em i:before{
+  content: '';
+  display: inline-block;
+  height: 10px;
+  width: 23px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+}
+.app-status em i:after{
+  position: absolute;
+  top: 5px;
+  left: 2px;
   content: '';
   display: block;
-  float: left;
-  width: 60px;
-  height: 20px;
-  margin-left: 5px;
-  background-image: url(../images/ios-statusbar-left.png);
-  background-position: center center;
-  background-size: auto 10px;
+  height: 6px;
+  width: 13px;
+  background-color: #fff;
+  border-radius: 1px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 }
-.app-status:after{
-  float: right;
-  margin-left: 0;
-  background-image: url(../images/ios-statusbar-right.png);
+.app-status em:after{
+  position: absolute;
+  content: '';
+  top: 8px;
+  right: -3px;
+  width: 2px;
+  height: 4px;
+  background-color: #fff;
+  border-radius: 1.5px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
+
 #form-cvs{
   height: 100%;
 }
@@ -1398,6 +1459,7 @@ h3.title button i{
   margin-right: 55px;
   color: #a8aeb7;
   position: relative;
+  cursor: pointer;
 }
 .modal .modal-tabs li.active{
   color: #3a7ef5;
@@ -1566,7 +1628,13 @@ h3.title button i{
 .theme-box .theme-detail input:not(.color):focus {
   border-color: #4d84f1;
 }
-
+.theme-box .theme-detail .theme-thumbnail{
+  white-space: nowrap
+}
+.theme-box .theme-detail .theme-thumbnail img{
+  display: inline-block;
+  margin-right: 10px;
+}
 /*tinycolorpicker*/
 .color{
   position: absolute;

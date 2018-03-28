@@ -14,8 +14,8 @@
 .sm-tabbar a i{
 	width: 22px;
 	height: 22px;
-	font-size: 18px;
-  margin-bottom: -3px;
+	font-size: 22px;
+  margin-bottom: 2px;
 }
 .sm-tabbar:after{
 	position: absolute;

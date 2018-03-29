@@ -1179,6 +1179,11 @@ h3.title button i{
   top: 0;
   right: 6px;
 }
+.app-status em:before{
+  content: '88% ';
+  display: inline-block;
+  margin-right: 5px;
+}
 .app-status em i{
   position: relative;  
 }
@@ -1215,6 +1220,7 @@ h3.title button i{
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+
 
 #form-cvs{
   height: 100%;
@@ -1754,7 +1760,7 @@ h3.title button i{
   height: 667px;
   padding-top: 20px;
   background-color: #F7F7F9;
-  z-index: 999
+  z-index: 999;
 }
 .preview-pop .pv-frame .app-status{
   position: absolute;
@@ -1788,7 +1794,7 @@ h3.title button i{
 .preview-pop .paging {
   width: 100px;
   height: 32px;
-  margin: 20px auto 0;
+  margin: 60px auto 0;
 }
 .preview-pop .paging span{
   cursor: pointer;
@@ -1816,6 +1822,60 @@ h3.title button i{
   background-image: url(../images/small-icons-sprite.png);
   background-position: 0 0;
   z-index: 999999;
+}
+/*预览窗口手机外壳*/
+.phone-shell{
+  position: absolute;
+  top: -40px;
+  left: -10px;
+  border: 1px solid  rgba(238,238,238,.5);
+  width: 395px;
+  height: 752px;
+  border-radius: 32px;
+  z-index: -1
+}
+.phone-shell:before{
+  content: '';
+  display: block;
+  position: absolute;
+  top: 38px;
+  left: 8px;
+  border: 1px solid rgba(238,238,238,.3);
+  width: 376px;
+  height: 668px;
+}
+.phone-shell:after{  
+  content: '';
+  display: block;
+  position: absolute;
+  top: 712px;
+  left: 180px;
+  border: 1px solid rgba(238,238,238,.3);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+.phone-shell i:before{  
+  content: '';
+  position: absolute;
+  display: block;
+  top: 15px;
+  left: 160px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(238,238,238,.3);
+}
+.phone-shell i:after{ 
+  content: '';
+  position: absolute;
+  display: block;
+  top: 16px;
+  left: 176px;
+  width: 63px;
+  height: 7px;
+  border-radius: 3px;
+  border: 1px solid rgba(238,238,238,.3);
 }
 .icon-cell-up,
 .icon-cell-down,

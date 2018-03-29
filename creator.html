@@ -339,6 +339,7 @@ function previewClose(){
 <!--preview zz-->
 <div class="preview-pop" v-if="isPreview" v-cloak>
   <div class="pv-frame">
+    <div class="phone-shell"><i></i></div>
     <div class="app-status">
       <span>
         <i></i><i></i> 中国电信
@@ -347,7 +348,7 @@ function previewClose(){
         </svg>
       </span>
       10:09
-      <em>88% <i></i></em>
+      <em><i></i></em>
     </div>
     <div class="preview-loading">加载中...</div>
     <iframe id="preview-frame" src="" frameborder="0" width="100%" height="100%" marginheight="0" marginwidth="0" scrolling="auto" allowtransparency="true" ></iframe>
@@ -477,8 +478,8 @@ function previewClose(){
             </svg>
           </span>
           10:09
-          <em>88% <i></i></em>
-         </div>
+          <em><i></i></em>
+        </div>
         <form id="form-cvs" action="http://10.168.1.91:3000/output" method="post">
         <!--****************Canvas****************-->
         <div class="canvas" id="canvas" @dragover.prevent="dragoverItem" @dragleave.prevent="dragleaveItem">

@@ -12,6 +12,9 @@
   // Mixins
   "mixins",
   
+  // Function
+  "function/_set-text-color",
+  
   // Icon
   "icon/icon-font",
 
@@ -50,17 +53,12 @@
   background-color: $body-bg;
 }
 .sm-container.isTb{
-  padding-bottom: 50px;
+  padding-bottom: 51px;
+}
+.sm-container.isHd{
+  padding-top: 44px;
 }
 
-/* for creator app status background color border*/
-@function set-text-color($color) {
-  @if (lightness($color) > 88) { 
-    @return #000; 
-  } @else { 
-    @return #fff;
-  } 
-}
 .app-status {
   fill: set-text-color($header-bg) !important;
   color: set-text-color($header-bg);

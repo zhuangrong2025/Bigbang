@@ -4,7 +4,7 @@
  */
 
 // funciton 根据背景颜色的亮度来设置字体颜色，用lightness()内部函数，亮度值0-100
-@function set-text-color($color) {
+@function set-tabbar-text-color($color) {
   @if (lightness($color) > 88) { 
     @return #808080; 
   } @else { 
@@ -12,7 +12,7 @@
   } 
 }
 // funciton 根据背景颜色的亮度来设置边框的颜色
-@function set-border($color) {
+@function set-tabbar-border($color) {
   $val:lightness($color);
   @if ($val > 88) and ($val < 95) { 
     @return darken($color,3%) 
@@ -20,6 +20,14 @@
     @return transparent;
   }  @else{ 
     @return $gray-lighter
+  } 
+}
+
+@function set-tabbar-active-color($color) {
+  @if (lightness($color) > 88) { 
+    @return $brand-primary; 
+  } @else { 
+    @return #fff;
   } 
 }
 .sm-tabbar{
@@ -32,7 +40,7 @@
 	display: flex;
 	height: 51px;
 	background-color: $tabbar-bg;
-	border-top: 1px solid set-border($tabbar-bg);
+	border-top: 1px solid set-tabbar-border($tabbar-bg);
 }
 .sm-tabbar a{
 	-webkit-box-flex:1;
@@ -45,13 +53,13 @@
 	-webkit-align-items: center; 
 	-webkit-box-align: center;
 	justify-content: center; 
-	color: set-text-color($tabbar-bg);
+	color: set-tabbar-text-color($tabbar-bg);
 }
 .sm-tabbar span{
 	font-size: 12px;
 }
 .sm-tabbar a.active{
-	color: #6795f5;
+	color: set-tabbar-active-color($tabbar-bg);
 }
 .sm-tabbar a i{
   font-family:"iconfont" !important;

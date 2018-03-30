@@ -4,25 +4,11 @@
  */
 
 
-// funciton 根据背景颜色的亮度来设置字体颜色，用lightness()内部函数，亮度值0-100
-@function set-text-color($color) {
-  @if (lightness($color) > 88) { 
-    @return #000; 
-  } @else { 
-    @return #fff;
-  } 
-}
-// funciton 根据背景颜色的亮度来设置边框的颜色
-@function set-border($color) {
-  @if (lightness($color) > 88) { 
-    @return darken($gray-lighter, 3%); 
-  } @else { 
-    @return transparent;
-  } 
-}
-
 .sm-header{
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 44px;
   line-height: 44px;
   text-align: center;
@@ -30,6 +16,7 @@
   color: set-text-color($header-bg);
   border-bottom: 1px solid set-border($header-bg);
   background-color: $header-bg;
+  z-index: 99999;
 }
 .sm-header a.icon-back{
   display: block;

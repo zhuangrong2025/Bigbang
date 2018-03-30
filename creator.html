@@ -54,11 +54,11 @@ $(function(){
   
   
   //modal for theme
-	$("#openModal").on("click",function(){
+	$("#chooseTheme").on("click",function(){
 		$("#modal-theme").addClass("in")
 		$(".modal-mask").addClass("in")
 	})
-	$(".icon-modal-close, .btn-cancel").on("click",function(){
+	$("#modal-page-close, #modal-page-cancel").on("click",function(){
 		 $(this).parents('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
 	})
@@ -70,7 +70,7 @@ $(function(){
      })
 	})
   
-  //theme tabs zz
+  //theme tabs 
 	$("#theme-tabs li").each(function(index){
      $(this).on("click",function(){
        $(this).addClass("active").siblings().removeClass("active");
@@ -78,10 +78,43 @@ $(function(){
      })
 	})
     
-  //modal close
-	$(".icon-modal-close").on("click",function(){
+  /* theme modal close or cancel
+   * The color receive from the server 
+   */
+	$("#modal-theme-cancel,#modal-theme-close").on("click",function(){
 		 $(this).parents('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
+     
+     $.ajax({
+        type: 'post',
+        url: 'http://10.168.1.91:3000/cancelTheme',
+        dataType: 'json',
+        success: function(data){
+          //Receive data returned by the server
+          //遍历服务器端返回的对象，设置vm.themes对应的值
+          $.each(data, function(key, value){
+              vm.themes[key] = value
+              $('[name='+ key +']').css("background-color",value)
+          })
+        }
+     })
+	})
+  /* theme Restore defaults zz*/
+	$("[data-theme=default]").on("click",function(){
+		 $(this).parents('.modal').removeClass("in")
+     $(".modal-mask").removeClass("in")
+     $.ajax({
+        type: 'post',
+        url: 'http://10.168.1.91:3000/restoreDefaults',
+        dataType: 'json',
+        success: function(data){
+          //Receive data returned by the server
+          $.each(data, function(key, value){
+              vm.themes[key] = value
+              $('[name='+ key +']').css("background-color",value)
+          })
+        }
+     })
 	})
     
   //tinycolorPicker
@@ -131,7 +164,7 @@ function previewClose(){
 <div class="modal" id="modal-theme">
   <div class="modal-header">
     <h3>Theming</h3>
-    <i class="icon-modal-close"></i>
+    <i class="icon-modal-close" id="modal-theme-close"></i>
   </div>
   <div class="modal-body">
     <div class="modal-tabs" id="theme-tabs">
@@ -142,7 +175,7 @@ function previewClose(){
       </ul>
     </div>
     <div class="modal-content">
-      <!--custom theme -->
+      <!--custom theme zz -->
       <div class="theme-box">
         <form action="http://10.168.1.91:3000/" method="post">
         <div class="theme-list" id="theme-list">
@@ -156,7 +189,7 @@ function previewClose(){
           <div class="theme-detail" id="theme-color">
             <div>
               <dl>
-                <dt>Primary <em>color for button, link</em></dt>
+                <dt>Primary <em id="newprimary">color for button, link</em></dt>
                 <dd>
                   <input type="text" v-model="themes.primary">
                   <input type="text" name="primary" class="color" v-model="themes.primary">
@@ -245,10 +278,10 @@ function previewClose(){
         <!--modal-footer-->
         <div class="modal-footer">
           <div class="pull-left">
-            <button class="btn-restore">Restore defaults</button>
+            <a class="btn-restore" data-theme="default">Restore defaults111</a>
           </div>
           <div class="pull-right">
-            <input type="button" class="btn" value="Cancel">
+            <input type="button" class="btn" id="modal-theme-cancel" value="Cancel">
             <input type="submit" class="btn-ok" value="Save">
           </div>
         </div>
@@ -256,7 +289,7 @@ function previewClose(){
         </form>
       </div>
       <!--//custom theme-->
-      <!--darkblue theme zz-->
+      <!--darkblue theme-->
       <div class="theme-box" style="display: none">
         <form action="http://10.168.1.91:3000/theme?name=darkblue" method="post">
         <div class="theme-detail pb0">
@@ -311,14 +344,14 @@ function previewClose(){
 <div class="modal modal-page" id="modal-page">
   <div class="modal-header">
     <h3>Delete Page</h3>
-    <i class="icon-modal-close"></i>
+    <i class="icon-modal-close" id="modal-page-close"></i>
   </div>
   <div class="modal-body">
     Are you sure you want to delete this page?
   </div>
   <div class="modal-footer">
     <div class="pull-right">
-      <input type="button" class="btn btn-cancel" value="Cancel">
+      <input type="button" class="btn" id="modal-page-cancel" value="Cancel">
       <input type="submit" class="btn-danger" value="Delete Page" @click="delectPageConfirm">
     </div>
   </div>
@@ -336,7 +369,7 @@ function previewClose(){
 </div>
 <!--//modal iconfont show-->
 <div class="modal-mask"></div>
-<!--preview zz-->
+<!--preview -->
 <div class="preview-pop" v-if="isPreview" v-cloak>
   <div class="pv-frame">
     <div class="phone-shell"><i></i></div>
@@ -377,7 +410,7 @@ function previewClose(){
   </div>
   <div class="header-right">
     <ul>
-      <li id="openModal"><i class="theme icon-h" title="themes"></i></li>
+      <li id="chooseTheme"><i class="theme icon-h" title="themes"></i></li>
       <li @click="submit"><i class="export icon-h"  title="export"></i></li>
       <li><i class="help icon-h"  title="help"></i></li>
       <li><i class="user icon-h"  title="user" @click="undoThis"></i></li>

@@ -51,23 +51,26 @@ app.get('/', function(req, res){
    res.sendFile(__dirname + '/creator.html')
 })
 
+var primaryNew, warningNew, successNew, secondaryNew, lineNew, grayLightNew,
+    headerBgNew, bodyBgNew, textColorNew, tabbarBgNew,
+    borderRadiusNew;
 /*custom theme color*/
 app.post('/', function(req, res, next) {
   //获取表单请求，修改颜色变量
   //Theme Color
-  var primaryNew = req.body.primary || '#008AD5'
-  var warningNew = req.body.warning || '#E64340'
-  var successNew = req.body.success || '#09BB07'
-  var secondaryNew = req.body.secondary || '#FFBE00'
-  var lineNew = req.body.line || '#dedede'
-  var grayLightNew = req.body.grayLight || '#999'
+  primaryNew = req.body.primary || '#008AD5'
+  warningNew = req.body.warning || '#E64340'
+  successNew = req.body.success || '#09BB07'
+  secondaryNew = req.body.secondary || '#FFBE00'
+  lineNew = req.body.line || '#dedede'
+  grayLightNew = req.body.grayLight || '#999'
   //Page and Header
-  var headerBgNew = req.body.headerBg || '#fff'
-  var bodyBgNew = req.body.bodyBg || '#f7f7f9'
-  var textColorNew = req.body.textColor || '#000'
-  var tabbarBgNew = req.body.tabbarBg || '#dedede'
+  headerBgNew = req.body.headerBg || '#fff'
+  bodyBgNew = req.body.bodyBg || '#f7f7f9'
+  textColorNew = req.body.textColor || '#000'
+  tabbarBgNew = req.body.tabbarBg || '#dedede'
   //Typography
-  var borderRadiusNew = req.body.borderRadius || '5px'
+  borderRadiusNew = req.body.borderRadius || '5px'
   
   //生成scss变量
   var newPrimary = sassVariable('brand-primary', primaryNew)
@@ -94,7 +97,9 @@ app.post('/', function(req, res, next) {
     return "$" + name + ": " + value + ";"
   }
     
+  
   res.sendFile(__dirname + '/creator.html')
+  
   
 })
 
@@ -212,6 +217,31 @@ app.get('/download', function(req, res){
 
 app.get('/', function(req, res){
    res.sendFile(__dirname + '/creator.html')
+})
+
+//在custom theme窗口点击关闭或取消时返回服务器上的theme变量
+app.post('/cancelTheme', function(req, res){
+   res.send({ 'primary': primaryNew, 'warning': warningNew , 'success': successNew , 'secondary': secondaryNew , 'line': lineNew , 'grayLight': grayLightNew,
+              'headerBg': headerBgNew, 'bodyBg': bodyBgNew, 'textColor': textColorNew, 'tabbarBg': tabbarBgNew,
+              'borderRadius': borderRadiusNew
+            });
+})
+
+//Restore defaults theme 恢复默认样式 
+app.post('/restoreDefaults', function(req, res){
+  var themeDefault = "$brand-primary: #008AD5;$brand-warning: #E64340;$brand-success: #09BB07;$brand-secondary: #f80;$gray-lighter: #dedede;$gray-light: #999;$header-bg: #fff;$body-bg: #f7f7f9;$body-color: #000;$tabbar-bg: #f7f7f9;$border-radius: 5px;"
+  //写入_custom.scss
+  fs.writeFile('sass/_custom.scss', themeDefault) 
+  
+  
+  
+  //返回默认值
+  res.send({ 'primary': "#008AD5", 'warning': "#E64340" , 'success': "#09BB07" , 'secondary': "#FFBE00" , 'line': "#dedede" , 'grayLight': "#999",
+            'headerBg': "#fff", 'bodyBg': "#f7f7f9", 'textColor': "#000", 'tabbarBg': "#dedede",
+            'borderRadius': "5px"
+          });
+  res.sendFile(__dirname + '/creator.html')
+  
 })
 
 app.use('/preview', preview)

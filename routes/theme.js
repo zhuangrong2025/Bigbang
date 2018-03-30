@@ -14,9 +14,9 @@ router.post('/', function(req, res, next) {
       newHeaderBg;
   //深蓝色
   if(themeName ==='darkblue'){
-    newPrimary = sassVariable('brand-primary', '#00f')
-    newWarning = sassVariable('brand-warning', '#f00')
-    newHeaderBg = sassVariable('header-bg', '#00f') 
+    newPrimary = sassVariable('brand-primary', '#004E97')
+    newWarning = sassVariable('brand-warning', '#805B01')
+    newHeaderBg = sassVariable('header-bg', '#004E97') 
   }
   //红色
   if(themeName === 'red'){
@@ -37,5 +37,6 @@ router.post('/', function(req, res, next) {
   //返回上一级目录
   res.sendFile( path.resolve(__dirname, '../creator.html'))
 })
+
 
 module.exports = router

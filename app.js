@@ -59,7 +59,7 @@ var defaultTheme = { 'primary': "#008AD5", 'warning': "#E64340" , 'success': "#0
 var newTheme = {}
 
 /*custom theme color*/
-app.post('/', function(req, res, next) {
+app.post('/themeCustom', function(req, res, next) {
   //获取表单请求，修改颜色变量
   //Theme Color
   newTheme.primary = req.body.primary || '#008AD5'
@@ -95,14 +95,15 @@ app.post('/', function(req, res, next) {
   
   //写入_custom.scss
   fs.writeFile('sass/_custom.scss', newScss) 
-  console.log("首页")
   
   //变量组合
   function sassVariable(name, value) {
     return "$" + name + ": " + value + ";"
   }
     
-  res.sendFile(__dirname + '/creator.html')
+  // res.sendFile(__dirname + '/creator.html')
+  // url重定向到首页
+  res.redirect("http://10.168.1.91:3000")
 })
 
 /*output 保存页面html到服务器  压缩zip*/
@@ -217,10 +218,6 @@ app.get('/download', function(req, res){
   res.download(file); // Set disposition and send it.
 });
 
-app.get('/', function(req, res){
-   res.sendFile(__dirname + '/creator.html')
-})
-
 //在custom theme窗口点击关闭或取消时返回服务器上的theme变量
 app.post('/cancelTheme', function(req, res){
      res.send(newTheme)
@@ -228,9 +225,11 @@ app.post('/cancelTheme', function(req, res){
 
 //Restore defaults theme 恢复默认样式 
 app.post('/restoreDefaults', function(req, res, next){
-  var themeDefaultCss = "$brand-primary: #008AD5;$brand-warning: #E64340;$brand-success: #09BB07;$brand-secondary: #f80;$gray-lighter: #dedede;$gray-light: #999;$header-bg: #fff;$body-bg: #f7f7f9;$body-color: #000;$tabbar-bg: #f7f7f9;$border-radius: 5px;"
- 
-  fs.writeFile('sass/_custom.scss', themeDefaultCss) 
+  
+  //读取默认样式文件，并写入到_custom.scss中
+  var rsCss = fs.createReadStream(__dirname + '/sass/themes/default/theme.scss');
+  var wsCss = fs.createWriteStream(__dirname + '/sass/_custom.scss');
+  rsCss.pipe(wsCss);
   
   //返回默认值，把默认样式作为定义一个常量，新的提交的颜色值作为变量对象
   res.send(defaultTheme)

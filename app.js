@@ -51,56 +51,58 @@ app.get('/', function(req, res){
    res.sendFile(__dirname + '/creator.html')
 })
 
-var primaryNew, warningNew, successNew, secondaryNew, lineNew, grayLightNew,
-    headerBgNew, bodyBgNew, textColorNew, tabbarBgNew,
-    borderRadiusNew;
+//默认主题颜色
+var defaultTheme = { 'primary': "#008AD5", 'warning': "#E64340" , 'success': "#09BB07" , 'secondary': "#FFBE00" , 'line': "#dedede" , 'grayLight': "#999",
+                     'headerBg': "#fff", 'bodyBg': "#f7f7f9", 'textColor': "#000", 'tabbarBg': "#dedede",
+                     'borderRadius': "5px" }
+//点击"save"后的自定义样式
+var newTheme = {}
+
 /*custom theme color*/
 app.post('/', function(req, res, next) {
   //获取表单请求，修改颜色变量
   //Theme Color
-  primaryNew = req.body.primary || '#008AD5'
-  warningNew = req.body.warning || '#E64340'
-  successNew = req.body.success || '#09BB07'
-  secondaryNew = req.body.secondary || '#FFBE00'
-  lineNew = req.body.line || '#dedede'
-  grayLightNew = req.body.grayLight || '#999'
+  newTheme.primary = req.body.primary || '#008AD5'
+  newTheme.warning = req.body.warning || '#E64340'
+  newTheme.success = req.body.success || '#09BB07'
+  newTheme.secondary = req.body.secondary || '#FFBE00'
+  newTheme.line = req.body.line || '#dedede'
+  newTheme.grayLight = req.body.grayLight || '#999'
   //Page and Header
-  headerBgNew = req.body.headerBg || '#fff'
-  bodyBgNew = req.body.bodyBg || '#f7f7f9'
-  textColorNew = req.body.textColor || '#000'
-  tabbarBgNew = req.body.tabbarBg || '#dedede'
+  newTheme.headerBg = req.body.headerBg || '#fff'
+  newTheme.bodyBg = req.body.bodyBg || '#f7f7f9'
+  newTheme.textColor = req.body.textColor || '#000'
+  newTheme.tabbarBg = req.body.tabbarBg || '#dedede'
   //Typography
-  borderRadiusNew = req.body.borderRadius || '5px'
+  newTheme.borderRadius = req.body.borderRadius || '5px'
   
   //生成scss变量
-  var newPrimary = sassVariable('brand-primary', primaryNew)
-  var newWarning = sassVariable('brand-warning', warningNew)  
-  var newSuccess = sassVariable('brand-success', successNew)
-  var newSecondary = sassVariable('brand-secondary', secondaryNew)
-  var newLine = sassVariable('gray-lighter', lineNew)
-  var newGrayLight = sassVariable('gray-light', grayLightNew)
+  var newPrimary = sassVariable('brand-primary', newTheme.primary)
+  var newWarning = sassVariable('brand-warning', newTheme.warning)  
+  var newSuccess = sassVariable('brand-success', newTheme.success)
+  var newSecondary = sassVariable('brand-secondary', newTheme.secondary)
+  var newLine = sassVariable('gray-lighter', newTheme.line)
+  var newGrayLight = sassVariable('gray-light', newTheme.grayLight)
   
-  var newHeaderBg = sassVariable('header-bg', headerBgNew)  
-  var newBodyBg = sassVariable('body-bg', bodyBgNew)  
-  var newTextColor = sassVariable('body-color', textColorNew)  
-  var newTabbarBg = sassVariable('tabbar-bg', tabbarBgNew) 
+  var newHeaderBg = sassVariable('header-bg', newTheme.headerBg)  
+  var newBodyBg = sassVariable('body-bg', newTheme.bodyBg)  
+  var newTextColor = sassVariable('body-color', newTheme.textColor)  
+  var newTabbarBg = sassVariable('tabbar-bg', newTheme.tabbarBg) 
   
-  var newBorderRadius = sassVariable('border-radius', borderRadiusNew) 
+  var newBorderRadius = sassVariable('border-radius', newTheme.borderRadius) 
   
   var newScss = newPrimary + newWarning + newSuccess + newSecondary + newLine + newGrayLight + newHeaderBg + newBodyBg + newTextColor + newTabbarBg + newBorderRadius
   
   //写入_custom.scss
   fs.writeFile('sass/_custom.scss', newScss) 
+  console.log("首页")
   
   //变量组合
   function sassVariable(name, value) {
     return "$" + name + ": " + value + ";"
   }
     
-  
   res.sendFile(__dirname + '/creator.html')
-  
-  
 })
 
 /*output 保存页面html到服务器  压缩zip*/
@@ -221,27 +223,25 @@ app.get('/', function(req, res){
 
 //在custom theme窗口点击关闭或取消时返回服务器上的theme变量
 app.post('/cancelTheme', function(req, res){
-   res.send({ 'primary': primaryNew, 'warning': warningNew , 'success': successNew , 'secondary': secondaryNew , 'line': lineNew , 'grayLight': grayLightNew,
-              'headerBg': headerBgNew, 'bodyBg': bodyBgNew, 'textColor': textColorNew, 'tabbarBg': tabbarBgNew,
-              'borderRadius': borderRadiusNew
-            });
+     res.send(newTheme)
 })
 
 //Restore defaults theme 恢复默认样式 
-app.post('/restoreDefaults', function(req, res){
-  var themeDefault = "$brand-primary: #008AD5;$brand-warning: #E64340;$brand-success: #09BB07;$brand-secondary: #f80;$gray-lighter: #dedede;$gray-light: #999;$header-bg: #fff;$body-bg: #f7f7f9;$body-color: #000;$tabbar-bg: #f7f7f9;$border-radius: 5px;"
-  //写入_custom.scss
-  fs.writeFile('sass/_custom.scss', themeDefault) 
+app.post('/restoreDefaults', function(req, res, next){
+  var themeDefaultCss = "$brand-primary: #008AD5;$brand-warning: #E64340;$brand-success: #09BB07;$brand-secondary: #f80;$gray-lighter: #dedede;$gray-light: #999;$header-bg: #fff;$body-bg: #f7f7f9;$body-color: #000;$tabbar-bg: #f7f7f9;$border-radius: 5px;"
+ 
+  fs.writeFile('sass/_custom.scss', themeDefaultCss) 
   
+  //返回默认值，把默认样式作为定义一个常量，新的提交的颜色值作为变量对象
+  res.send(defaultTheme)
   
-  
-  //返回默认值
-  res.send({ 'primary': "#008AD5", 'warning': "#E64340" , 'success': "#09BB07" , 'secondary': "#FFBE00" , 'line': "#dedede" , 'grayLight': "#999",
-            'headerBg': "#fff", 'bodyBg': "#f7f7f9", 'textColor': "#000", 'tabbarBg': "#dedede",
-            'borderRadius': "5px"
-          });
-  res.sendFile(__dirname + '/creator.html')
-  
+  //克隆对象方法
+  function cloneObj(a) {
+     return JSON.parse(JSON.stringify(a));
+  }
+  //defaultTheme复制给newTheme，将服务器上的primary值为默认的，而且防止theme窗口在点取消或关闭的时候还是新值
+  newTheme = cloneObj(defaultTheme)
+    
 })
 
 app.use('/preview', preview)
@@ -265,6 +265,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+  
 });
 
 module.exports = app;

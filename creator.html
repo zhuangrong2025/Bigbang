@@ -65,16 +65,16 @@ $(function(){
   //theme color tabs
 	$("#theme-list li").each(function(index){
      $(this).on("click",function(){
-       $(this).addClass("active").siblings().removeClass("active");
-       $("div.theme-detail-wrap > div").eq(index).show().siblings().hide();
+       $(this).addClass("active").siblings().removeClass("active")
+       $("div.theme-detail-wrap > div").eq(index).show().siblings().hide()
      })
 	})
   
   //theme tabs 
 	$("#theme-tabs li").each(function(index){
      $(this).on("click",function(){
-       $(this).addClass("active").siblings().removeClass("active");
-       $("div.modal-content > .theme-box").eq(index).show().siblings().hide();
+       $(this).addClass("active").siblings().removeClass("active")
+       $("div.modal-content > .theme-box").eq(index).show().siblings().hide()
      })
 	})
     
@@ -84,25 +84,22 @@ $(function(){
 	$("#modal-theme-cancel,#modal-theme-close").on("click",function(){
 		 $(this).parents('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
-     
      $.ajax({
         type: 'post',
         url: 'http://10.168.1.91:3000/cancelTheme',
         dataType: 'json',
         success: function(data){
-          //Receive data returned by the server
           //遍历服务器端返回的对象，设置vm.themes对应的值
           $.each(data, function(key, value){
               vm.themes[key] = value
               $('[name='+ key +']').css("background-color",value)
           })
+          
         }
      })
 	})
   /* theme Restore defaults zz*/
 	$("[data-theme=default]").on("click",function(){
-		 $(this).parents('.modal').removeClass("in")
-     $(".modal-mask").removeClass("in")
      $.ajax({
         type: 'post',
         url: 'http://10.168.1.91:3000/restoreDefaults',
@@ -113,6 +110,7 @@ $(function(){
               vm.themes[key] = value
               $('[name='+ key +']').css("background-color",value)
           })
+          $(window).attr('location','http://10.168.1.91:3000/')
         }
      })
 	})
@@ -163,15 +161,15 @@ function previewClose(){
 <!--modal theme-->
 <div class="modal" id="modal-theme">
   <div class="modal-header">
-    <h3>Theming</h3>
+    <h3>Theming <span>(the current theme is DarkBlue)</span></h3>
     <i class="icon-modal-close" id="modal-theme-close"></i>
   </div>
   <div class="modal-body">
     <div class="modal-tabs" id="theme-tabs">
       <ul>
         <li class="active" title="自定义风格"><i class="icon-theme"></i>Custom</li>
-        <li>Dark Blue</li>
-        <li>ios</li>
+        <li>DarkBlue</li>
+        <li>BrightRed</li>
       </ul>
     </div>
     <div class="modal-content">
@@ -278,7 +276,7 @@ function previewClose(){
         <!--modal-footer-->
         <div class="modal-footer">
           <div class="pull-left">
-            <a class="btn-restore" data-theme="default">Restore defaults111</a>
+            <a class="btn-restore" data-theme="default">Restore defaults</a>
           </div>
           <div class="pull-right">
             <input type="button" class="btn" id="modal-theme-cancel" value="Cancel">
@@ -304,7 +302,7 @@ function previewClose(){
         <!--modal-footer-->
         <div class="modal-footer pl0">
           <div class="pull-left">
-            <button class="btn-restore">Restore defaults</button>
+            <a class="btn-restore" data-theme="default">Restore defaults</a>
           </div>
           <div class="pull-right">
             <input type="submit" class="btn-ok" value="Choose">
@@ -325,7 +323,7 @@ function previewClose(){
         <!--modal-footer-->
         <div class="modal-footer pl0">
           <div class="pull-left">
-            <button class="btn-restore">Restore defaults</button>
+            <a class="btn-restore" data-theme="default">Restore defaults</a>
           </div>
           <div class="pull-right">
             <input type="submit" class="btn-ok" value="Choose">

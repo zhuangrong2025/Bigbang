@@ -34,8 +34,8 @@ router.post('/', function(req, res, next) {
   function sassVariable(name, value) {
     return "$" + name + ": " + value + ";"
   }
-  //返回上一级目录
-  res.sendFile( path.resolve(__dirname, '../creator.html'))
+  //url重定向到首页
+  res.redirect("http://10.168.1.91:3000")
 })
 
 

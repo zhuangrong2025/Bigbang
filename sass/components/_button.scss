@@ -45,12 +45,16 @@
     z-index: 99
   }
   //链接按钮
+  &.link-text-primary,
   &.link-text{
-    color: $brand-primary;
+    color: $body-color;
     padding-left: 0;
     padding-right: 0;
     margin-left: 0;
     margin-right: 0;
+  }
+  &.link-text-primary{
+    color: $link-color;
   }
   
 }

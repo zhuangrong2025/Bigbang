@@ -292,11 +292,11 @@ function previewClose(){
         <form action="http://10.168.1.91:3000/theme?name=darkBlue" method="post">
         <div class="theme-detail pb0">
           <div class="theme-thumbnail">
-            <img src="images/theme/DarkBlue/01.png" alt="">
-            <img src="images/theme/DarkBlue/02.png" alt="">
-            <img src="images/theme/DarkBlue/03.png" alt="">
-            <img src="images/theme/DarkBlue/04.png" alt="">
-            <img src="images/theme/DarkBlue/05.png" alt="">
+            <img src="images/theme/darkBlue/01.png" alt="">
+            <img src="images/theme/darkBlue/02.png" alt="">
+            <img src="images/theme/darkBlue/03.png" alt="">
+            <img src="images/theme/darkBlue/04.png" alt="">
+            <img src="images/theme/darkBlue/05.png" alt="">
           </div>
         </div>
         <!--modal-footer-->
@@ -317,7 +317,11 @@ function previewClose(){
         <form action="http://10.168.1.91:3000/theme?name=brightRed" method="post">
         <div class="theme-detail pb0">
           <div class="theme-thumbnail">
-           red
+            <img src="images/theme/brightRed/01.png" alt="">
+            <img src="images/theme/brightRed/02.png" alt="">
+            <img src="images/theme/brightRed/03.png" alt="">
+            <img src="images/theme/brightRed/04.png" alt="">
+            <img src="images/theme/brightRed/05.png" alt="">
           </div>
         </div>
         <!--modal-footer zz-->
@@ -2126,7 +2130,7 @@ var vm = new Vue({
     compIdx: 0,
     comps: [{}],
     panelProp: "pageComp",
-    classes:["primary", "warning", "outline-primary", "outline-warning", "disabled", "link-text"],
+    classes:["primary", "warning", "outline-primary", "outline-warning", "disabled", "link-text", "link-text-primary"],
     themes: Store.fetch('themes-list', '{"primary": "#008AD5", "warning": "#E64340", "success": "#09BB07", "secondary": "#f80", "line": "#dedede", "grayLight": "#999", "bodyBg": "#f7f7f9", "headerBg": "#fff", "tabbarBg": "#f7f7f9", "textColor": "#000", "borderRadius": "5px"}'),
     pages: Store.fetch('pages', '[{}]'),
     pageIdx: Store.fetch('pageIdx', 0),

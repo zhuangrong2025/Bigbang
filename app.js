@@ -227,16 +227,16 @@ app.post('/cancelTheme', function(req, res){
 app.post('/restoreDefaults', function(req, res, next){
   
   //读取默认样式文件，并写入到_custom.scss中
-  var rsCss = fs.createReadStream(__dirname + '/sass/themes/default/theme.scss');
-  var wsCss = fs.createWriteStream(__dirname + '/sass/_custom.scss');
-  rsCss.pipe(wsCss);
+  var rsCss = fs.createReadStream(__dirname + '/sass/themes/default/theme.scss')
+  var wsCss = fs.createWriteStream(__dirname + '/sass/_custom.scss')
+  rsCss.pipe(wsCss)
   
   //返回默认值，把默认样式作为定义一个常量，新的提交的颜色值作为变量对象
   res.send(defaultTheme)
   
   //克隆对象方法
   function cloneObj(a) {
-     return JSON.parse(JSON.stringify(a));
+     return JSON.parse(JSON.stringify(a))
   }
   //defaultTheme复制给newTheme，将服务器上的primary值为默认的，而且防止theme窗口在点取消或关闭的时候还是新值
   newTheme = cloneObj(defaultTheme)

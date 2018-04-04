@@ -98,7 +98,7 @@ $(function(){
         }
      })
 	})
-  /* theme Restore defaults zz*/
+  /* theme Restore defaults */
 	$("[data-theme=default]").on("click",function(){
      $.ajax({
         type: 'post',
@@ -161,7 +161,7 @@ function previewClose(){
 <!--modal theme-->
 <div class="modal" id="modal-theme">
   <div class="modal-header">
-    <h3>Theming <span>(the current theme is DarkBlue)</span></h3>
+    <h3>Theming <span> ({{themeName[0]}})</span></h3>
     <i class="icon-modal-close" id="modal-theme-close"></i>
   </div>
   <div class="modal-body">
@@ -276,11 +276,11 @@ function previewClose(){
         <!--modal-footer-->
         <div class="modal-footer">
           <div class="pull-left">
-            <a class="btn-restore" data-theme="default">Restore defaults</a>
+            <a class="btn-restore" data-theme="default" @click=" themeName = ['Default']">Restore defaults</a>
           </div>
           <div class="pull-right">
             <input type="button" class="btn" id="modal-theme-cancel" value="Cancel">
-            <input type="submit" class="btn-ok" value="Save">
+            <input type="submit" class="btn-ok" value="Save" @click=" themeName = ['Custom']">
           </div>
         </div>
         <!--//modal-footer-->
@@ -289,7 +289,7 @@ function previewClose(){
       <!--//custom theme-->
       <!--darkblue theme-->
       <div class="theme-box" style="display: none">
-        <form action="http://10.168.1.91:3000/theme?name=darkblue" method="post">
+        <form action="http://10.168.1.91:3000/theme?name=darkBlue" method="post">
         <div class="theme-detail pb0">
           <div class="theme-thumbnail">
             <img src="images/theme/DarkBlue/01.png" alt="">
@@ -302,10 +302,10 @@ function previewClose(){
         <!--modal-footer-->
         <div class="modal-footer pl0">
           <div class="pull-left">
-            <a class="btn-restore" data-theme="default">Restore defaults</a>
+            <a class="btn-restore" data-theme="default" @click=" themeName = ['Default']">Restore defaults</a>
           </div>
           <div class="pull-right">
-            <input type="submit" class="btn-ok" value="Choose">
+            <input type="submit" class="btn-ok" data-theme="darkBlue" value="Choose"  @click=" themeName = ['DarkBlue']">
           </div>
         </div>
         <!--//modal-footer-->
@@ -314,19 +314,19 @@ function previewClose(){
       <!--//darkblue theme-->
       <!--red theme-->
       <div class="theme-box" style="display: none">
-        <form action="http://10.168.1.91:3000/theme?name=red" method="post">
+        <form action="http://10.168.1.91:3000/theme?name=brightRed" method="post">
         <div class="theme-detail pb0">
           <div class="theme-thumbnail">
            red
           </div>
         </div>
-        <!--modal-footer-->
+        <!--modal-footer zz-->
         <div class="modal-footer pl0">
           <div class="pull-left">
-            <a class="btn-restore" data-theme="default">Restore defaults</a>
+            <a class="btn-restore" data-theme="default" @click=" themeName = ['Default']">Restore defaults</a>
           </div>
           <div class="pull-right">
-            <input type="submit" class="btn-ok" value="Choose">
+            <input type="submit" class="btn-ok" value="Choose" @click=" themeName = ['BrightRed']">
           </div>
         </div>
         <!--//modal-footer-->
@@ -2137,9 +2137,11 @@ var vm = new Vue({
     isPreview: false,
     caseTypes:["none", "actionsheet", "toast"],
     caseIdx: null,
-    jsonUrl: "http://10.168.1.91:3000/cell.json"
+    jsonUrl: "http://10.168.1.91:3000/cell.json",
+    themeName: Store.fetch('theme-name', '["Default"]')
+    
   },
-  /*监听data */
+  /*监听data zz*/
   watch: {
     comps: {
        handler: function(newVal){
@@ -2153,6 +2155,12 @@ var vm = new Vue({
     themes: {
        handler: function(newVal){
           Store.save('themes-list', newVal)
+       },
+       deep: true
+    },
+    themeName: {
+       handler: function(newVal){
+          Store.save('theme-name', newVal)
        },
        deep: true
     },

@@ -1,0 +1,22 @@
+//image
+.sm-image{
+  padding: 80px 0;
+  background-color: #E2E7F0;
+  background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAxBAMAAAB9p3flAAAAJ1BMVEUAAACHiY6HiY6HiY6HiY6HiY6HiY6HiY6HiY6HiY6HiY6HiY6HiY54fcpfAAAADHRSTlMApot3Dxy+S10r7dUK1R6IAAAA/0lEQVQ4y8XUvYrCQBSG4XETV4QtsrBlirDdwhY2222RetciYKmFlYVYeAH2NhZi7Q0IXoKFf5hBv4syM4kS4zlHEMG3GnhgmDkMo0Zg0wpCN3AVKjLXT3CrmOoJLjl8uwMb7z8sOgBqHP4C2DBYhmlMo2MxoLFk0ZOwLW4rHki4yloaQsChmnS+xME/DKvDkEW3h5jFfwA1Dn1zcwZfYPqw68pnAUcWD1H6YIMLrCBtlqybQHyBU2T1VXkO7MMcuvMT7jpdJHk5fEWhOId+EffhGR1c5Z1xcI36hFUQRRn+UehluKBQp1gCWWTxm8a2QQ06bZCtJWFPQjwFxf/2COuVTSLtsn5iAAAAAElFTkSuQmCC);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15%;
+  display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-align-items: center; 
+	-webkit-box-align: center;
+	justify-content: center;
+
+}
+.sm-image.noneBg{
+  padding:0;
+  background-color: transparent;
+  background-image: none;
+}
+

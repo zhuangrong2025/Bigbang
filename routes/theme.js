@@ -8,32 +8,20 @@ var path = require('path')
 */
 router.post('/', function(req, res, next) {
   var themeName = req.query.name
-  var newScss, //合并所有变量
-      newPrimary,
-      newWarning,
-      newHeaderBg;
-  //深蓝色
-  if(themeName ==='darkblue'){
-    newPrimary = sassVariable('brand-primary', '#004E97')
-    newWarning = sassVariable('brand-warning', '#805B01')
-    newHeaderBg = sassVariable('header-bg', '#004E97') 
-  }
-  //红色
-  if(themeName === 'red'){
-    newPrimary = sassVariable('brand-primary', '#f00')
-    newWarning = sassVariable('brand-warning', '#ff0')
-    newHeaderBg = sassVariable('header-bg', '#f00') 
-  }
+  var rsCss
+  var wsCss = fs.createWriteStream( path.resolve(__dirname, '../sass/_custom.scss'))
   
-  newScss = newPrimary + newWarning + newHeaderBg
-  
-  //写入_custom.scss
-  fs.writeFile('sass/_custom.scss', newScss) 
-  
-  //变量组合
-  function sassVariable(name, value) {
-    return "$" + name + ": " + value + ";"
+  //读取主题样式文件，并写入到_custom.scss
+  //深蓝色 darkBlue
+  if(themeName ==='darkBlue'){
+    rsCss = fs.createReadStream( path.resolve(__dirname, '../sass/themes/darkBlue/theme.scss'))
   }
+  //亮红色 brightRed
+  if(themeName === 'brightRed'){
+    rsCss = fs.createReadStream( path.resolve(__dirname, '../sass/themes/brightRed/theme.scss'))
+  }
+  rsCss.pipe(wsCss)
+  
   //url重定向到首页
   res.redirect("http://10.168.1.91:3000")
 })

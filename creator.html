@@ -1031,21 +1031,19 @@ function previewClose(){
       <!--//**************html property**************-->
       <!--**************space property **************-->
       <div v-if=" panelProp == 'spaceComp'"  v-cloak>
-        <!--html-->
+        <!--height zz-->
         <div class="pro-item">
           <h3 @click="toggleCls">
-            Space <span class="caret"></span>
+            Height <span class="caret"></span>
           </h3>
-          <div class="pro-box"> 
+          <div class="pro-box">
             <div class="form-group">
-              <label>Size</label>
-              <div>
-                <select class="select" v-model="comps[compIdx].size">
-                  <option value="lg">large</option>
-                  <option value="md">middle</option>
-                  <option value="">default</option>
-                  <option value="sm">small</option>
-                </select>
+              <label>Height</label>
+              <span>&nbsp;</span>
+              <div class="spinner">
+                <input type="number" v-model.number="comps[compIdx].height" v-on:click=" comps[compIdx].height = Number($event.target.value) " class="c-ipt">
+                <em class="increment" v-spinner:inc="comps[compIdx].height"></em>
+                <em class="decrement" v-spinner:dec="comps[compIdx].height"></em>
               </div>
             </div>
           </div>
@@ -1316,7 +1314,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************searchbar property**************-->
-      <!--**************image property zz**************-->
+      <!--**************image property**************-->
       <div v-if=" panelProp == 'imageComp'">
         <div class="pro-item">
           <h3>
@@ -1890,10 +1888,10 @@ var HtmlComp = {
       methods: compMethods
     }
 
-//white-space
+//white-space zz
 var SpaceComp = {
       props: ["comp", "id"],
-      template: `<div class="sm-space" v-bind:class="comp.size" v-on:click = "increment"  data-comp="drag-div" v-bind:id="id"  draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"></div>`,
+      template: `<div class="sm-space" v-bind:style="{height: comp.height  + 'px'}"  v-on:click = "increment"  data-comp="drag-div" v-bind:id="id"  draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"></div>`,
       methods: compMethods
     }
 
@@ -2096,7 +2094,7 @@ var FlextextComp = {
       methods: compMethods
 }
 
-//image zz
+//image 
 var ImageComp = {
       props: ["comp", "id"],
       template: `<div class="sm-image"  :class="{noneBg: comp.url!='' }" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -2752,10 +2750,10 @@ var vm = new Vue({
 </style>`
          }
       
-      //space组件
+      //space组件 zz
       var spaceCompObj = {
                          name: "spaceComp",
-                         size: ""
+                         height: 15
                        }
       //panel组件 
       var panelCompObj = {
@@ -2890,7 +2888,7 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
                            {one: "五星基金", two: "52.8%", three: "近1年收益", id: tgid + "-3"}
                          ]
                        }
-      //image 组件 zz
+      //image 组件 
       var imageCompObj = {
                          name: "imageComp",
                          url: "",

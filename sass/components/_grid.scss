@@ -41,6 +41,7 @@
         color: $brand-primary;
         -webkit-background-clip: text;/* 字体渐变 */
         -webkit-text-fill-color: transparent;
+        background-image:-webkit-linear-gradient(80deg,  $brand-primary 60%, #fff);
     }
   }
   &.border-less{

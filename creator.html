@@ -64,7 +64,7 @@ $(function(){
     })
     
 	})
-	$("#modal-page-close, #modal-page-cancel").on("click",function(){
+	$("#modal-page-close, #modal-page-cancel, #modal-icon-show").on("click",function(){
 		 $(this).parents('.modal').removeClass("in")
      $(".modal-mask").removeClass("in")
 	})
@@ -369,7 +369,7 @@ function previewClose(){
 <div class="modal bgw" id="modal-iconfont">
   <div class="modal-header">
     <h3>Select Icon</h3>
-    <i class="icon-modal-close"></i>
+    <i class="icon-modal-close" id="modal-icon-show"></i>
   </div>
   <div class="modal-body iconfont-show bgw">
     
@@ -850,7 +850,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************buttonbar property**************-->
-      <!--**************list property**************-->
+      <!--**************list property zz**************-->
       <div v-if=" panelProp == 'listComp'"  >
         <!--cell content-->
         <div class="pro-item">
@@ -877,13 +877,19 @@ function previewClose(){
                   <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].icon" v-on:click=" comps[compIdx].cells[index].icon = $event.target.value" :title="comps[compIdx].cells[index].icon" placeholder="图标名">
                   <button @click="chooseIcon($event)" title="choose icon"></button>
                 </div>
+                <span>
+                  <select class="select color-choose" :class="{'primary-color': comps[compIdx].cells[index].colorSelected == '' }" v-model="comps[compIdx].cells[index].colorSelected"  :style="{'color': comps[compIdx].cells[index].colorSelected}">
+                    <option :value="color" v-for="color in comps[compIdx].colors" :style="{'color': color}">▇</option>
+                    <option value="" class="primary-color" title="primary color">▇</option>
+                  </select>
+                </span>
                 <span class="icon-cell-up" @click="sortCell('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
                 <span class="icon-cell-down" @click="sortCell('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
                 <span class="icon-cell-del" @click="delCell(index)"></span>
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", description: "", tip: "", linkto: "#", icon: "icon-collection", id: "lid" + Math.round(Math.random() * 1000)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", description: "", tip: "", linkto: "#", colorSelected:"", icon: "icon-collection", id: "lid" + Math.round(Math.random() * 1000)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -1031,7 +1037,7 @@ function previewClose(){
       <!--//**************html property**************-->
       <!--**************space property **************-->
       <div v-if=" panelProp == 'spaceComp'"  v-cloak>
-        <!--height zz-->
+        <!--height-->
         <div class="pro-item">
           <h3 @click="toggleCls">
             Height <span class="caret"></span>
@@ -1182,7 +1188,7 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--cell content-->
+        <!--cell content zz-->
         <div class="pro-item">
           <h3 @click="toggleCls">
             Cells<span class="caret"></span>
@@ -1204,8 +1210,9 @@ function previewClose(){
                   </select>
                 </span>
                 <span>
-                  <select class="select color-choose" v-model="comps[compIdx].cells[index].colorSelected"  :style="{'color': comps[compIdx].cells[index].colorSelected}">
+                  <select class="select color-choose" :class="{'primary-color': comps[compIdx].cells[index].colorSelected == '' }" v-model="comps[compIdx].cells[index].colorSelected"  :style="{'color': comps[compIdx].cells[index].colorSelected}">
                     <option :value="color" v-for="color in comps[compIdx].colors" :style="{'color': color}">▇</option>
+                    <option value="" class="primary-color" title="primary color">▇</option>
                   </select>
                 </span>
                 <span class="icon-cell-up" @click="sortCell('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
@@ -1214,7 +1221,7 @@ function previewClose(){
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({ text: "模块名称", icon:"icon-createtask", linkto:"#", colorSelected:"#1D8FE1", id: "gid" + Math.round(Math.random() * 100)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({ text: "模块名称", icon:"icon-createtask", linkto:"#", colorSelected:"", id: "gid" + Math.round(Math.random() * 100)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -1752,7 +1759,7 @@ var ButtonbarComp = {
 `,
       methods: compMethods
 }
-//list 
+//list zz
 var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1760,7 +1767,7 @@ var ListComp = {
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <transition-group name="list-complete" tag="div"  :key="comp.tgId">
       <a :href="comp.cells[index].linkto | isLink" class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
-        <i :class="comp.cells[index].icon"></i>
+        <i :class="comp.cells[index].icon" :style="{color: comp.cells[index].colorSelected}"></i>
         <div>{{comp.cells[index].tag}}<em class="description" v-if=" comp.cells[index].description != ''">{{comp.cells[index].description}}</em></div>
         <span>{{comp.cells[index].tip}}</span>
       </a>
@@ -1888,7 +1895,7 @@ var HtmlComp = {
       methods: compMethods
     }
 
-//white-space zz
+//white-space
 var SpaceComp = {
       props: ["comp", "id"],
       template: `<div class="sm-space" v-bind:style="{height: comp.height  + 'px'}"  v-on:click = "increment"  data-comp="drag-div" v-bind:id="id"  draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend"></div>`,
@@ -1932,7 +1939,7 @@ var GridComp = {
       template: `<div v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <transition-group name="list-complete" class="sm-grids" :class="{'border-less': comp.isBorder, 'bg': comp.isBg }" :style="{'background-color': comp.isBg ? comp.bgSelected : ''}" tag="div" :key="comp.tgId">  
     <a :href="comp.cells[index].linkto | isLink" class="sm-grid list-complete-item" :class="comp.columns" :key="cell.id" v-for="(cell, index) in comp.cells">
-      <i :class="comp.cells[index].icon" :style="{'background-image':'-webkit-linear-gradient(80deg,' + comp.cells[index].colorSelected + ' 60%,#fff)','font-size': +  comp.iconSize + 'px'}"></i>
+      <i :class="comp.cells[index].icon"  :style="{'background-image': comp.cells[index].colorSelected !='' ? '-webkit-linear-gradient(80deg,' + comp.cells[index].colorSelected + ' 60%,#fff)' : '' ,'font-size': +  comp.iconSize + 'px'}"></i>
       <span>{{comp.cells[index].text}}</span>
     </a>
   </transition-group>
@@ -2666,13 +2673,16 @@ var vm = new Vue({
                          
                        }
       
-      //list组件
+      //list组件 zz
       var listCompObj = {
                          name: "listComp",
                          title: "会员信息",
                          inputname: "",
+                         colors: ["#1D8FE1","#F29402","#FF7070","#5D52E8","#0EA39C","#EE7116","#65BB12","#F15A4A","#999","#555"],
                          tgId: tgid,
-                         cells: [{tag: "会员特权", description: "", tip: "", icon: "icon-select", linkto: "#", id: tgid + "-1"},{tag: "会员认证", description: "消费获积分累加权限", tip: "已认证", icon: "icon-integral", linkto: "#", id: tgid + "-2"}],
+                         cells: [
+                           {tag: "会员特权", description: "消费获积分累加权限", tip: "", icon: "icon-select", linkto: "#", colorSelected: "#1D8FE1", id: tgid + "-1"},
+                           {tag: "会员认证", description: "", tip: "已认证", icon: "icon-integral", linkto: "#", colorSelected: "#F29402", id: tgid + "-2"}],
                          isMerge: false,
                          isShow: true
                        }
@@ -2750,7 +2760,7 @@ var vm = new Vue({
 </style>`
          }
       
-      //space组件 zz
+      //space组件 
       var spaceCompObj = {
                          name: "spaceComp",
                          height: 15
@@ -2769,14 +2779,14 @@ var vm = new Vue({
                          content: "这里显示多行内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
                          isBg: true,
                        }
-      //grid 组件
+      //grid 组件 zz
       var gridCompObj = {
                          name: "gridComp",
                          columns: "four",
                          isBg: false,
                          bgSelected: "#008AD5",
                          isBorder: false,
-                         colors: ["#1D8FE1","#F29402","#FF7070","#5D52E8","#0EA39C","#EE7116","#65BB12","#F15A4A"],
+                         colors: ["#1D8FE1","#F29402","#FF7070","#5D52E8","#0EA39C","#EE7116","#65BB12","#F15A4A","#999","#555"],
                          iconSize: 32,
                          tgId: tgid,
                          cells: [

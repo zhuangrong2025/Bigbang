@@ -764,7 +764,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************common property**************-->
-      <!--**************input property **************-->
+      <!--**************input property zz**************-->
       <div v-if=" panelProp == 'inputComp'">
         <!--cell content -->
         <div class="pro-item">
@@ -777,19 +777,26 @@ function previewClose(){
                 <label><input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].tag"></label>
                 <span>&nbsp;</span>
                 <div>
-                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].control" placeholder="请输入">
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].placeholder" title="placeholder">
                 </div>
                 <span>&nbsp;</span>
-                <label>
-                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].button" placeholder="例: '获取验证码'">
-                </label>
+                <div>
+                  <select class="select" v-model="comps[compIdx].cells[index].readonly" title="readonly">
+                    <option value="true">默认</option>
+                    <option value="">只读</option>
+                  </select>
+                </div>
+                <span>&nbsp;</span>
+                <div>
+                  <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].unit" placeholder="例: 元">
+                </div>
                 <span class="icon-cell-up" @click="sortCell('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
                 <span class="icon-cell-down" @click="sortCell('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
                 <span class="icon-cell-del" @click="delCell(index)"></span>
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", control: "", button: "", id: "iid" + Math.round(Math.random() * 1000)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", placeholder: "请输入", unit: "", id: "iid" + Math.round(Math.random() * 1000)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -850,7 +857,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************buttonbar property**************-->
-      <!--**************list property zz**************-->
+      <!--**************list property **************-->
       <div v-if=" panelProp == 'listComp'"  >
         <!--cell content-->
         <div class="pro-item">
@@ -1188,7 +1195,7 @@ function previewClose(){
             </div>
           </div>
         </div>
-        <!--cell content zz-->
+        <!--cell content-->
         <div class="pro-item">
           <h3 @click="toggleCls">
             Cells<span class="caret"></span>
@@ -1241,7 +1248,7 @@ function previewClose(){
             <div class="form-group" v-if="comps[compIdx].isBg">
               <label>Color</label>
               <div>
-                <input class="c-ipt" v-model="comps[compIdx].bgSelected"/>
+                <input class="c-ipt" v-model="comps[compIdx].bgSelected" placeholder="background color"/>
               </div>
             </div>
           </div>
@@ -1314,7 +1321,7 @@ function previewClose(){
             <div class="form-group" v-if="comps[compIdx].isBg">
               <label>Color</label>
               <div>
-                <input class="c-ipt" v-model="comps[compIdx].bgColor"/>
+                <input class="c-ipt" v-model="comps[compIdx].bgColor" placeholder="background color"/>
               </div>
             </div>
           </div>
@@ -1452,7 +1459,7 @@ function previewClose(){
             <div class="form-group">
               <label>Color</label>
               <div>
-                <input class="c-ipt" v-model="comps[compIdx].bgColor"/>
+                <input class="c-ipt" v-model="comps[compIdx].bgColor" placeholder="background color"/>
               </div>
             </div>
             <div class="form-group">
@@ -1518,7 +1525,7 @@ function previewClose(){
             <div class="form-group" v-if="comps[compIdx].isBg">
               <label>Color</label>
               <div>
-                <input class="c-ipt" v-model="comps[compIdx].bgColor"/>
+                <input class="c-ipt" v-model="comps[compIdx].bgColor" placeholder="background color"/>
               </div>
             </div>
           </div>
@@ -1725,7 +1732,7 @@ var ButtonComp = {
       methods: compMethods
     }
 
-//input
+//input zz
 var InputComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1735,9 +1742,9 @@ var InputComp = {
       <div class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
         <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
         <div>
-          <input type="text" :value="comp.cells[index].control" placeholder="请输入">
+          <input type="text" :value="comp.cells[index].placeholder" :placeholder="comp.cells[index].placeholder" :readonly="!comp.cells[index].readonly">
         </div>
-        <a href="#" class="cell-btn" v-if="comp.cells[index].button != ''">{{comp.cells[index].button}}</a>
+        <a class="cell-unit" v-if="comp.cells[index].unit != ''">{{comp.cells[index].unit}}</a>
       </div>
     </transition-group>
   </div>
@@ -1759,7 +1766,7 @@ var ButtonbarComp = {
 `,
       methods: compMethods
 }
-//list zz
+//list
 var ListComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" :name="comp.inputname" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -2653,13 +2660,16 @@ var vm = new Vue({
                          y: 0,
                          size: ""
                        }
-      //input组件  
+      //input组件 zz
       var inputCompObj = {
                          name: "inputComp",
-                         title: "个人信息",
+                         title: "委托信息",
                          inputname: "",
                          tgId: tgid,
-                         cells: [{tag: "姓名", control: "", button: "", id: tgid + "-1" }, {tag: "手机号", control: "", button: "", id: tgid + "-2"}],
+                         cells: [
+                           {tag: "证券代码", placeholder: "例: 01525 ", unit: "", readonly: true, id: tgid + "-1" },
+                           {tag: "买入数量", placeholder: "请输入买入数量", unit: "", readonly: true, id: tgid + "-2"},
+                           {tag: "买入价格", placeholder: "请输入买入价格", unit: "元", readonly: true, id: tgid + "-3"}],
                          isMerge: false,
                          isShow: true
                        }
@@ -2673,7 +2683,7 @@ var vm = new Vue({
                          
                        }
       
-      //list组件 zz
+      //list组件
       var listCompObj = {
                          name: "listComp",
                          title: "会员信息",
@@ -2779,12 +2789,12 @@ var vm = new Vue({
                          content: "这里显示多行内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
                          isBg: true,
                        }
-      //grid 组件 zz
+      //grid 组件 
       var gridCompObj = {
                          name: "gridComp",
                          columns: "four",
                          isBg: false,
-                         bgSelected: "#008AD5",
+                         bgSelected: "",
                          isBorder: false,
                          colors: ["#1D8FE1","#F29402","#FF7070","#5D52E8","#0EA39C","#EE7116","#65BB12","#F15A4A","#999","#555"],
                          iconSize: 32,
@@ -2844,7 +2854,7 @@ $(".sm-searchbar[data-case=${tgid}] input").blur(function(){
                          name: "searchbarComp",
                          tgId: tgid,
                          isBg: false,
-                         bgColor: "#008AD5",
+                         bgColor: "",
                          script: searchbarScript
                        }
       
@@ -2874,13 +2884,13 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
                            {img:"https://images.uiiiuiii.com/wp-content/uploads/2018/01/uiii-bbanner-125.jpg",text: "幻灯片标题",id: tgid + "-3"}
                          ]
                        }
-      //avatar 组件
+      //avatar 组件 
       var avatarCompObj = {
                          name: "avatarComp",
                          avatarAlign: "", 
                          fontColor: "", 
                          size: "", 
-                         bgColor: "#008AD5", 
+                         bgColor: "", 
                          bgImage: "", 
                          userName: "昵称", 
                          userInfo: "NiChen", 
@@ -2890,7 +2900,7 @@ var swiper = new Swiper('.sm-swiper[data-case=${tgid}]', {
                          name: "flextextComp",
                          tgId: tgid,
                          isBg: false,
-                         bgColor: "#008AD5",
+                         bgColor: "",
                          isDivider: false,
                          cells: [
                            {one: "货币基金", two: "5.53%", three: "7日年化", id: tgid + "-1"},

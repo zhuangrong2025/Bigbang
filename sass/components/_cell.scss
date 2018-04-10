@@ -65,6 +65,9 @@
       > input[type=text]{
         width: 100%;
       }
+      > input[readonly]::-webkit-input-placeholder{
+        color: $body-color;
+      }
       > em.description{
         display: block;
         font-size: 12px;
@@ -115,6 +118,9 @@
       width: 105px;
       @include textwrap()
   }
+  .sm-cell-label.disabled{
+      color: #ccc;
+  }
   &.sm-cell-switch{
      padding-top: 6.5px;
      padding-bottom: 6.5px;
@@ -133,12 +139,10 @@
   }
 }
 
-.cell-btn{
+.cell-unit{
   display: block;
-  border-radius: 3px;
-  padding: 3px 5px 0;
   text-align: center;
-  color: $link-color;
+  color: $gray-light;
   font-size: 13px;
   white-space: nowrap;
 }

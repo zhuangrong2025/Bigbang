@@ -796,8 +796,22 @@ function previewClose(){
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({tag: "名称", placeholder: "请输入", unit: "", id: "iid" + Math.round(Math.random() * 1000)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({tag: "名称", placeholder: "请输入", readonly: true, unit: "", id: "iid" + Math.round(Math.random() * 1000)})'>add cell</button>
               <div></div>
+            </div>
+          </div>
+        </div>
+        <!--origin border-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Border <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Border</label>
+              <div class="tr">
+                <input class="ct-switch" type="checkbox" v-model="comps[compIdx].isBorder"/>
+              </div>
             </div>
           </div>
         </div>
@@ -923,7 +937,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************checkbox property**************-->
-      <!--**************common Cells property **************-->
+      <!--**************common Cells property  **************-->
       <div v-if=" panelProp == 'radioComp' || panelProp == 'switchComp' || panelProp == 'checkboxComp' ">
         <!--cell content-->
         <div class="pro-item">
@@ -936,13 +950,20 @@ function previewClose(){
                 <div>
                   <input type="text" class="c-ipt" v-model="comps[compIdx].cells[index].item">
                 </div>
+                <span>&nbsp;</span>
+                <label>
+                  <select class="select" v-model="comps[compIdx].cells[index].checked" title="checked">
+                    <option value="true">关</option>
+                    <option value="">开</option>
+                  </select>
+                </label>
                 <span class="icon-cell-up" @click="sortCell('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
                 <span class="icon-cell-down" @click="sortCell('down',index)" :class=" index != (comps[compIdx].cells.length - 1) ? '' : 'moveDis' "  title="down"></span>
                 <span class="icon-cell-del" @click="delCell(index)"></span>
               </div>
             </transition-group>
             <div class="form-group">
-              <button  class="icon-cell-add" @click='addCell({item: "选项名称", id: "rscid" + Math.round(Math.random() * 10000)})'>add cell</button>
+              <button  class="icon-cell-add" @click='addCell({item: "选项名称", checked: true, id: "rscid" + Math.round(Math.random() * 10000)})'>add cell</button>
               <div></div>
             </div>
           </div>
@@ -1732,12 +1753,12 @@ var ButtonComp = {
       methods: compMethods
     }
 
-//input zz
+//input zz 
 var InputComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <div class="sm-cells-title" v-if="comp.isShow">{{comp.title}}</div>
-  <div class="sm-cells" :class="{ merge: comp.isMerge}">
+  <div class="sm-cells" :class="{ merge: comp.isMerge, border: comp.isBorder}">
     <transition-group name="list-complete" tag="div"  :key="comp.tgId">
       <div class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
         <label v-if="comp.cells[index].tag != ''" class="sm-cell-label">{{comp.cells[index].tag}}</label>
@@ -1835,7 +1856,7 @@ var TextareaComp = {
 `,
       methods: compMethods
     }
-//switch
+//switch 
 var SwitchComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1844,7 +1865,7 @@ var SwitchComp = {
     <transition-group name="list-complete" tag="div" :key="comp.tgId">
       <label class="sm-cell sm-cell-switch list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
         <div>{{comp.cells[index].item}}</div>
-        <span><input type="checkbox" :name="comp.inputname" class="sm-switch"></span>
+        <span><input type="checkbox" :name="comp.inputname" class="sm-switch" :checked="!comp.cells[index].checked"></span>
       </label>
     </transition-group>
   </div>
@@ -2668,9 +2689,9 @@ var vm = new Vue({
                          tgId: tgid,
                          cells: [
                            {tag: "证券代码", placeholder: "例: 01525 ", unit: "", readonly: true, id: tgid + "-1" },
-                           {tag: "买入数量", placeholder: "请输入买入数量", unit: "", readonly: true, id: tgid + "-2"},
-                           {tag: "买入价格", placeholder: "请输入买入价格", unit: "元", readonly: true, id: tgid + "-3"}],
+                           {tag: "买入价格", placeholder: "请输入买入价格", unit: "元", readonly: true, id: tgid + "-2"}],
                          isMerge: false,
+                         isBorder: false,
                          isShow: true
                        }
       
@@ -2736,7 +2757,7 @@ var vm = new Vue({
                          title: "同步",
                          inputname: "synch",
                          tgId: tgid,
-                         cells: [{item: "开启自动同步", id: tgid + "-1"}],
+                         cells: [{item: "开启自动同步", checked: true, id: tgid + "-1"}],
                          isMerge: false,
                          isShow: true,
         

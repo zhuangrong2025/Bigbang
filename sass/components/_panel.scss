@@ -38,6 +38,9 @@
     &:active{
       background-color: #eee;
     }
+    &.reverse{
+      flex-direction: row-reverse;
+    }
     > figure{
       width: 60px;
       height: 60px;

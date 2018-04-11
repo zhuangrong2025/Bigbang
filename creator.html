@@ -764,7 +764,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************common property**************-->
-      <!--**************input property zz**************-->
+      <!--**************input property **************-->
       <div v-if=" panelProp == 'inputComp'">
         <!--cell content -->
         <div class="pro-item">
@@ -937,7 +937,7 @@ function previewClose(){
         </div>
       </div>
       <!--//**************checkbox property**************-->
-      <!--**************common Cells property  **************-->
+      <!--**************common Cells property zz**************-->
       <div v-if=" panelProp == 'radioComp' || panelProp == 'switchComp' || panelProp == 'checkboxComp' ">
         <!--cell content-->
         <div class="pro-item">
@@ -953,8 +953,8 @@ function previewClose(){
                 <span>&nbsp;</span>
                 <label>
                   <select class="select" v-model="comps[compIdx].cells[index].checked" title="checked">
-                    <option value="true">关</option>
-                    <option value="">开</option>
+                    <option value="true">未选</option>
+                    <option value="">选中</option>
                   </select>
                 </label>
                 <span class="icon-cell-up" @click="sortCell('up',index)" :class="index != 0 ? '' : 'moveDis' "  title="up"></span>
@@ -1085,7 +1085,7 @@ function previewClose(){
        
       </div>
       <!--//**************space property**************-->
-      <!--**************panel property**************-->
+      <!--**************panel property zz**************-->
       <div v-if=" panelProp == 'panelComp'">
         <!--cell content-->
         <div class="pro-item">
@@ -1131,6 +1131,23 @@ function previewClose(){
             </div>
           </div>
         </div> 
+        <!--reverse-->
+        <div class="pro-item">
+          <h3 @click="toggleCls">
+            Reverse <span class="caret"></span>
+          </h3>
+          <div class="pro-box">
+            <div class="form-group">
+              <label>Reverse</label>
+              <div>
+                <select class="select" v-model="comps[compIdx].isReverse">
+                  <option value="">图片居左</option>
+                  <option value="true" >图片居右</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!--//**************panel property**************-->
       <!--**************article property**************-->
@@ -1753,7 +1770,7 @@ var ButtonComp = {
       methods: compMethods
     }
 
-//input zz 
+//input  
 var InputComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1806,7 +1823,7 @@ var ListComp = {
       methods: compMethods
     }
 
-//checkbox
+//checkbox 
 var CheckboxComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1814,7 +1831,7 @@ var CheckboxComp = {
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <transition-group name="list-complete" tag="div" :key="comp.tgId">
       <label class="sm-cell list-complete-item" :class="{reverse: comp.isReverse}" :key="cell.id" v-for="(cell, index) in comp.cells" >
-        <div>{{comp.cells[index].item}}</div><input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" class="sm-checkbox">
+        <div>{{comp.cells[index].item}}</div><input type="checkbox" :name="comp.inputname" :value="comp.cells[index].item" :checked="!comp.cells[index].checked" class="sm-checkbox">
       </label>
     </transition-group>
   </div>
@@ -1823,7 +1840,7 @@ var CheckboxComp = {
       methods: compMethods
     }
 
-//radio
+//radio 
 var RadioComp = {
       props: ["comp", "id"],
       template: `<div class="sm-cells-wrap" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
@@ -1831,7 +1848,7 @@ var RadioComp = {
   <div class="sm-cells" :class="{ merge: comp.isMerge}">
     <transition-group name="list-complete" tag="div" :key="comp.tgId">
       <label class="sm-cell list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells" >
-        <div>{{comp.cells[index].item}}</div><input type="radio" :name="comp.inputname" :value="comp.cells[index].item" class="sm-radio">
+        <div>{{comp.cells[index].item}}</div><input type="radio" :name="comp.inputname" :value="comp.cells[index].item"  :checked="!comp.cells[index].checked" class="sm-radio">
       </label>
     </transition-group>
   </div>
@@ -1930,12 +1947,12 @@ var SpaceComp = {
       methods: compMethods
     }
 
-//panel
+//panel zz
 var PanelComp = {
       props: ["comp", "id"],
       template: `<div class="sm-panels" v-on:click.prevent = "increment" v-bind:id="id" data-comp="drag-div" draggable="true" v-on:dragstart.stop="drag" v-on:dragover.prevent="dragover" v-on:dragend.prevent="dragend">
   <transition-group name="list-complete" tag="div" :key="comp.tgId">  
-    <a :href="comp.cells[index].linkto | isLink" class="sm-panel list-complete-item" :key="cell.id" v-for="(cell, index) in comp.cells">
+    <a :href="comp.cells[index].linkto | isLink" class="sm-panel list-complete-item" :class="{reverse: comp.isReverse}" :key="cell.id" v-for="(cell, index) in comp.cells">
       <figure v-if="comp.isFigure">
         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8BAMAAADI0sRBAAAAIVBMVEX/qgD/3Zn/rgv/46j/6bv/vDT/wkb/2Yv/03r/tB7/y2PJaPMWAAAAwUlEQVQ4y2MYBTQCjIJYgABCGpueYSed7JyAR5rNVdUNjzRzAEMwHmkWBQYWcnQj7CbD5awFeP09RRyfNKcbewEeaeUFDOW4pZmkGBig2jGloVISOKUbQbRiAw5pLiMQzQTTvgJNOlmBAUk7h3ECijSbJ5CEa2cq1HRFkQ4JAJJw7coNDCETkKVLYSwmC2AAWTGA3IIZJVCdoChpxy7NZMXmChZagD1ClUsmgJW5YZdmqoTQMwZhJiJWmlDRMwpoAwDTPB0IZXoaBQAAAABJRU5ErkJggg==">
       </figure>
@@ -2681,7 +2698,7 @@ var vm = new Vue({
                          y: 0,
                          size: ""
                        }
-      //input组件 zz
+      //input组件 
       var inputCompObj = {
                          name: "inputComp",
                          title: "委托信息",
@@ -2717,13 +2734,13 @@ var vm = new Vue({
                          isMerge: false,
                          isShow: true
                        }
-      //checkbox组件  
+      //checkbox组件
       var checkboxCompObj = {
                          name: "checkboxComp",
                          title: "您去过的城市？",
                          inputname: "city",
                          tgId: tgid,
-                         cells: [{item: "福州", id: tgid + "-1"},{item: "厦门", id: tgid + "-2"},{item: "上海", id: tgid + "-3"}],
+                         cells: [{item: "福州", checked: true, id: tgid + "-1"},{item: "厦门", checked: true, id: tgid + "-2"},{item: "上海", checked: true, id: tgid + "-3"}],
                          isMerge: false,
                          isShow: true,
                          rows: [{reverse: false, txt: "文字在左"}, {reverse: true, txt: "文字在右"}],
@@ -2736,7 +2753,7 @@ var vm = new Vue({
                          title: "您的性别？",
                          inputname: "sex",
                          tgId: tgid,
-                         cells: [{item: "男", id: tgid + "-1"},{item: "女", id: tgid + "-2"}],
+                         cells: [{item: "男", checked: true, id: tgid + "-1"},{item: "女", checked: true, id: tgid + "-2"}],
                          isMerge: false,
                          isShow: true,
         
@@ -2796,10 +2813,11 @@ var vm = new Vue({
                          name: "spaceComp",
                          height: 15
                        }
-      //panel组件 
+      //panel组件  zz
       var panelCompObj = {
                          name: "panelComp",
                          isFigure: true,
+                         isReverse: "",
                          tgId: tgid,
                          cells: [{title: "标题", content: "内容内容内容", linkto: "#", id: tgid + "-1"}],
                        }

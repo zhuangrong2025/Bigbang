@@ -1,0 +1,4 @@
+bundle.js合并了一下js文件
+codeHighlight.js
+jqColorpicker.js
+store.js

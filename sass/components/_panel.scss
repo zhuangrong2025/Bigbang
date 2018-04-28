@@ -40,6 +40,16 @@
     }
     &.reverse{
       flex-direction: row-reverse;
+      > figure{
+        margin-right: 0;
+      }
+    }
+    &.radius{
+      > figure{
+        img{
+          border-radius: 50%;
+        }
+      }
     }
     > figure{
       width: 60px;

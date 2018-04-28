@@ -53,6 +53,10 @@
           background-color: #fff;
         }
       }
+      .cell-unit{
+        width: 0;
+        transform: translate(-25px, 0px);
+      }
     }
   }
 }
@@ -152,6 +156,13 @@
       font-size: 0;
      }
   }
+  .cell-unit{
+    display: block;
+    text-align: center;
+    color: $gray-light;
+    font-size: 13px;
+    white-space: nowrap;
+  }
 }
 
 .sm-cells .sm-cell:not([href]){
@@ -163,10 +174,4 @@
   }
 }
 
-.cell-unit{
-  display: block;
-  text-align: center;
-  color: $gray-light;
-  font-size: 13px;
-  white-space: nowrap;
-}
+

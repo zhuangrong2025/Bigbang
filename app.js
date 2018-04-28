@@ -50,6 +50,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', function(req, res){
    res.sendFile(__dirname + '/creator.html')
 })
+app.get('/creator-prod.html', function(req, res){
+   res.sendFile(__dirname + '/creator-prod.html')
+})
 
 //默认主题颜色
 var defaultTheme = { 'primary': "#008AD5", 'warning': "#E64340" , 'success': "#09BB07" , 'secondary': "#FFBE00" , 'line': "#dedede" , 'grayLight': "#999",
@@ -226,6 +229,7 @@ app.post('/cancelTheme', function(req, res){
 //Restore defaults theme 恢复默认样式 
 app.post('/restoreDefaults', function(req, res, next){
   
+  
   //读取默认样式文件，并写入到_custom.scss中
   var rsCss = fs.createReadStream(__dirname + '/sass/themes/default/theme.scss')
   var wsCss = fs.createWriteStream(__dirname + '/sass/_custom.scss')
@@ -240,7 +244,7 @@ app.post('/restoreDefaults', function(req, res, next){
   }
   //defaultTheme复制给newTheme，将服务器上的primary值为默认的，而且防止theme窗口在点取消或关闭的时候还是新值
   newTheme = cloneObj(defaultTheme)
-    
+  
 })
 
 app.use('/preview', preview)
